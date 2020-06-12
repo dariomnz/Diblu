@@ -1,13 +1,13 @@
 import random,noise
 from Game.Components.Tile import Tile,TileMap,Chunk
-from utils import JSONParser,JSONsave,str2list, list2str, list2str2, str2list2
-from Game.constants import CHUNK_SIZE
+from utils import JSONParser,JSONsave,str2list3, list2str3, list2str2, str2list2
+from Game.constants import CHUNK_SIZE, TILE_TYPES
 
 class Map():
     
     def __init__(self,screen_container,load=True):
 #         Estructura: 'x;y':{'x;y':tile}
-        self.size_square_in_chunk=16
+        self.size_square_in_chunk=24
         if load:
             self.chunks=map_load('world.json', screen_container)
         else:
@@ -28,7 +28,7 @@ def map_load(name,screen_container):
     for chunk_data in map_data['chunks'].items():
         chunks[chunk_data[0]]={}
         for tile_data in map_data['chunks'][chunk_data[0]].items():
-            tile_position=str2list(tile_data[0])
+            tile_position=str2list3(tile_data[0])
             chunk_position=str2list2(chunk_data[0])
 #             Tile_position= pos dentro chunk + el chunk en el que esta * su tamaño
             tile_position=[tile_position[0]+chunk_position[0]*CHUNK_SIZE[0],tile_position[1]+chunk_position[1]*CHUNK_SIZE[1],tile_position[2]]
@@ -65,7 +65,7 @@ def generate_map(map_size,screen_container):
     map_size=[map_size[0]//2,map_size[1]//2]
     tilemap = TileMap('tilemap1.gif')
     chunks={}
-    aux_tiles_data=[]
+    aux_tiles_data={}
 #     size=10
     scale = 25
     octaves = 4
@@ -91,8 +91,9 @@ def generate_map(map_size,screen_container):
             else:
                 tile_type=1
 #             print('noise at: X',x,' Y: ',y,'noise: ',noise_at_xy)   
-            aux_tiles_data.append([x,y,tile_type])
-                
+            aux_tiles_data[list2str2([x,y])]=[x,y,tile_type]
+    
+    
 #     Primero cracion de chunks vacions en el dict chunks
     for x in range(-map_size[0]//CHUNK_SIZE[0],map_size[0]//CHUNK_SIZE[0]):
         for y in range(-map_size[1]//CHUNK_SIZE[1],map_size[1]//CHUNK_SIZE[1]):
@@ -100,13 +101,23 @@ def generate_map(map_size,screen_container):
             chunks[chunk_position]={}
 
 #     Segundo creacion de los tile de cada chunk guardados en un dict
-    for tile in aux_tiles_data:
+    for tile in aux_tiles_data.values():
         tile_position_in_chunk=[tile[0]%CHUNK_SIZE[0],tile[1]%CHUNK_SIZE[1],0]
-        tile_position_in_chunk_str=list2str(tile_position_in_chunk)
+        tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
         tile_position=[tile[0],tile[1]]
         chunk_position=list2str2([tile[0]//8,tile[1]//8])
         chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,0,tile[2],tilemap,screen_container)
-            
+        
+        #Anadido de detalles en la layer 1
+        
+        #Detalles del agua
+        if tile[2]==1:
+            numero_random=random.randint(100,150)
+            if numero_random in TILE_TYPES:
+                tile_position_in_chunk[2]=1
+                tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
+                chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,1,numero_random,tilemap,screen_container)
+               
 #     Tercero creacion de los chunks
     for x in range(-map_size[0]//CHUNK_SIZE[0],map_size[0]//CHUNK_SIZE[0]):
         for y in range(-map_size[1]//CHUNK_SIZE[1],map_size[1]//CHUNK_SIZE[1]):
@@ -115,4 +126,24 @@ def generate_map(map_size,screen_container):
             
     return chunks
 
-        
+def neirbours(position,map_data):  
+    '''Position in form [x,y] Map in form of a dic of [x,y,type]'''
+    neirbours=[]
+    
+#     Top
+    position_top=list2str2(position[0],position[1]-1)
+    neirbours[0]=map_data[position_top][2]
+#     Down
+    position_top=list2str2(position[0],position[1]+1)
+    neirbours[1]=map_data[position_top][2]
+#     Left
+    position_top=list2str2(position[0]-1,position[1])
+    neirbours[2]=map_data[position_top][2]
+#     Right
+    position_top=list2str2(position[0]+1,position[1])
+    neirbours[3]=map_data[position_top][2]
+
+   
+     
+    return neirbours
+    

@@ -25,7 +25,11 @@ def center2pos(pos,size):
 def size(screen):
     return [screen.get_width(),screen.get_height()]
 
-def str2list(string):
+def str2list4(string):
+    split=string.split(';')
+    return [int(split[0]),int(split[1]),int(split[2]),int(split[3])]
+
+def str2list3(string):
     split=string.split(';')
     return [int(split[0]),int(split[1]),int(split[2])]
 
@@ -33,7 +37,10 @@ def str2list2(string):
     split=string.split(';')
     return [int(split[0]),int(split[1])]
 
-def list2str(listIn):
+def list2str4(listIn):
+    return str(listIn[0])+';'+str(listIn[1])+';'+str(listIn[2])+';'+str(listIn[3])
+
+def list2str3(listIn):
     return str(listIn[0])+';'+str(listIn[1])+';'+str(listIn[2])
 
 def list2str2(listIn):
@@ -41,8 +48,8 @@ def list2str2(listIn):
 
 
 
-# print(list2str([1,2,3]))
-# print(str2list('1;2;3')[:2])
+# print(list2str3([1,2,3]))
+# print(str2list3('1;2;3')[:2])
 # data=JSONParser('world.json')
 # 
 # print(data)

@@ -19,8 +19,8 @@ class Camera():
         
     def update_position(self,position_to_folow):
 #         Partido de 10 para crear el movimiento suave
-        self.position_map[0]+=((position_to_folow[0]-self.position_map[0])/10)
-        self.position_map[1]+=((position_to_folow[1]-self.position_map[1])/10)
+        self.position_map[0]+=((position_to_folow[0]-self.position_map[0])/20)
+        self.position_map[1]+=((position_to_folow[1]-self.position_map[1])/20)
         
         self.position_chunk=[self.position_map[0]//TILE_SIZE_GENERAL[0]//CHUNK_SIZE[0],self.position_map[1]//TILE_SIZE_GENERAL[1]//CHUNK_SIZE[1]]
         
