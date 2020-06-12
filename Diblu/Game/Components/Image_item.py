@@ -21,6 +21,7 @@ class Image_item():
         self.position_map[0]*=scale_image
         self.position_map[1]*=scale_image
         self.position_camera=position_map.copy()
+        self.rect=[self.position_camera[0],self.position_camera[1],self.original_image_size[0],self.original_image_size[1]]
         
     def draw(self):
         self.screen.blit(self.image,self.position_camera)
@@ -29,7 +30,7 @@ class Image_item():
         pass
     
     def camera_update(self,camera):
-        
+        self.rect=[self.position_camera[0],self.position_camera[1],self.original_image_size[0],self.original_image_size[1]]
         self.position_camera[0]=((self.position_map[0]-camera.position_map[0])*camera.zoom*self.screen_container.w_factor_position)+camera.position_screen[0]
         self.position_camera[1]=((self.position_map[1]-camera.position_map[1])*camera.zoom*self.screen_container.h_factor_position)+camera.position_screen[1]
         

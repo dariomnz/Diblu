@@ -18,7 +18,7 @@ camera = Camera([0,0],screen_container)
 control_text=Text([10,0],screen_container)
 player=Player([0,0],"slime_idle.gif",screen_container)
 
-terrain_map=Map(screen_container)
+terrain_map=Map(screen_container,load=False)
 
 run=True
 
@@ -58,9 +58,19 @@ while (run):
 
     camera.update_position(player.position_map)
     
-    for chunk in terrain_map.chunks.values():
-        chunk.camera_update(camera)
-        chunk.draw()
+#     Optimizacion de renderizado
+    
+#     chunk en el que se encuentra la camara
+    for chunk_key in camera.list_of_str_in_screen_chunks():
+        if chunk_key in terrain_map.chunks:
+            terrain_map.chunks[chunk_key].camera_update(camera)
+            terrain_map.chunks[chunk_key].draw()
+            
+    
+    
+#     for chunk in terrain_map.chunks.values():
+#         chunk.camera_update(camera)
+#         chunk.draw()
     
     
     player.update()
@@ -79,7 +89,7 @@ while (run):
     
 #     run=False
     
-terrain_map.save()
+# terrain_map.save()
 pygame.quit()
 sys.exit()
 

@@ -1,16 +1,11 @@
 import pygame,os
-from Game.constants import *
-from utils import str2list
+from utils import  str2list2
 from Game.Components.Sprite import Sprite
+from Game.constants import TILE_SIZE_GENERAL, CHUNK_SIZE, TILE_TYPES
 
-tile_types = {
-            0:[0,0,16,16],
-            1:[32,0,16,16],
-            2:[32,32,16,16]
-            }
 
-def tile_size(tile_type):
-    return tile_types[tile_type][2:] 
+
+
 
 class TileMap():
     
@@ -24,15 +19,18 @@ class TileMap():
 
 class Chunk():
     
-    def __init__(self,chunk_data):
+    def __init__(self,chunk_data,screen_container):
         '''chunk_data is a list, in [0]:the string of position, in [1] a dict with tiles'''
-        self.position=str2list(chunk_data[0])
+        self.position=str2list2(chunk_data[0])
         self.position_map=[self.position[0]*CHUNK_SIZE[0]*TILE_SIZE_GENERAL[0],self.position[1]*CHUNK_SIZE[1]*TILE_SIZE_GENERAL[1]]
         self.tiles=chunk_data[1]
+        self.tile_group=pygame.sprite.Group()
+        self.tile_group.add(self.tiles.values())
+        
+        self.screen_container=screen_container
         
     def draw(self):
-        for tile in self.tiles.values():
-            tile.draw()
+        self.tile_group.draw(self.screen_container.screen)
             
     def camera_update(self,camera):
         for tile in self.tiles.values():
@@ -45,12 +43,13 @@ class Chunk():
         
 class Tile(Sprite):
     
-    def __init__(self,position_chunk,tile_type,tilemap,screen):
+    def __init__(self,position_chunk,layer,tile_type,tilemap,screen_container):
         self.tile_type=tile_type
+        self.layer=layer
         self.tilemap=tilemap
         self.position_chunk=position_chunk
-        rect_in_tilemap=pygame.Rect(tile_types[self.tile_type])
+        rect_in_tilemap=pygame.Rect(TILE_TYPES[self.tile_type])
         image=self.tilemap.image.subsurface(rect_in_tilemap)
         
         position_map=[position_chunk[0]*TILE_SIZE_GENERAL[0],position_chunk[1]*TILE_SIZE_GENERAL[1]]
-        super().__init__(position_map, image, screen)
+        super().__init__(position_map, image, screen_container)
