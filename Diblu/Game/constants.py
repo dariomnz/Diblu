@@ -1,4 +1,6 @@
 
+# Tilemap1
+TILEMAP1_NAME='tilemap1.png'
 # Pixels iniciales
 TILE_SIZE_GENERAL=(16,16)
 # Pixels en pantalla
@@ -37,7 +39,18 @@ TILE_TYPES = {
 # Respecto a los tipos de vecino el tipo de tile correspondiente
 # Top;Down;Left;Right
 TILE_TYPES_NEIGHBOUR = {
+    '0;1;0;1':2,
     '0;5;3;0':2,
+    '0;1;1;1':3,
+    '0;1;3;1':3,
+    '0;1;1;3':3,
+    '0;1;3;3':3,
+    '0;1;1;4':3,
+    '0;1;3;4':3,
+    '0;1;2;1':3,
     '0;6;2;3':3,
+    '0;1;1;0':4,
+    '0;3;1;0':4,
+    '0;7;1;0':4,
     '0;7;3;0':4
     }

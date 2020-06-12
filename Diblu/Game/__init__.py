@@ -11,11 +11,11 @@ pygame.init()
 clock = pygame.time.Clock()
 
 screen_container = Screen_container()
-# screen=screen_container.screen
 
 camera = Camera([0,0],screen_container)
 
 control_text=Text([10,0],screen_container)
+
 player=Player([0,0],"slime_idle.gif",screen_container)
 
 terrain_map=Map(screen_container,load=False)
@@ -61,6 +61,7 @@ while (run):
 #     Optimizacion de renderizado
     
 #     chunk en el que se encuentra la camara
+
     for chunk_key in camera.list_of_str_in_screen_chunks():
         if chunk_key in terrain_map.chunks:
             terrain_map.chunks[chunk_key].camera_update(camera)
