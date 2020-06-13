@@ -60,19 +60,16 @@ while (run):
     
 #     Optimizacion de renderizado
     
-#     chunk en el que se encuentra la camara
-
     for chunk_key in camera.list_of_str_in_screen_chunks():
         if chunk_key in terrain_map.chunks:
             terrain_map.chunks[chunk_key].camera_update(camera)
-            terrain_map.chunks[chunk_key].draw()
-            
+            terrain_map.chunks[chunk_key].draw()   
     
     
 #     for chunk in terrain_map.chunks.values():
 #         chunk.camera_update(camera)
 #         chunk.draw()
-    
+     
     
     player.update()
     player.camera_update(camera)
@@ -82,7 +79,7 @@ while (run):
     fps = "FPS: " + str(int(clock.get_fps()))
     player_x_text= " X: "+str(player.position_map[0])
     player_y_text= " Y: "+str(player.position_map[1])
-    control_text.update(fps+player_x_text+player_y_text)
+    control_text.update_text(fps+player_x_text+player_y_text)
     control_text.draw()
     
     clock.tick(60)
