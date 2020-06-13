@@ -202,6 +202,30 @@ TILE_TYPES_UPNEIGHBOUR = {
     '9':11
     }
 
+CURSOR_CROSS = ( "                        ",
+                 "    XXXXXX    XXXXXX    ",
+                 "   X......X  X......X   ",
+                 "  XX......X  X......XX  ",
+                 " X..XXXXXX    XXXXXX..X ",
+                 " X..X              X..X ",
+                 " X..X              X..X ",
+                 " X..X              X..X ",
+                 " X..X      XX      X..X ",
+                 " X..X     X..X     X..X ",
+                 "  XX     XX..XX     XX  ",
+                 "        X..,...X        ",#Mitad
+                 "        X......X        ",#
+                 "  XX     XX..XX     XX  ",
+                 " X..X     X..X     X..X ",
+                 " X..X      XX      X..X ",
+                 " X..X              X..X ",
+                 " X..X              X..X ",
+                 " X..X              X..X ",
+                 " X..XXXXXX    XXXXXX..X ",
+                 "  XX......X  X......XX  ",
+                 "   X......X  X......X   ",
+                 "    XXXXXX    XXXXXX    ",
+                 "                        ")
 
 
 

@@ -1,4 +1,5 @@
 import pygame
+from Game.constants import CURSOR_CROSS
 
 
 class Screen_container(pygame.Surface):
@@ -25,6 +26,29 @@ class Screen_container(pygame.Surface):
         
         self.w_factor_image=1
         self.h_factor_image=1
+        
+        self.setUpCursor()
+        
+        
+    def setUpCursor(self):
+        '''Carga un cursor'''
+        hotspot = None
+        for y in range(len(CURSOR_CROSS)):
+            for x in range(len(CURSOR_CROSS[y])):
+                if CURSOR_CROSS[y][x] in ['x', ',', 'O']:
+                    hotspot = x,y
+                    break
+            if hotspot != None:
+                break
+        if hotspot == None:
+            raise Exception("No hotspot specified for cursor!")
+        s2 = []
+        for line in CURSOR_CROSS:
+            s2.append(line.replace(',', '.'))
+        cursor, mask = pygame.cursors.compile(s2, 'X', '.', 'o')
+        size = len(CURSOR_CROSS[0]), len(CURSOR_CROSS)
+        pygame.mouse.set_cursor(size, hotspot, cursor, mask)
+        
     
     def mean_factor_position(self):
         '''devuelve la media del factor de posicion'''
