@@ -11,7 +11,7 @@ class Player(Sprite):
         self.position_camera=[0,0]
         
         self.direction={'UP':0,'DOWN':0,'LEFT':0,'RIGHT':0}
-        self.original_vel=2
+        self.original_vel=1
         self.vel=self.original_vel
         
         self.controls_press={

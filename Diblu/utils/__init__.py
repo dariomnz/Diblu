@@ -25,6 +25,10 @@ def center2pos(pos,size):
 def size(screen):
     return [screen.get_width(),screen.get_height()]
 
+def str2list8(string):
+    split=string.split(';')
+    return [int(split[0]),int(split[1]),int(split[2]),int(split[3]),int(split[4]),int(split[5]),int(split[6]),int(split[7])]
+
 def str2list4(string):
     split=string.split(';')
     return [int(split[0]),int(split[1]),int(split[2]),int(split[3])]
@@ -36,6 +40,9 @@ def str2list3(string):
 def str2list2(string):
     split=string.split(';')
     return [int(split[0]),int(split[1])]
+
+def list2str8(listIn):
+    return str(listIn[0])+';'+str(listIn[1])+';'+str(listIn[2])+';'+str(listIn[3])+';'+str(listIn[4])+';'+str(listIn[5])+';'+str(listIn[6])+';'+str(listIn[7])
 
 def list2str4(listIn):
     return str(listIn[0])+';'+str(listIn[1])+';'+str(listIn[2])+';'+str(listIn[3])

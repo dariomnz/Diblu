@@ -18,7 +18,7 @@ control_text=Text([10,0],screen_container)
 
 player=Player([0,0],"slime_idle.gif",screen_container)
 
-terrain_map=Map(screen_container,load=False)
+terrain_map=Map(screen_container,load=True)
 
 run=True
 
@@ -90,7 +90,7 @@ while (run):
     
 #     run=False
     
-# terrain_map.save()
+terrain_map.save()
 pygame.quit()
 sys.exit()
 

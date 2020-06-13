@@ -1,15 +1,16 @@
-import random,noise
+import random,noise,time
 from Game.Components.Tile import Tile,TileMap,Chunk
 from utils import JSONParser,JSONsave,str2list3, list2str3, list2str2, str2list2,\
-    list2str4
+    list2str4, list2str8
 from Game.constants import CHUNK_SIZE, TILE_TYPES, TILEMAP1_NAME,\
-    TILE_TYPES_NEIGHBOUR
+    TILE_TYPES_4NEIGHBOUR, TILE_TYPES_8NEIGHBOUR, TILE_TYPES_4NEIGHBOUR_FIX
+
 
 class Map():
     
     def __init__(self,screen_container,load=True):
 #         Estructura: 'x;y':{'x;y':tile}
-        self.size_square_in_chunk=24
+        self.size_square_in_chunk=32
         if load:
             self.chunks=map_load('world.json', screen_container)
         else:
@@ -64,6 +65,7 @@ def generate_map(map_size,screen_container):
         print('Generacion de mapa incorrecta,map_size tiene que ser multiplo de 16')
         return None
     
+    start_time=time.time()
     map_size=[map_size[0]//2,map_size[1]//2]
     tilemap = TileMap(TILEMAP1_NAME)
     chunks={}
@@ -130,16 +132,29 @@ def generate_map(map_size,screen_container):
             chunk_position=list2str2([x,y])
             chunks[chunk_position]=Chunk([chunk_position,chunks[chunk_position]],screen_container)
             
+    print('Time consumed in generating the map:',time.time()-start_time,' seconds')
     return chunks
 
 def adapt_borders(aux_tiles_data):
     change_data=aux_tiles_data.copy()
     
+    #Primera pasada para las esquinas exteriores
     for change_data_key,change_data_item in change_data.items():
-        key_tile_tipe_neirbours=neirbours([change_data_item[0],change_data_item[1]],change_data)
-        if key_tile_tipe_neirbours in TILE_TYPES_NEIGHBOUR:
-            change_data[change_data_key]=[change_data_item[0],change_data_item[1],TILE_TYPES_NEIGHBOUR[key_tile_tipe_neirbours]]
-        
+        key_tile_tipe_neirbours=neirbours8([change_data_item[0],change_data_item[1]],change_data)
+        if key_tile_tipe_neirbours in TILE_TYPES_8NEIGHBOUR:
+            change_data[change_data_key]=[change_data_item[0],change_data_item[1],TILE_TYPES_8NEIGHBOUR[key_tile_tipe_neirbours]]
+    
+    #Segunda pasada para las demas
+    for change_data_key,change_data_item in change_data.items():
+        key_tile_tipe_neirbours=neirbours4([change_data_item[0],change_data_item[1]],change_data)
+        if key_tile_tipe_neirbours in TILE_TYPES_4NEIGHBOUR:
+            change_data[change_data_key]=[change_data_item[0],change_data_item[1],TILE_TYPES_4NEIGHBOUR[key_tile_tipe_neirbours]]
+    
+    #Tercera pasada para realizar el arreglo de unas pocas    
+    for change_data_key,change_data_item in change_data.items():
+        key_tile_tipe_neirbours=neirbours4([change_data_item[0],change_data_item[1]],change_data)
+        if key_tile_tipe_neirbours in TILE_TYPES_4NEIGHBOUR_FIX:
+            change_data[change_data_key]=[change_data_item[0],change_data_item[1],TILE_TYPES_4NEIGHBOUR_FIX[key_tile_tipe_neirbours]]
         
 #     print(change_data['0;0'][3])
     
@@ -153,10 +168,10 @@ def adapt_borders(aux_tiles_data):
 #         isChange=False
 #         for tile_data in change_data.items():
 # #             if tile_data[1][3]==0:
-#                 key_tile_tipe_neirbours=neirbours([tile_data[1][0],tile_data[1][1]],change_data)
-#                 if key_tile_tipe_neirbours in TILE_TYPES_NEIGHBOUR:
+#                 key_tile_tipe_neirbours=neirbours4([tile_data[1][0],tile_data[1][1]],change_data)
+#                 if key_tile_tipe_neirbours in TILE_TYPES_4NEIGHBOUR:
 #                     change_data.pop(tile_data[0])
-#                     aux_change_data[tile_data[0]]=[tile_data[1][0],tile_data[1][1],TILE_TYPES_NEIGHBOUR[key_tile_tipe_neirbours]]
+#                     aux_change_data[tile_data[0]]=[tile_data[1][0],tile_data[1][1],TILE_TYPES_4NEIGHBOUR[key_tile_tipe_neirbours]]
 #                     isChange=True
 #     #                 print('change',key_tile_tipe_neirbours)
 #                     break
@@ -167,27 +182,68 @@ def adapt_borders(aux_tiles_data):
      
     return change_data
    
-def neirbours(position,map_data):  
+def neirbours4(position,map_data):  
     '''Position in form [x,y] Map in form of a dic of [x,y,type]'''
 #     -1 para cuando no hay vecino
-    neirbours=[-1,-1,-1,-1]
+# Top;Down;Left;Right           tipo respectivo
+    neirbours4=[-1,-1,-1,-1]
     
 #     Top
     position_top=list2str2([position[0],position[1]-1])
     if position_top in map_data:
-        neirbours[0]=map_data[position_top][2]
+        neirbours4[0]=map_data[position_top][2]
 #     Down
     position_down=list2str2([position[0],position[1]+1])
     if position_down in map_data:
-        neirbours[1]=map_data[position_down][2]
+        neirbours4[1]=map_data[position_down][2]
 #     Left
     position_left=list2str2([position[0]-1,position[1]])
     if position_left in map_data:
-        neirbours[2]=map_data[position_left][2]
+        neirbours4[2]=map_data[position_left][2]
 #     Right
     position_right=list2str2([position[0]+1,position[1]])
     if position_right in map_data:
-        neirbours[3]=map_data[position_right][2]
+        neirbours4[3]=map_data[position_right][2]
 
-    return list2str4(neirbours)
+    return list2str4(neirbours4)
+
+def neirbours8(position,map_data):  
+    '''Position in form [x,y] Map in form of a dic of [x,y,type]'''
+#     -1 para cuando no hay vecino
+# cornerTopLeft;Top;cornerTopRight;Left;Right;cornerDownLeft;Down;cornerDownRight      tipo respectivo
+    neirbours8=[-1,-1,-1,-1,-1,-1,-1,-1]
+    
+#     cornerTopLeft
+    position_top=list2str2([position[0]-1,position[1]-1])
+    if position_top in map_data:
+        neirbours8[0]=map_data[position_top][2]
+#     Top
+    position_top=list2str2([position[0],position[1]-1])
+    if position_top in map_data:
+        neirbours8[1]=map_data[position_top][2]
+#     cornerTopRight
+    position_top=list2str2([position[0]+1,position[1]-1])
+    if position_top in map_data:
+        neirbours8[2]=map_data[position_top][2]
+#     Left
+    position_left=list2str2([position[0]-1,position[1]])
+    if position_left in map_data:
+        neirbours8[3]=map_data[position_left][2]
+#     Right
+    position_right=list2str2([position[0]+1,position[1]])
+    if position_right in map_data:
+        neirbours8[4]=map_data[position_right][2]
+#     cornerDownLeft
+    position_down=list2str2([position[0]-1,position[1]+1])
+    if position_down in map_data:
+        neirbours8[5]=map_data[position_down][2]
+#     Down
+    position_down=list2str2([position[0],position[1]+1])
+    if position_down in map_data:
+        neirbours8[6]=map_data[position_down][2]
+#     cornerDownRight
+    position_down=list2str2([position[0]+1,position[1]+1])
+    if position_down in map_data:
+        neirbours8[7]=map_data[position_down][2]
+    return list2str8(neirbours8)
     

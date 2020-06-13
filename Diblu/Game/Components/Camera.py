@@ -47,8 +47,8 @@ class Camera():
         y2_chunk=int(y2//TILE_SIZE_GENERAL_PIXEL[1]//CHUNK_SIZE[1])
                 
         chunks_target=[]
-        for x in range(x1_chunk,x2_chunk+1):
-            for y in range(y1_chunk,y2_chunk+1):
+        for x in range(x1_chunk-1,x2_chunk+2):
+            for y in range(y1_chunk-1,y2_chunk+2):
                 chunks_target.append(list2str2([x,y]))
         
         return chunks_target
