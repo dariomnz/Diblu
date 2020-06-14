@@ -5,23 +5,24 @@ from Game.constants import TILE_SIZE_GENERAL_PIXEL, TILE_SIZE_GENERAL
 class Image_item():
     '''Super clase de objetos con imagen'''
     def __init__(self,position_map,image,screen_container):
-        scale_image=TILE_SIZE_GENERAL_PIXEL[0]/TILE_SIZE_GENERAL[0]
+        self.scale_image=TILE_SIZE_GENERAL_PIXEL[0]/TILE_SIZE_GENERAL[0]
         self.screen_container=screen_container
         self.screen=screen_container.screen
         #Si es una imagen ya no la carga
         if isinstance(image, str):
+            image+='.png'
             file = os.path.join('..','data','images',image)
             self.original_image=pygame.image.load(file).convert_alpha()
         else:
             self.original_image=image
         
-        self.original_image_size=[int(self.original_image.get_width()*scale_image),int(self.original_image.get_height()*scale_image)]
+        self.original_image_size=[int(self.original_image.get_width()*self.scale_image),int(self.original_image.get_height()*self.scale_image)]
         self.original_image=pygame.transform.scale(self.original_image, (self.original_image_size[0], self.original_image_size[1]))
         self.image=self.original_image.copy()
         
         self.position_map=position_map
-        self.position_map[0]*=scale_image
-        self.position_map[1]*=scale_image
+        self.position_map[0]*=self.scale_image
+        self.position_map[1]*=self.scale_image
         self.position_camera=position_map.copy()
         #rect para dibujar la imagen
         self.rect=[self.position_camera[0],self.position_camera[1],self.original_image_size[0],self.original_image_size[1]]

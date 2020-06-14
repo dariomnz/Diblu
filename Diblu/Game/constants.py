@@ -1,6 +1,9 @@
 
+#TPS
+TPS=60
+
 # Tilemap1
-TILEMAP1_NAME='tilemap1.png'
+TILEMAP1_NAME='tilemap1'
 # Pixels iniciales
 TILE_SIZE_GENERAL=(16,16)
 # Pixels en pantalla

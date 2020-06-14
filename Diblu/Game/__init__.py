@@ -16,7 +16,7 @@ camera = Camera([0,0],screen_container)
 
 control_text=Text([10,0],screen_container)
 
-player=Player([0,0],"slime_idle.gif",screen_container)
+player=Player([0,0],"slime",screen_container)
 
 terrain_map=Map(screen_container,load=True)
 

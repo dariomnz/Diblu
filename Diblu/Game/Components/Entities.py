@@ -1,9 +1,9 @@
 from utils import center2pos
-from Game.Components.Sprite import Sprite
+from Game.Components.Sprite import AnimateSprite
 
 
 
-class Player(Sprite):
+class Player(AnimateSprite):
     '''Clase del jugador'''
     def __init__(self,position_map,image,screen_container):
         super().__init__(position_map,image,screen_container)
@@ -40,6 +40,7 @@ class Player(Sprite):
         '''Actualiza la posicion en el mapa del jugador'''
         self.position_map[0]=self.position_map[0]+((self.direction['RIGHT']-self.direction['LEFT'])*self.vel)
         self.position_map[1]=self.position_map[1]+((self.direction['DOWN']-self.direction['UP'])*self.vel)
+        super().update()
     
     
     #Multiplicadores de movimiento, para los controles
@@ -52,6 +53,7 @@ class Player(Sprite):
         self.direction['LEFT']=1
     def set_move_right(self):
         self.direction['RIGHT']=1
+        self.current_tag='jump_right'
     
     #Release 
     def del_move_up(self):
@@ -62,3 +64,4 @@ class Player(Sprite):
         self.direction['LEFT']=0
     def del_move_right(self):
         self.direction['RIGHT']=0
+        self.current_tag='idle'

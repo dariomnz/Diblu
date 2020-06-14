@@ -14,14 +14,14 @@ class Map():
         self.size_square_in_chunk=16
         # Si esta true lo carga sino genera un mapa nuevo
         if load:
-            self.chunks=map_load('world.json', screen_container)
+            self.chunks=map_load('world', screen_container)
         else:
             self.chunks=generate_map([CHUNK_SIZE[0]*self.size_square_in_chunk,CHUNK_SIZE[0]*self.size_square_in_chunk],screen_container)
         
         
     def save(self):
         '''Guarda el mapa'''
-        map_save(self.chunks, 'world.json')
+        map_save(self.chunks, 'world')
         
 
 

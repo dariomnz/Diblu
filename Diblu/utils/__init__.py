@@ -3,6 +3,7 @@ import json,os
 
 def JSONParser(jsonfile)->dict:
     '''Recoje los datos de un jsonfile y los devuelve en forma de dict'''
+    jsonfile+='.json'
     pathfile = os.path.join('..','data','json',jsonfile)
     
     with open(pathfile, 'r') as json_data:
@@ -12,6 +13,7 @@ def JSONParser(jsonfile)->dict:
 
 def JSONsave(jsonfile,data:dict):
     '''Guarda en el archivo jsonfile los datos de data'''
+    jsonfile+='.json'
     pathfile = os.path.join('..','data','json',jsonfile)
     with open(pathfile, 'w') as file:
         json.dump(data, file)
