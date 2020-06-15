@@ -12,7 +12,7 @@ class Map():
     
     def __init__(self,load=True):
 #         Estructura: 'x;y':{'x;y':tile}
-        self.size_square_in_chunk=4
+        self.size_square_in_chunk=16
         # Si esta true lo carga sino genera un mapa nuevo
         if load:
             self.chunks=map_load('world')

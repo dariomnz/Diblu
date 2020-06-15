@@ -1,8 +1,9 @@
 import pygame
 from Game.Components.Image_item import Image_item
 from utils import JSONParser, load_image
-from Game.constants import TPS
+from Game.constants import TPS, TILE_SIZE_GENERAL_PIXEL, TILE_SIZE_GENERAL
 from Game import Particle_manager
+from Game.Components import Screen_container as S_c
 
 
 class Sprite(pygame.sprite.Sprite,Image_item):
@@ -65,10 +66,15 @@ class AnimateSprite(pygame.sprite.Sprite,Image_item):
         self.images={}
         self.current_frame=self.tags[self.current_tag][0]
         
+        self.scale_image=TILE_SIZE_GENERAL_PIXEL[0]/TILE_SIZE_GENERAL[0]
+        
         # Creacion de un dict de imagenes con key el frame
         for frame,rect in self.image_sheet.items():
             self.images[frame] = sprite_sheet.subsurface(rect)
+            self.images[frame]=pygame.transform.scale(self.images[frame], (int(self.images[frame].get_width()*self.scale_image), int(self.images[frame].get_height()*self.scale_image)))
             
+        # Creacion de una copia de la imagen original, para transformaciones
+        self.original_images=self.images.copy()
         
     def update(self):
         
@@ -85,9 +91,11 @@ class AnimateSprite(pygame.sprite.Sprite,Image_item):
         if input_action in self.animation_manager[self.current_tag]:
             self.current_tag=self.animation_manager[self.current_tag][input_action]
             Particle_manager.getInstance().spawn(self.position_map, 20,Particle_manager.SMOKE_PRESET) 
-            
-            
-        
+     
+    def image_update(self, camera):
+        for image_key,image in self.original_images.items():
+            self.images[image_key]=pygame.transform.scale(image, (int(self.original_images[image_key].get_width()*camera.zoom*S_c.getInstance().w_factor_image), int(self.original_images[image_key].get_height()*camera.zoom*S_c.getInstance().h_factor_image)))
+         
         
         
         

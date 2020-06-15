@@ -73,9 +73,9 @@ while (run):
             terrain_map.chunks[chunk_key].draw()   
     
     
-    for chunk in terrain_map.chunks.values():
-        chunk.camera_update(camera)
-        chunk.draw()
+#     for chunk in terrain_map.chunks.values():
+#         chunk.camera_update(camera)
+#         chunk.draw()
      
     
     player.update()
