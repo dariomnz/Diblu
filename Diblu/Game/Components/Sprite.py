@@ -1,6 +1,6 @@
 import pygame,os
 from Game.Components.Image_item import Image_item
-from utils import JSONParser, list2str2, str2list2
+from utils import JSONParser, load_image
 from Game.constants import TPS
 
 
@@ -34,6 +34,10 @@ class AnimateSprite(pygame.sprite.Sprite,Image_item):
 #         print(self.config_data['meta']['frameTags'])
         aux_tags=config_data['meta']['frameTags']
         
+        # Creacion del animation_manager
+        # Es un dict que tiene el estado como key y {las aciones(key) con los estados(value) a los que lleva} como value
+        self.animation_manager=JSONParser(image+'_animation_manager')
+        
         # Almacena las animaciones con el nombre como key y una lista con los frames
         self.tags={}
         self.current_frame_position=0
@@ -44,7 +48,7 @@ class AnimateSprite(pygame.sprite.Sprite,Image_item):
         # Almacena el frame como key y una lista con [x,y,w,h]
         self.image_sheet={}
         aux_image_sheet=config_data['frames']
-         # Creacion de un dict para la duracion de cada frame
+        # Creacion de un dict para la duracion de cada frame
         self.frame_duration={}
         self.current_duration=0
         for aux_image_sheet_key,aux_image_sheet_data in aux_image_sheet.items():
@@ -53,8 +57,9 @@ class AnimateSprite(pygame.sprite.Sprite,Image_item):
         
         # Carga de el sprite_sheet     
         image+='.png'
-        file = os.path.join('..','data','images',image)
-        sprite_sheet=pygame.image.load(file).convert_alpha()  
+#         file = os.path.join('..','data','images',image)
+#         sprite_sheet=pygame.image.load(file).convert_alpha()
+        sprite_sheet=load_image(image)  
         
         self.images={}
         self.current_frame=self.tags[self.current_tag][0]
@@ -63,16 +68,23 @@ class AnimateSprite(pygame.sprite.Sprite,Image_item):
         for frame,rect in self.image_sheet.items():
             self.images[frame] = sprite_sheet.subsurface(rect)
             
-       
+        
     def update(self):
+        
         self.current_duration+=1
         if self.current_duration>self.frame_duration[self.current_frame]:
+            if self.current_frame_position == len(self.tags[self.current_tag])-1:
+                self.update_animation('end_animation')
             self.current_duration=0
             self.current_frame_position = (self.current_frame_position+1)%len(self.tags[self.current_tag])
             self.current_frame=self.tags[self.current_tag][self.current_frame_position]
             self.image=self.images[self.current_frame]
+            
      
-        
+    def update_animation(self,input_action):
+        if input_action in self.animation_manager[self.current_tag]:
+            self.current_tag=self.animation_manager[self.current_tag][input_action]
+            
         
         
         

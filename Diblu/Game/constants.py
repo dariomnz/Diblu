@@ -69,8 +69,36 @@ TILE_TYPES = {
     #Roca pequeña acuatica
     103:[48,176,16,16],
     #Roca grande acuatica
-    104:[0,192,32,32]
+    104:[0,192,32,32],
     
+    
+#Decoracion del cesped
+    #Hierba 1
+    200:[64,176,16,16],
+    #Hierba 2
+    201:[80,176,16,16],
+    #Hierba 3
+    202:[96,176,16,16],
+    #Hierba 4
+    203:[112,176,16,16],
+    #Hierba 5
+    204:[128,176,16,16],
+    #Hierba 6
+    205:[64,192,16,16],
+    #Hierba 7
+    206:[80,192,16,16],
+    #Hierba 8
+    207:[96,192,16,16],
+    #Hierba 9
+    208:[112,192,16,16],
+    #Hierba 10
+    209:[128,192,16,16],
+    #Roca 1
+    210:[32,192,16,16],
+    #Roca 2
+    211:[32,208,16,16],
+    #Roca 3
+    212:[64,208,16,16],
     }
 
 
@@ -205,30 +233,38 @@ TILE_TYPES_UPNEIGHBOUR = {
     '9':11
     }
 
-CURSOR_CROSS = ( "                        ",
-                 "    XXXXXX    XXXXXX    ",
-                 "   X......X  X......X   ",
-                 "  XX......X  X......XX  ",
-                 " X..XXXXXX    XXXXXX..X ",
-                 " X..X              X..X ",
-                 " X..X              X..X ",
-                 " X..X              X..X ",
-                 " X..X      XX      X..X ",
-                 " X..X     X..X     X..X ",
-                 "  XX     XX..XX     XX  ",
-                 "        X..,...X        ",#Mitad
-                 "        X......X        ",#
-                 "  XX     XX..XX     XX  ",
-                 " X..X     X..X     X..X ",
-                 " X..X      XX      X..X ",
-                 " X..X              X..X ",
-                 " X..X              X..X ",
-                 " X..X              X..X ",
-                 " X..XXXXXX    XXXXXX..X ",
-                 "  XX......X  X......XX  ",
-                 "   X......X  X......X   ",
-                 "    XXXXXX    XXXXXX    ",
-                 "                        ")
+CURSOR_CROSS = ( "                                ",
+                 "    XXXXXXXX        XXXXXXXX    ",
+                 "   X........X      X........X   ",
+                 "  X.........X      X.........X  ",
+                 " X..........X      X..........X ",
+                 " X...XXXXXXX        XXXXXXX...X ",
+                 " X...X                    X...X ",
+                 " X...X                    X...X ",
+                 " X...X                    X...X ",
+                 " X...X         XX         X...X ",
+                 " X...X        X..X        X...X ",
+                 " X...X        X..X        X...X ",
+                 "  XXX         X..X         XXX  ",
+                 "              X..X              ",
+                 "          XXXXX..XXXXX          ",
+                 "         X......,.....X         ",#Mitad
+                 "         X............X         ",#
+                 "          XXXXX..XXXXX          ",
+                 "              X..X              ",
+                 "  XXX         X..X         XXX  ",
+                 " X...X        X..X        X...X ",
+                 " X...X        X..X        X...X ",
+                 " X...X         XX         X...X ",
+                 " X...X                    X...X ",
+                 " X...X                    X...X ",
+                 " X...X                    X...X ",
+                 " X...XXXXX            XXXXX...X ",
+                 " X........X          X........X ",
+                 "  X.......X          X.......X  ",
+                 "   X......X          X......X   ",
+                 "    XXXXXX            XXXXXX    ",
+                 "                                ")
 
 
 

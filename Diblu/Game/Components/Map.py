@@ -124,37 +124,45 @@ def generate_map(map_size,screen_container):
         
         #Anadido de detalles en la layer 1
 
-        #Detalles del agua
         tile_position_in_chunk[2]=1
         tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
-        if tile[2]==1 and tile_position_in_chunk_str not in chunks[chunk_position]:
-            numero_random=random.randint(100,150)
-            if numero_random in TILE_TYPES:
-                if numero_random==104:
-                    if neirbours9([tile[0],tile[1]], aux_tiles_data)=='1;1;1;1;1;1;1;1;1' and tile_position_in_chunk[0]!=7 and tile_position_in_chunk[1]!=7:
+        if tile_position_in_chunk_str not in chunks[chunk_position]:
+            #Detalles del agua
+            if tile[2]==1:
+                numero_random=random.randint(100,150)
+                if numero_random in TILE_TYPES:
+                    if numero_random==104:
+                        if neirbours9([tile[0],tile[1]], aux_tiles_data)=='1;1;1;1;1;1;1;1;1' and tile_position_in_chunk[0]!=7 and tile_position_in_chunk[1]!=7:
+                            #layer
+                            tile_position_in_chunk[2]=1
+                            #Center
+                            tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
+                            chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,1,numero_random,tilemap,screen_container)
+                            #Right
+                            tile_position_in_chunk=[tile_position_in_chunk[0]+1,tile_position_in_chunk[1],1]
+                            tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
+                            chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,1,-10,tilemap,screen_container)
+                            #Down
+                            tile_position_in_chunk=[tile_position_in_chunk[0],tile_position_in_chunk[1]+1,1]
+                            tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
+                            chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,1,-10,tilemap,screen_container)
+                            #Down-Right
+                            tile_position_in_chunk=[tile_position_in_chunk[0]-1,tile_position_in_chunk[1],1]
+                            tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
+                            chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,1,-10,tilemap,screen_container)
+                    else:
                         #layer
                         tile_position_in_chunk[2]=1
-                        #Center
                         tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
                         chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,1,numero_random,tilemap,screen_container)
-                        #Right
-                        tile_position_in_chunk=[tile_position_in_chunk[0]+1,tile_position_in_chunk[1],1]
-                        tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
-                        chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,1,-10,tilemap,screen_container)
-                        #Down
-                        tile_position_in_chunk=[tile_position_in_chunk[0],tile_position_in_chunk[1]+1,1]
-                        tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
-                        chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,1,-10,tilemap,screen_container)
-                        #Down-Right
-                        tile_position_in_chunk=[tile_position_in_chunk[0]-1,tile_position_in_chunk[1],1]
-                        tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
-                        chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,1,-10,tilemap,screen_container)
-                else:
+            #Detalles del cesped
+            elif tile[2]==0:
+                numero_random=random.randint(200,280)
+                if numero_random in TILE_TYPES:
                     #layer
                     tile_position_in_chunk[2]=1
                     tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
                     chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,1,numero_random,tilemap,screen_container)
-               
 #     Tercero creacion de los chunks
     for x in range(-map_size[0]//CHUNK_SIZE[0],map_size[0]//CHUNK_SIZE[0]):
         for y in range(-map_size[1]//CHUNK_SIZE[1],map_size[1]//CHUNK_SIZE[1]):

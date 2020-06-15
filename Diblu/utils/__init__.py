@@ -1,4 +1,26 @@
-import json,os
+import json,os,pygame
+from pygame.locals import RLEACCEL
+
+def load_image(name, colorkey = None):
+    """Carga la imagen de nombre 'name' desde
+       el directorio 'datadir'"""
+    fullname = os.path.join('..','data','images',name)
+
+    image = pygame.image.load(fullname)
+    
+    if colorkey is not None:
+        image = image.convert()
+        
+    if colorkey == -1:
+        colorkey = image.get_at((0, 0))
+        image.set_colorkey(colorkey, RLEACCEL)
+    else:
+        if image.get_alpha() is None:
+            image = image.convert()
+        else:
+            image = image.convert_alpha()
+                
+    return image
 
 
 def JSONParser(jsonfile)->dict:

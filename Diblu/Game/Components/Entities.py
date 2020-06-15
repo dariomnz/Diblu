@@ -38,8 +38,21 @@ class Player(AnimateSprite):
                          
     def update(self):
         '''Actualiza la posicion en el mapa del jugador'''
+       
+            
         self.position_map[0]=self.position_map[0]+((self.direction['RIGHT']-self.direction['LEFT'])*self.vel)
         self.position_map[1]=self.position_map[1]+((self.direction['DOWN']-self.direction['UP'])*self.vel)
+        
+        # Comprobaciones para las animaciones
+        if self.direction['UP']==1:   
+            self.update_animation('press_w')
+        elif self.direction['DOWN']==1:
+            self.update_animation('press_s')
+        elif self.direction['LEFT']==1:
+            self.update_animation('press_a')
+        elif self.direction['RIGHT']==1:
+            self.update_animation('press_d')
+        
         super().update()
     
     
@@ -53,7 +66,6 @@ class Player(AnimateSprite):
         self.direction['LEFT']=1
     def set_move_right(self):
         self.direction['RIGHT']=1
-        self.current_tag='jump_right'
     
     #Release 
     def del_move_up(self):
@@ -64,4 +76,3 @@ class Player(AnimateSprite):
         self.direction['LEFT']=0
     def del_move_right(self):
         self.direction['RIGHT']=0
-        self.current_tag='idle'

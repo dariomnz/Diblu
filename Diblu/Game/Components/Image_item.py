@@ -1,5 +1,6 @@
 import pygame,os
 from Game.constants import TILE_SIZE_GENERAL_PIXEL, TILE_SIZE_GENERAL
+from utils import load_image
 
 
 class Image_item():
@@ -11,8 +12,13 @@ class Image_item():
         #Si es una imagen ya no la carga
         if isinstance(image, str):
             image+='.png'
-            file = os.path.join('..','data','images',image)
-            self.original_image=pygame.image.load(file).convert_alpha()
+            self.original_image=load_image(image)
+#             file = os.path.join('..','data','images',image)
+#             self.original_image=pygame.image.load(file)
+#             if self.original_image.get_alpha() is None:
+#                 self.original_image = self.original_image.convet()
+#             else:
+#                 self.original_image = self.original_image.convert_alpha()
         else:
             self.original_image=image
         

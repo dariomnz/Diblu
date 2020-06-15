@@ -5,6 +5,7 @@ from Game.Components.Camera import Camera
 from Game.Components.Entities import Player
 from Game.Components.Text import Text
 from Game.Components.Map import Map
+from Game.Particle_manager  import Particle_manager,SMOKE_PRESET
 
 pygame.init()
 
@@ -18,7 +19,9 @@ control_text=Text([10,0],screen_container)
 
 player=Player([0,0],"slime",screen_container)
 
-terrain_map=Map(screen_container,load=True)
+terrain_map=Map(screen_container,load=False)
+
+particle_manager=Particle_manager(screen_container)
 
 run=True
 
@@ -34,6 +37,9 @@ while (run):
         if e.type == KEYDOWN:
             if pygame.key.name(e.key) in player.controls_press.keys():
                 player.controls_press[pygame.key.name(e.key)]()
+            #Prueba de creacion de particulas
+            if pygame.key.name(e.key)=='p':
+                particle_manager.spawn(player.position_map, 20,SMOKE_PRESET)
         elif e.type == KEYUP:
             if pygame.key.name(e.key) in player.controls_release.keys():
                 player.controls_release[pygame.key.name(e.key)]()
@@ -74,6 +80,10 @@ while (run):
     player.update()
     player.camera_update(camera)
     player.draw()
+    
+    particle_manager.camera_update(camera)
+    particle_manager.draw()
+    
     
     
     fps = "FPS: " + str(int(clock.get_fps()))

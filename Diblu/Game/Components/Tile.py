@@ -1,5 +1,5 @@
 import pygame,os
-from utils import  str2list2
+from utils import  str2list2, load_image
 from Game.Components.Sprite import Sprite
 from Game.constants import TILE_SIZE_GENERAL, CHUNK_SIZE, TILE_TYPES
 
@@ -8,8 +8,9 @@ class TileMap():
     '''Clase que se encarga de guardar el tilemap'''
     def __init__(self,image):
         image+='.png'
-        file = os.path.join('..','data','images',image)
-        self.image=pygame.image.load(file).convert_alpha()
+#         file = os.path.join('..','data','images',image)
+#         self.image=pygame.image.load(file).convert_alpha()
+        self.image=load_image(image)
         self.original_image_size=[self.image.get_width(),self.image.get_height()]
         
 
