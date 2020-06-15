@@ -1,7 +1,12 @@
 import pygame
 from Game.constants import CURSOR_CROSS
 
+def getInstance():
+    return _instance
 
+def createInstance():
+    Screen_container()
+    
 class Screen_container(pygame.Surface):
     
     def __init__(self):
@@ -29,6 +34,8 @@ class Screen_container(pygame.Surface):
         
         self.setUpCursor()
         
+        global _instance
+        _instance=self
         
     def setUpCursor(self):
         '''Carga un cursor'''

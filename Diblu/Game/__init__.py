@@ -1,32 +1,33 @@
 import pygame,sys
 from pygame.locals import *
-from Game.Components.Screen import Screen_container
-from Game.Components.Camera import Camera
-from Game.Components.Entities import Player
-from Game.Components.Text import Text
-from Game.Components.Map import Map
-from Game.Particle_manager  import Particle_manager,SMOKE_PRESET
 
 pygame.init()
 
 clock = pygame.time.Clock()
 
-screen_container = Screen_container()
+from Game.Components import Screen_container as S_c
+S_c.createInstance()
 
-camera = Camera([0,0],screen_container)
+from Game.Components.Camera import Camera
+camera = Camera([0,0])
 
-control_text=Text([10,0],screen_container)
+from Game.Components.Text import Text
+control_text=Text([10,0])
 
-player=Player([0,0],"slime",screen_container)
+from Game.Components.Entities import Player
+player=Player([0,0],"slime")
 
-terrain_map=Map(screen_container,load=False)
+from Game.Components.Map import Map
+terrain_map=Map(load=False)
 
-particle_manager=Particle_manager(screen_container)
+from Game import Particle_manager
+from Game.Particle_manager import SMOKE_PRESET
+particle_manager=Particle_manager.createInstance()
 
 run=True
 
 while (run):
-    screen_container.screen.fill((0,0,0))
+    S_c.getInstance().screen.fill((0,0,0))
     
     for e in pygame.event.get():
 #         For the exit
@@ -38,8 +39,8 @@ while (run):
             if pygame.key.name(e.key) in player.controls_press.keys():
                 player.controls_press[pygame.key.name(e.key)]()
             #Prueba de creacion de particulas
-            if pygame.key.name(e.key)=='p':
-                particle_manager.spawn(player.position_map, 20,SMOKE_PRESET)
+#             if pygame.key.name(e.key)=='p':
+#                 Particle_manager.getInstance().spawn(player.position_map, 20,SMOKE_PRESET)
         elif e.type == KEYUP:
             if pygame.key.name(e.key) in player.controls_release.keys():
                 player.controls_release[pygame.key.name(e.key)]()
@@ -54,7 +55,7 @@ while (run):
        
 #         For the resizable
         if e.type == VIDEORESIZE:
-            screen_container.update_size([e.w,e.h])
+            S_c.getInstance().update_size([e.w,e.h])
             camera.screen_update()
             player.image_update(camera)
             for chunk in terrain_map.chunks.values():
@@ -72,17 +73,17 @@ while (run):
             terrain_map.chunks[chunk_key].draw()   
     
     
-#     for chunk in terrain_map.chunks.values():
-#         chunk.camera_update(camera)
-#         chunk.draw()
+    for chunk in terrain_map.chunks.values():
+        chunk.camera_update(camera)
+        chunk.draw()
      
     
     player.update()
     player.camera_update(camera)
     player.draw()
     
-    particle_manager.camera_update(camera)
-    particle_manager.draw()
+    Particle_manager.getInstance().camera_update(camera)
+    Particle_manager.getInstance().draw()
     
     
     

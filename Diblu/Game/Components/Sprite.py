@@ -1,25 +1,26 @@
-import pygame,os
+import pygame
 from Game.Components.Image_item import Image_item
 from utils import JSONParser, load_image
 from Game.constants import TPS
+from Game import Particle_manager
 
 
 class Sprite(pygame.sprite.Sprite,Image_item):
     '''Super clase de los sprites, hereda de pygame Sprite y de Image_item'''
-    def __init__(self,position_map,image,screen_container):
+    def __init__(self,position_map,image):
         pygame.sprite.Sprite.__init__(self)
-        Image_item.__init__(self,position_map,image,screen_container)
+        Image_item.__init__(self,position_map,image)
         
         
 class AnimateSprite(pygame.sprite.Sprite,Image_item):
     '''Super clase de los sprites animados, hereda de pygame Sprite y de Image_item'''
-    def __init__(self,position_map,image,screen_container):
+    def __init__(self,position_map,image):
         self.setup(image)
         
         image=self.images[0] 
         
         pygame.sprite.Sprite.__init__(self)
-        Image_item.__init__(self,position_map,image,screen_container)
+        Image_item.__init__(self,position_map,image)
         
         # Escalamos todas las imagenes para que sean iguales
         for keys,value in self.images.items():
@@ -79,11 +80,12 @@ class AnimateSprite(pygame.sprite.Sprite,Image_item):
             self.current_frame_position = (self.current_frame_position+1)%len(self.tags[self.current_tag])
             self.current_frame=self.tags[self.current_tag][self.current_frame_position]
             self.image=self.images[self.current_frame]
-            
      
     def update_animation(self,input_action):
         if input_action in self.animation_manager[self.current_tag]:
             self.current_tag=self.animation_manager[self.current_tag][input_action]
+            Particle_manager.getInstance().spawn(self.position_map, 20,Particle_manager.SMOKE_PRESET) 
+            
             
         
         

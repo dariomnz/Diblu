@@ -4,19 +4,20 @@ from utils import JSONParser,JSONsave,str2list3, list2str3, list2str2, str2list2
     list2str4, list2str9
 from Game.constants import CHUNK_SIZE, TILE_TYPES, TILEMAP1_NAME,\
     TILE_TYPES_4NEIGHBOUR_FIX,\
-    TILE_TYPES_9NEIGHBOUR1, TILE_TYPES_9NEIGHBOUR2, TILE_TYPES_UPNEIGHBOUR
+    TILE_TYPES_9NEIGHBOUR1, TILE_TYPES_9NEIGHBOUR2, TILE_TYPES_UPNEIGHBOUR,\
+    TILE_SIZE
 
 
 class Map():
     
-    def __init__(self,screen_container,load=True):
+    def __init__(self,load=True):
 #         Estructura: 'x;y':{'x;y':tile}
-        self.size_square_in_chunk=16
+        self.size_square_in_chunk=4
         # Si esta true lo carga sino genera un mapa nuevo
         if load:
-            self.chunks=map_load('world', screen_container)
+            self.chunks=map_load('world')
         else:
-            self.chunks=generate_map([CHUNK_SIZE[0]*self.size_square_in_chunk,CHUNK_SIZE[0]*self.size_square_in_chunk],screen_container)
+            self.chunks=generate_map([CHUNK_SIZE[0]*self.size_square_in_chunk,CHUNK_SIZE[0]*self.size_square_in_chunk])
         
         
     def save(self):
@@ -25,7 +26,7 @@ class Map():
         
 
 
-def map_load(name,screen_container):
+def map_load(name):
     '''Carga el mapa name'''
     start_time=time.time()
     tilemap = TileMap(TILEMAP1_NAME)
@@ -41,8 +42,8 @@ def map_load(name,screen_container):
 #             Tile_position= pos dentro chunk + el chunk en el que esta * su tamaño
             tile_position=[tile_position[0]+chunk_position[0]*CHUNK_SIZE[0],tile_position[1]+chunk_position[1]*CHUNK_SIZE[1],tile_position[2]]
 
-            chunks[chunk_data[0]][tile_data[0]]=Tile(tile_position[:2],tile_position[2],tile_data[1],tilemap,screen_container)
-        chunks[chunk_data[0]]=Chunk([chunk_data[0],chunks[chunk_data[0]]],screen_container)
+            chunks[chunk_data[0]][tile_data[0]]=Tile(tile_position[:2],tile_position[2],tile_data[1],tilemap)
+        chunks[chunk_data[0]]=Chunk([chunk_data[0],chunks[chunk_data[0]]])
     print('Time consumed in load the map:',time.time()-start_time,' seconds')
     return chunks
 
@@ -67,7 +68,7 @@ def map_save(chunks,name):
     
     
     
-def generate_map(map_size,screen_container):
+def generate_map(map_size):
     '''map_size is the number or tiles [tiles_w,tiles_h], it must be multiple of 16'''
     if map_size[0]%16!=0 or map_size[1]%16!=0:
         print('Generacion de mapa incorrecta,map_size tiene que ser multiplo de 16')
@@ -120,7 +121,8 @@ def generate_map(map_size,screen_container):
         tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
         tile_position=[tile[0],tile[1]]
         chunk_position=list2str2([tile[0]//8,tile[1]//8])
-        chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,0,tile[2],tilemap,screen_container)
+        if tile[2]!=-10:
+            chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,0,tile[2],tilemap)
         
         #Anadido de detalles en la layer 1
 
@@ -132,42 +134,32 @@ def generate_map(map_size,screen_container):
                 numero_random=random.randint(100,150)
                 if numero_random in TILE_TYPES:
                     if numero_random==104:
-                        if neirbours9([tile[0],tile[1]], aux_tiles_data)=='1;1;1;1;1;1;1;1;1' and tile_position_in_chunk[0]!=7 and tile_position_in_chunk[1]!=7:
-                            #layer
-                            tile_position_in_chunk[2]=1
-                            #Center
-                            tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
-                            chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,1,numero_random,tilemap,screen_container)
-                            #Right
-                            tile_position_in_chunk=[tile_position_in_chunk[0]+1,tile_position_in_chunk[1],1]
-                            tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
-                            chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,1,-10,tilemap,screen_container)
-                            #Down
-                            tile_position_in_chunk=[tile_position_in_chunk[0],tile_position_in_chunk[1]+1,1]
-                            tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
-                            chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,1,-10,tilemap,screen_container)
-                            #Down-Right
-                            tile_position_in_chunk=[tile_position_in_chunk[0]-1,tile_position_in_chunk[1],1]
-                            tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
-                            chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,1,-10,tilemap,screen_container)
+                        
+                        generate_big_tile(tile[:2],tile[2], numero_random, chunks, aux_tiles_data)
+
                     else:
                         #layer
                         tile_position_in_chunk[2]=1
                         tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
-                        chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,1,numero_random,tilemap,screen_container)
+                        chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,1,numero_random,tilemap)
             #Detalles del cesped
             elif tile[2]==0:
                 numero_random=random.randint(200,280)
                 if numero_random in TILE_TYPES:
-                    #layer
-                    tile_position_in_chunk[2]=1
-                    tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
-                    chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,1,numero_random,tilemap,screen_container)
+                    if numero_random in [213,214,215,216]:
+                        
+                        generate_big_tile(tile[:2],tile[2], numero_random, chunks, aux_tiles_data)
+                        
+                    else:
+#                         layer
+                        tile_position_in_chunk[2]=1
+                        tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
+                        chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,1,numero_random,tilemap)
 #     Tercero creacion de los chunks
     for x in range(-map_size[0]//CHUNK_SIZE[0],map_size[0]//CHUNK_SIZE[0]):
         for y in range(-map_size[1]//CHUNK_SIZE[1],map_size[1]//CHUNK_SIZE[1]):
             chunk_position=list2str2([x,y])
-            chunks[chunk_position]=Chunk([chunk_position,chunks[chunk_position]],screen_container)
+            chunks[chunk_position]=Chunk([chunk_position,chunks[chunk_position]])
             
     print('Time consumed in generate the map:',time.time()-start_time,' seconds')
     return chunks
@@ -204,7 +196,56 @@ def adapt_borders(aux_tiles_data):
      
     return change_data
    
-   
+def generate_big_tile(position,parent_tile_type,tile_type,chunks,map_data):
+    '''Encargado de poner tiles que ocupen mas de 1 tile
+        position=[x,y]
+        parent_tile_type= tipo de tile del suelo
+        tile_type= tipo de tile actual
+        tiles_size=[w,h] en tiles
+        chunks es dict de datos
+        map_data dict de 'x;y':[x,y,type]'''
+    
+    tilemap = TileMap(TILEMAP1_NAME)
+    chunk_position=list2str2([position[0]//8,position[1]//8])
+    tile_position_in_chunk=[position[0]%CHUNK_SIZE[0],position[1]%CHUNK_SIZE[1],1]
+    
+    #Comprobacion de que no esta en bordes de chunk
+    if not (tile_position_in_chunk[0]<CHUNK_SIZE[0]-(TILE_SIZE(tile_type)[0]-1) and tile_position_in_chunk[1]<CHUNK_SIZE[1]-(TILE_SIZE(tile_type)[1]-1)):
+        return
+
+    #Comprobacion de que tiene espacio
+    for x in range(TILE_SIZE(tile_type)[0]):
+        for y in range(TILE_SIZE(tile_type)[1]):
+            
+            aux_tile_position=[position[0]+x,position[1]+y]
+            if list2str2(aux_tile_position) in map_data:
+                #Respecto a si esta en tierra o agua
+                if map_data[list2str2(aux_tile_position)][2]!=parent_tile_type:
+                #Como no tiene sale
+                    return
+                #Respecto a si ya esta ocupada posicion
+                aux_tile_position_in_chunk=[tile_position_in_chunk[0]+x,tile_position_in_chunk[1]+y,1]
+                aux_tile_position_in_chunk_str=list2str3(aux_tile_position_in_chunk)
+                if aux_tile_position_in_chunk_str in chunks[chunk_position]:
+                    return
+            else:
+                return
+    # Creacion de las tiles necesarias        
+    for x in range(TILE_SIZE(tile_type)[0]):
+        for y in range(TILE_SIZE(tile_type)[1]):
+            if x==0 and y==0:
+                aux_tile_position_in_chunk=[tile_position_in_chunk[0]+x,tile_position_in_chunk[1]+y,1]
+                aux_tile_position_in_chunk_str=list2str3(aux_tile_position_in_chunk)
+                chunks[chunk_position][aux_tile_position_in_chunk_str]=Tile(position,1,tile_type,tilemap)
+            else:
+                aux_tile_position_in_chunk=[tile_position_in_chunk[0]+x,tile_position_in_chunk[1]+y,1]
+                aux_tile_position_in_chunk_str=list2str3(aux_tile_position_in_chunk)
+                position[0]+=x
+                position[1]+=y
+                chunks[chunk_position][aux_tile_position_in_chunk_str]=Tile(position,1,-10,tilemap)
+    
+    
+        
 def upNeirbour(position,map_data):
     '''Devuelve el vecino de arriba en str'''
     #     Top

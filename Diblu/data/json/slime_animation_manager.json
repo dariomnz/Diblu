@@ -2,7 +2,7 @@
 "idle_back":{"press_w":"jump_back","press_s":"jump_front","press_a":"jump_left","press_d":"jump_right"},
 "idle_right":{"press_w":"jump_back","press_s":"jump_front","press_a":"jump_left","press_d":"jump_right"},
 "idle_left":{"press_w":"jump_back","press_s":"jump_front","press_a":"jump_left","press_d":"jump_right"},
-"jump_front":{"end_animation":"idle_front"},
-"jump_back":{"end_animation":"idle_back"},
-"jump_right":{"end_animation":"idle_right"},
-"jump_left":{"end_animation":"idle_left"}}
+"jump_front":{"end_animation":"idle_front","press_w":"jump_back","press_a":"jump_left","press_d":"jump_right"},
+"jump_back":{"end_animation":"idle_back","press_s":"jump_front","press_a":"jump_left","press_d":"jump_right"},
+"jump_right":{"end_animation":"idle_right","press_w":"jump_back","press_s":"jump_front","press_a":"jump_left"},
+"jump_left":{"end_animation":"idle_left","press_w":"jump_back","press_s":"jump_front","press_d":"jump_right"}}

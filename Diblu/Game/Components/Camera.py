@@ -1,15 +1,16 @@
 from utils import pos2center, list2str2
 from Game.constants import CHUNK_SIZE,TILE_SIZE_GENERAL_PIXEL
+from Game.Components import Screen_container as S_c
+
 class Camera():
     
-    def __init__(self,position_map,screen_container):
-        self.screen_container=screen_container
+    def __init__(self,position_map):
         self.position_map=position_map
 
-        self.position_screen=pos2center([0,0],self.screen_container.get_screen_size())
+        self.position_screen=pos2center([0,0],S_c.getInstance().get_screen_size())
         self.zoom=1
-        self.max_zoom=2
-        self.min_zoom=0.1
+        self.max_zoom=4
+        self.min_zoom=0.5
         #Encargado de identificar los controles con lo que hacen
         self.controls={
             2:self.zoom_reset,
@@ -27,11 +28,11 @@ class Camera():
        
     def screen_update(self):
         '''Actualizar cuando se actualiza el tamano de la pantalla'''
-        self.position_screen=pos2center([0,0],self.screen_container.get_screen_size())
+        self.position_screen=pos2center([0,0],S_c.getInstance().get_screen_size())
         
     def list_of_str_in_screen_chunks(self):
         '''Devuelve una lista de identificadores chunks que hay en pantalla. Ej: '0;0' '''
-        screen_size = self.screen_container.get_screen_size()
+        screen_size = S_c.getInstance().get_screen_size()
 #         Posiciones por pixeles en pantalla
 #                   y1
 #                    |
@@ -64,14 +65,14 @@ class Camera():
         
     def zoom_in(self):
         '''Disminuye el zoom, lo que hace las cosas en pantalla mas grandes'''
-        self.zoom-=0.1
+        self.zoom-=0.5
         if self.zoom<self.min_zoom:
             self.zoom=self.min_zoom
         print('Zoom: '+str(self.zoom))
         
     def zoom_out(self):
         '''Aumenta el zoom, lo que hace las cosas en pantalla mas pequenas'''
-        self.zoom+=0.1
+        self.zoom+=0.5
         if self.zoom>self.max_zoom:
             self.zoom=self.max_zoom
         print('Zoom: '+str(self.zoom))

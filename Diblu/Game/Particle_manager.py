@@ -1,13 +1,23 @@
 import random
 import pygame
+from Game.Components import Screen_container as S_c
 
-SMOKE_PRESET=[(255,255,255),(214,214,214),(180,180,180),(150,150,150),(130,130,130)]
+SMOKE_PRESET=[(230,230,230),(214,214,214),(180,180,180),(150,150,150),(130,130,130)]
+
+def getInstance():
+    return _instance
+
+def createInstance():
+    Particle_manager()
+
 class Particle_manager():
     
-    def __init__(self,screen_container):
+    def __init__(self):
         # Formato [position_map,position_camera, velocity, timer, color]
         self.particles=[]
-        self.screen_container=screen_container
+        
+        global _instance
+        _instance=self
         
         
     def spawn(self,position_map,number,preset):
@@ -17,8 +27,8 @@ class Particle_manager():
         
     def camera_update(self,camera):
         for particle in self.particles:
-            particle[1][0]=((particle[0][0]-camera.position_map[0])*camera.zoom*self.screen_container.w_factor_position)+camera.position_screen[0]
-            particle[1][1]=((particle[0][1]-camera.position_map[1])*camera.zoom*self.screen_container.w_factor_position)+camera.position_screen[1]
+            particle[1][0]=((particle[0][0]-camera.position_map[0])*camera.zoom*S_c.getInstance().w_factor_position)+camera.position_screen[0]
+            particle[1][1]=((particle[0][1]-camera.position_map[1])*camera.zoom*S_c.getInstance().w_factor_position)+camera.position_screen[1]
         
         
     def draw(self):
@@ -28,6 +38,6 @@ class Particle_manager():
             particle[0][1] += particle[2][1]
             particle[3]-=0.1
             particle[2][1] +=0.03
-            pygame.draw.circle(self.screen_container.screen, particle[4], [int(particle[1][0]),int(particle[1][1])] , int(particle[3]))
+            pygame.draw.circle(S_c.getInstance().screen, particle[4], [int(particle[1][0]),int(particle[1][1])] , int(particle[3]))
             if particle[3] <=0:
                 self.particles.remove(particle)

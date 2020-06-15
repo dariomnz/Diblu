@@ -99,9 +99,19 @@ TILE_TYPES = {
     211:[32,208,16,16],
     #Roca 3
     212:[64,208,16,16],
+    
+    #Arbol grande 1
+    213:[0,224,48,80],
+    #Arbol mediano 1
+    214:[48,224,32,48],
+    #Arbol mediano 2
+    215:[80,224,32,48],
+    #Arbol mediano 3
+    216:[112,224,32,48],
     }
 
-
+# Tamano de un tipo de tile en tiles
+TILE_SIZE=lambda tile_type: [TILE_TYPES[tile_type][2]//TILE_SIZE_GENERAL[0],TILE_TYPES[tile_type][3]//TILE_SIZE_GENERAL[1]]
 
 
 # Respecto a los tipos de vecino el tipo de tile correspondiente con 4 vecinos
