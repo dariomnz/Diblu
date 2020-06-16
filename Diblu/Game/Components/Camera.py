@@ -10,7 +10,7 @@ class Camera():
         self.position_screen=pos2center([0,0],S_c.getInstance().get_screen_size())
         self.zoom=1
         self.max_zoom=4
-        self.min_zoom=0.5
+        self.min_zoom=0.25
         #Encargado de identificar los controles con lo que hacen
         self.controls={
             2:self.zoom_reset,
@@ -33,6 +33,10 @@ class Camera():
     def list_of_str_in_screen_chunks(self):
         '''Devuelve una lista de identificadores chunks que hay en pantalla. Ej: '0;0' '''
         screen_size = S_c.getInstance().get_screen_size()
+        #Actualizaciones para cuando se cambie la resolucion
+        screen_size[0]//=S_c.getInstance().w_factor_position
+        screen_size[1]//=S_c.getInstance().h_factor_position
+        
 #         Posiciones por pixeles en pantalla
 #                   y1
 #                    |

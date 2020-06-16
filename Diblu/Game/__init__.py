@@ -15,10 +15,10 @@ from Game.Components.Text import Text
 control_text=Text([10,0])
 
 from Game.Components.Entities import Player
-player=Player([0,0],"slime")
+player=Player([1,0],"slime",layer=0)
 
 from Game.Components.Map import Map
-terrain_map=Map(load=False)
+terrain_map=Map(load=True)
 
 from Game import Particle_manager
 from Game.Particle_manager import SMOKE_PRESET
@@ -67,23 +67,35 @@ while (run):
     
 #     Optimizacion de renderizado
     
+    S_c.getInstance().draw_layers()
+    
+    
+    
     for chunk_key in camera.list_of_str_in_screen_chunks():
         if chunk_key in terrain_map.chunks:
             terrain_map.chunks[chunk_key].camera_update(camera)
-            terrain_map.chunks[chunk_key].draw()   
+            terrain_map.chunks[chunk_key].add_self_layer()
     
     
 #     for chunk in terrain_map.chunks.values():
+#         
 #         chunk.camera_update(camera)
+#         chunk.add_self_layer()
 #         chunk.draw()
      
     
     player.update()
     player.camera_update(camera)
-    player.draw()
-    
+#     player.draw()
+    player._add_layer(player.layer)
+
     Particle_manager.getInstance().camera_update(camera)
     Particle_manager.getInstance().draw()
+    
+    
+    
+    
+    
     
     
     

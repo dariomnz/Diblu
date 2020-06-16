@@ -24,13 +24,13 @@ class Chunk():
         self.tile_group=list(self.tiles.values())
     
         
-    def draw(self):
-        '''Dibuja todas las tiles del chunk por capas'''
-        #Ordenacion por capas
-        self.tile_group.sort(key=lambda tile:tile.layer)
-        
-        for tile in self.tile_group:
-            tile.draw()
+#     def draw(self):
+#         '''Dibuja todas las tiles del chunk por capas'''
+#         #Ordenacion por capas
+#         self.tile_group.sort(key=lambda tile:tile.layer)
+#         
+#         for tile in self.tile_group:
+#             tile.draw()
             
     def camera_update(self,camera):
         '''Actualiza la posicion de todas sus tile'''
@@ -42,16 +42,24 @@ class Chunk():
         for tile in self.tiles.values():
             tile.image_update(camera)    
     
+    def add_self_layer(self):
+        '''Se anaden a su layer'''
+        for tile in self.tiles.values():
+            tile._add_layer(tile.layer) 
+    
+    def del_layer(self):
+        '''Elimina de las layers el chunk'''
+        for tile in self.tiles.values():
+            tile.del_layer()    
         
 class Tile(Sprite):
     '''Porcion de un chunk para mostrar objetos'''
     def __init__(self,position_chunk,layer,tile_type,tilemap):
         self.tile_type=tile_type
-        self.layer=layer
         self.tilemap=tilemap
         self.position_chunk=position_chunk
         rect_in_tilemap=pygame.Rect(TILE_TYPES[self.tile_type])
         image=self.tilemap.image.subsurface(rect_in_tilemap)
         #Posicion calculada con su posicion dentro de la grid de chunks por su tamaño
         position_map=[position_chunk[0]*TILE_SIZE_GENERAL[0],position_chunk[1]*TILE_SIZE_GENERAL[1]]
-        super().__init__(position_map, image)
+        super().__init__(position_map, image,layer)

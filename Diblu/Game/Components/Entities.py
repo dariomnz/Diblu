@@ -5,8 +5,8 @@ from Game.Components import Screen_container as S_c
 
 class Player(AnimateSprite):
     '''Clase del jugador'''
-    def __init__(self,position_map,name):
-        super().__init__(position_map,name)
+    def __init__(self,position_map,name,layer):
+        super().__init__(position_map,name,layer)
         
         self.position_camera=[0,0]
         

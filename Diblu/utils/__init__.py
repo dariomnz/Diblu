@@ -85,8 +85,14 @@ def list2str2(listIn):
     '''format '0;0' '''
     return str(listIn[0])+';'+str(listIn[1])
 
+def nearValue(value_to_chenk,value,range_to_chenk):
+    return (value-range_to_chenk)<value_to_chenk<(value+range_to_chenk)
 
 #Pruebas
+
+# d={1:'123123',0:'123',5:'a',3:'d'}
+# print(nearValue(0.521234, 0.5, 0.01))
+
 # print(list2str3([1,2,3]))
 # print(str2list3('1;2;3')[:2])
 # data=JSONParser('world.json')

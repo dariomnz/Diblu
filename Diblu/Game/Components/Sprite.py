@@ -8,20 +8,20 @@ from Game.Components import Screen_container as S_c
 
 class Sprite(pygame.sprite.Sprite,Image_item):
     '''Super clase de los sprites, hereda de pygame Sprite y de Image_item'''
-    def __init__(self,position_map,image):
+    def __init__(self,position_map,image,layer):
         pygame.sprite.Sprite.__init__(self)
-        Image_item.__init__(self,position_map,image)
+        Image_item.__init__(self,position_map,image,layer)
         
         
 class AnimateSprite(pygame.sprite.Sprite,Image_item):
     '''Super clase de los sprites animados, hereda de pygame Sprite y de Image_item'''
-    def __init__(self,position_map,image):
+    def __init__(self,position_map,image,layer):
         self.setup(image)
         
         image=self.images[0] 
         
         pygame.sprite.Sprite.__init__(self)
-        Image_item.__init__(self,position_map,image)
+        Image_item.__init__(self,position_map,image,layer)
         
         # Escalamos todas las imagenes para que sean iguales
         for keys,value in self.images.items():
