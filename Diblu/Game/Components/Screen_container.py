@@ -1,7 +1,5 @@
 import pygame
 from Game.constants import CURSOR_CROSS
-from pygame import key
-from copy import deepcopy
 from utils import nearValue
 
 def getInstance():
@@ -65,14 +63,11 @@ class Screen_container(pygame.Surface):
     
     def draw_layers(self):
         '''Pinta en pantalla todas las layers'''
-        list_to_pop=[]
-        for key_layer,item_layer in sorted(self.layers.items()):
-            for key_obj in item_layer.keys():
-                item_layer[key_obj].draw();
-                list_to_pop.append([key_layer,key_obj])
+        
+        for item_layer in sorted(list(self.layers.items())):
+            for key_obj in list(item_layer[1].keys()):
+                item_layer[1].pop(key_obj).draw();
                 
-        for aux in list_to_pop:
-                del self.layers[aux[0]][aux[1]]
             
     
     def mean_factor_position(self):
@@ -117,7 +112,7 @@ class Screen_container(pygame.Surface):
         if nearValue(self.h_factor_position,2,0.2):
             self.h_factor_position=2
             
-        print(self.h_factor_position,' ',self.h_factor_position)
+#         print(self.h_factor_position,' ',self.h_factor_position)
         
          
     def update_factor_image(self):

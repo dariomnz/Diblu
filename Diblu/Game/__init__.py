@@ -48,10 +48,12 @@ while (run):
 #         For the camera controls
         if e.type == MOUSEBUTTONDOWN:
             if e.button in camera.controls.keys():
+                aux_camera_zoom=camera.zoom
                 camera.controls[e.button]()
-                player.image_update(camera)
-                for chunk in terrain_map.chunks.values():
-                    chunk.image_update(camera)
+                if aux_camera_zoom!=camera.zoom:
+                    player.image_update(camera)
+                    for chunk in terrain_map.chunks.values():
+                        chunk.image_update(camera)
        
 #         For the resizable
         if e.type == VIDEORESIZE:
@@ -68,8 +70,6 @@ while (run):
 #     Optimizacion de renderizado
     
     S_c.getInstance().draw_layers()
-    
-    
     
     for chunk_key in camera.list_of_str_in_screen_chunks():
         if chunk_key in terrain_map.chunks:

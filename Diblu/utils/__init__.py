@@ -85,8 +85,9 @@ def list2str2(listIn):
     '''format '0;0' '''
     return str(listIn[0])+';'+str(listIn[1])
 
-def nearValue(value_to_chenk,value,range_to_chenk):
-    return (value-range_to_chenk)<value_to_chenk<(value+range_to_chenk)
+def nearValue(value_to_check,value,range_to_check):
+    '''Comprueba si value_to_check esta cerca de value con un rango de error de range_to_check'''
+    return (value-range_to_check)<value_to_check<(value+range_to_check)
 
 #Pruebas
 

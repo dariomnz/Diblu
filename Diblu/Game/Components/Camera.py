@@ -8,9 +8,11 @@ class Camera():
         self.position_map=position_map
 
         self.position_screen=pos2center([0,0],S_c.getInstance().get_screen_size())
+        
         self.zoom=1
-        self.max_zoom=4
-        self.min_zoom=0.25
+        
+        self.posible_zoom={0:0.125,1:0.25,2:0.5,3:0.75,4:1,5:2,6:3}
+        self.actual_zoom=4
         #Encargado de identificar los controles con lo que hacen
         self.controls={
             2:self.zoom_reset,
@@ -34,8 +36,8 @@ class Camera():
         '''Devuelve una lista de identificadores chunks que hay en pantalla. Ej: '0;0' '''
         screen_size = S_c.getInstance().get_screen_size()
         #Actualizaciones para cuando se cambie la resolucion
-        screen_size[0]//=S_c.getInstance().w_factor_position
-        screen_size[1]//=S_c.getInstance().h_factor_position
+        screen_size[0]//=S_c.getInstance().w_factor_position*self.zoom
+        screen_size[1]//=S_c.getInstance().h_factor_position*self.zoom
         
 #         Posiciones por pixeles en pantalla
 #                   y1
@@ -65,18 +67,25 @@ class Camera():
     def zoom_reset(self):
         '''Resetea el zoom a 1'''
         self.zoom=1
+        self.actual_zoom=4
         print('Zoom: '+str(self.zoom))
         
     def zoom_in(self):
         '''Disminuye el zoom, lo que hace las cosas en pantalla mas grandes'''
-        self.zoom-=0.5
-        if self.zoom<self.min_zoom:
-            self.zoom=self.min_zoom
+        if self.actual_zoom-1 in self.posible_zoom:
+            self.actual_zoom-=1
+            self.zoom=self.posible_zoom[self.actual_zoom]
+#         self.zoom-=0.5
+#         if self.zoom<self.min_zoom:
+#             self.zoom=self.min_zoom
         print('Zoom: '+str(self.zoom))
         
     def zoom_out(self):
         '''Aumenta el zoom, lo que hace las cosas en pantalla mas pequenas'''
-        self.zoom+=0.5
-        if self.zoom>self.max_zoom:
-            self.zoom=self.max_zoom
+        if self.actual_zoom+1 in self.posible_zoom:
+            self.actual_zoom+=1
+            self.zoom=self.posible_zoom[self.actual_zoom]
+#         self.zoom+=0.5
+#         if self.zoom>self.max_zoom:
+#             self.zoom=self.max_zoom
         print('Zoom: '+str(self.zoom))

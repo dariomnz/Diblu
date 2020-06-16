@@ -28,7 +28,7 @@ class Chunk():
 #         '''Dibuja todas las tiles del chunk por capas'''
 #         #Ordenacion por capas
 #         self.tile_group.sort(key=lambda tile:tile.layer)
-#         
+#          
 #         for tile in self.tile_group:
 #             tile.draw()
             
