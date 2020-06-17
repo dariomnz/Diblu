@@ -6,6 +6,7 @@ from Game.constants import CHUNK_SIZE, TILE_TYPES,\
     TILE_TYPES_4NEIGHBOUR_FIX,\
     TILE_TYPES_9NEIGHBOUR1, TILE_TYPES_9NEIGHBOUR2, TILE_TYPES_UPNEIGHBOUR,\
     TILE_SIZE
+import logging
 
 
 class Map():
@@ -43,7 +44,9 @@ def map_load(name):
 
             chunks[chunk_data[0]][tile_data[0]]=Tile(tile_position[:2],tile_position[2],tile_data[1],tilemap)
         chunks[chunk_data[0]]=Chunk([chunk_data[0],chunks[chunk_data[0]]])
-    print('Time consumed in load the map:',time.time()-start_time,' seconds')
+        
+    logging.info('Time consumed in load the map: '+str(time.time()-start_time)+' seconds')
+#     print('Time consumed in load the map:',time.time()-start_time,' seconds')
     return chunks
 
 
@@ -62,7 +65,8 @@ def map_save(chunks,name):
     map_data['chunks']=chunks_data
     
     JSONsave(name, map_data)
-    print('Time consumed in save the map:',time.time()-start_time,' seconds')
+    logging.info('Time consumed in save the map: '+str(time.time()-start_time)+' seconds')
+#     print('Time consumed in save the map:',time.time()-start_time,' seconds')
     
     
     
@@ -159,8 +163,9 @@ def generate_map(map_size):
         for y in range(-map_size[1]//CHUNK_SIZE[1],map_size[1]//CHUNK_SIZE[1]):
             chunk_position=list2str2([x,y])
             chunks[chunk_position]=Chunk([chunk_position,chunks[chunk_position]])
-            
-    print('Time consumed in generate the map:',time.time()-start_time,' seconds')
+     
+    logging.info('Time consumed in generate the map: '+str(time.time()-start_time)+' seconds')       
+#     print('Time consumed in generate the map:',time.time()-start_time,' seconds')
     return chunks
 
 def adapt_borders(aux_tiles_data):

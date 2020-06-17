@@ -1,6 +1,7 @@
 from utils import pos2center, list2str2
 from Game.constants import CHUNK_SIZE,TILE_SIZE_GENERAL_PIXEL
 from Game.Components.Screen_container import getInstance as S_c
+import logging
 
 def getInstance():
     return _instance
@@ -77,18 +78,21 @@ class Camera():
         '''Resetea el zoom a 1'''
         self.zoom=1
         self.actual_zoom=4
-        print('Zoom: '+str(self.zoom))
+        logging.info('Zoom: '+str(self.zoom))
+#         print('Zoom: '+str(self.zoom))
         
     def zoom_in(self):
         '''Disminuye el zoom, lo que hace las cosas en pantalla mas grandes'''
         if self.actual_zoom-1 in self.posible_zoom:
             self.actual_zoom-=1
             self.zoom=self.posible_zoom[self.actual_zoom]
-        print('Zoom: '+str(self.zoom))
+        logging.info('Zoom: '+str(self.zoom))
+#         print('Zoom: '+str(self.zoom))
         
     def zoom_out(self):
         '''Aumenta el zoom, lo que hace las cosas en pantalla mas pequenas'''
         if self.actual_zoom+1 in self.posible_zoom:
             self.actual_zoom+=1
             self.zoom=self.posible_zoom[self.actual_zoom]
-        print('Zoom: '+str(self.zoom))
+        logging.info('Zoom: '+str(self.zoom))
+#         print('Zoom: '+str(self.zoom))

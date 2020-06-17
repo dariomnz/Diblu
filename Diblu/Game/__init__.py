@@ -1,6 +1,8 @@
-import pygame,sys,cProfile
+import pygame,sys,os,logging,cProfile
 from pygame.locals import *
 from Game.constants import TPS
+import profile
+import pstats
 
 def main():
     pygame.init()
@@ -24,7 +26,7 @@ def main():
     
     from Game.Components.Tile import TILEMAP1
     from Game.Components.Map import Map
-    terrain_map=Map(load=False)
+    terrain_map=Map(load=True)
     
     from Game import Particle_manager as P_m 
     from Game.Particle_manager import SMOKE_PRESET
@@ -116,17 +118,41 @@ def main():
         
         clock.tick(TPS)
         
-        pygame.display.update()
+        pygame.display.update([0,0,S_c().get_screen_size()[0],S_c().get_screen_size()[1]])
 #         run=False
         
-#     terrain_map.save()
+    terrain_map.save()
     pygame.quit()
     sys.exit()
     
+def setUp_logger():
+    #Configuracion del logger
+    logger = logging.getLogger()
     
+    logger.setLevel(logging.DEBUG)
+    fh = logging.FileHandler(os.path.join('..','data','logging.log'),mode='w')
+    ch = logging.StreamHandler()
+    
+    fh.setLevel(logging.DEBUG)
+    ch.setLevel(logging.DEBUG)
+    
+    formatter = logging.Formatter(fmt='%(asctime)s - %(levelname)s: %(message)s', datefmt='%m/%d/%Y %H:%M:%S')
+    fh.setFormatter(formatter)
+    ch.setFormatter(formatter)
+    
+    logger.addHandler(fh)
+    logger.addHandler(ch)
 
 if __name__=='__main__':
-#     cProfile.run('main()')
+    setUp_logger()
+    
+    # Codigo para hacer un profile
+#     file_profiling=os.path.join('..','data','profiling')
+#     cProfile.run('main()',filename=file_profiling)
+#      
+#     p = pstats.Stats(file_profiling)
+#     p.strip_dirs().sort_stats(1).print_stats()
+#     p.sort_stats('cumulative').print_stats(10)
     main()
 
 
