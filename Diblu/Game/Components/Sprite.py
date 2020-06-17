@@ -2,8 +2,8 @@ import pygame
 from Game.Components.Image_item import Image_item
 from utils import JSONParser, load_image
 from Game.constants import TPS, TILE_SIZE_GENERAL_PIXEL, TILE_SIZE_GENERAL
-from Game import Particle_manager
 from Game.Components import Screen_container as S_c
+from Game import Particle_manager
 
 
 class Sprite(pygame.sprite.Sprite,Image_item):
@@ -33,7 +33,7 @@ class AnimateSprite(pygame.sprite.Sprite,Image_item):
     def setup(self,image):
         '''Carga la configuracion del archivo .json de igual nombre'''
         config_data=JSONParser(image)
-#         print(self.config_data['meta']['frameTags'])
+
         aux_tags=config_data['meta']['frameTags']
         
         # Creacion del animation_manager
@@ -57,11 +57,8 @@ class AnimateSprite(pygame.sprite.Sprite,Image_item):
             self.image_sheet[int(aux_image_sheet_key)]=[aux_image_sheet_data['frame']['x'],aux_image_sheet_data['frame']['y'],aux_image_sheet_data['frame']['w'],aux_image_sheet_data['frame']['h']]
             self.frame_duration[int(aux_image_sheet_key)]=aux_image_sheet_data['duration']/1000*TPS
         
-        # Carga de el sprite_sheet     
-        image+='.png'
-#         file = os.path.join('..','data','images',image)
-#         sprite_sheet=pygame.image.load(file).convert_alpha()
-        sprite_sheet=load_image(image)  
+        # Carga de el sprite_sheet    
+        sprite_sheet=load_image(image+'.png')  
         
         self.images={}
         self.current_frame=self.tags[self.current_tag][0]
@@ -77,7 +74,7 @@ class AnimateSprite(pygame.sprite.Sprite,Image_item):
         self.original_images=self.images.copy()
         
     def update(self):
-        
+        '''Encargado de ir rotando las imagenes de la animacion'''
         self.current_duration+=1
         if self.current_duration>self.frame_duration[self.current_frame]:
             if self.current_frame_position == len(self.tags[self.current_tag])-1:
@@ -88,11 +85,17 @@ class AnimateSprite(pygame.sprite.Sprite,Image_item):
             self.image=self.images[self.current_frame]
      
     def update_animation(self,input_action):
+        '''Introduciendole el input deseado, se comprueba si desde la animacion que esta cambia a otra'''
         if input_action in self.animation_manager[self.current_tag]:
+            if 'canSwitch' not in self.animation_manager[self.current_tag]['properties']:
+                self.current_frame_position=0
+            
             self.current_tag=self.animation_manager[self.current_tag][input_action]
-            Particle_manager.getInstance().spawn(self.position_map, 20,Particle_manager.SMOKE_PRESET) 
+        #Generacion experimental de particulas
+            Particle_manager.getInstance().spawn(self.position_map,self.layer-0.1, 20,Particle_manager.SMOKE_PRESET) 
      
     def image_update(self, camera):
+        '''Reescala las imagenes cuando es necesario'''
         for image_key,image in self.original_images.items():
             self.images[image_key]=pygame.transform.scale(image, (int(self.original_images[image_key].get_width()*camera.zoom*S_c.getInstance().w_factor_image), int(self.original_images[image_key].get_height()*camera.zoom*S_c.getInstance().h_factor_image)))
          

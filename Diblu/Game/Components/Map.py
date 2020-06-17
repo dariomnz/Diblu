@@ -11,9 +11,9 @@ from Game.constants import CHUNK_SIZE, TILE_TYPES, TILEMAP1_NAME,\
 class Map():
     
     def __init__(self,load=True):
-#         Estructura: 'x;y':{'x;y':tile}
-        self.size_square_in_chunk=16
+        self.size_square_in_chunk=8
         # Si esta true lo carga sino genera un mapa nuevo
+        # Estructura de chunks es un dict 'x,y' del chunk con un dict de tiles
         if load:
             self.chunks=map_load('world')
         else:
@@ -24,7 +24,6 @@ class Map():
         '''Guarda el mapa'''
         map_save(self.chunks, 'world')
         
-
 
 def map_load(name):
     '''Carga el mapa name'''

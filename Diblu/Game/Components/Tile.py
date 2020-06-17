@@ -2,6 +2,7 @@ import pygame
 from utils import  str2list2, load_image
 from Game.Components.Sprite import Sprite
 from Game.constants import TILE_SIZE_GENERAL, CHUNK_SIZE, TILE_TYPES
+from Game.Components import Screen_container as S_c
 
 
 class TileMap():
@@ -45,7 +46,7 @@ class Chunk():
     def add_self_layer(self):
         '''Se anaden a su layer'''
         for tile in self.tiles.values():
-            tile._add_layer(tile.layer) 
+            S_c.getInstance().add_to_self_layer(tile) 
     
     def del_layer(self):
         '''Elimina de las layers el chunk'''

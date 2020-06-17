@@ -1,6 +1,6 @@
 import pygame
 from Game.constants import TILE_SIZE_GENERAL_PIXEL, TILE_SIZE_GENERAL
-from utils import load_image, list2str2
+from utils import load_image
 from Game.Components import Screen_container as S_c
 
 
@@ -26,7 +26,8 @@ class Image_item():
         #rect para dibujar la imagen
         self.rect=[self.position_camera[0],self.position_camera[1],original_image_size[0],original_image_size[1]]
         
-        self._add_layer(layer)
+        self.layer=layer
+        S_c.getInstance().add_to_self_layer(self)
         
     def draw(self):
         '''Pinta la imagen en su posicion respecto la camara'''
@@ -50,45 +51,13 @@ class Image_item():
         '''Devuelve el tamano de la imagen actual'''
         return [self.image.get_width(),self.image.get_height()]
     
-    def change_layer(self,new_layer):
-        '''Cambia el objeto a la nueva layer especificada'''
-        for key_layer in S_c.getInstance().layers.keys():
-            if self in S_c.getInstance().layers[key_layer].values():
-                position_key=list2str2(self.position_map)
-                S_c.getInstance().layers[key_layer].pop(position_key)
-                self._add_layer(new_layer)
-                return
-    
-        
-    def _add_layer(self,layer):
-        '''Anade el objeto a la layer especificada, si ya esta ocupada la posicion, lo anade a una layer mas'''
-        notinsert=True
-        while(notinsert):
-            position_key=list2str2(self.position_map)
-            if layer in S_c.getInstance().layers:
-                if position_key not in  S_c.getInstance().layers[layer]:
-                    S_c.getInstance().layers[layer][position_key]=self
-                    self.layer=layer
-                    notinsert=False
-                else:
-                    layer+=1
-            else:
-                S_c.getInstance().layers[layer]={}
-                S_c.getInstance().layers[layer][position_key]=self
-                self.layer=layer
-                notinsert=False
-            
-    def del_layer(self):
-        '''Elimina el objeto de la layer en la que este'''
-        for key_layer in S_c.getInstance().layers.keys():
-            if self in S_c.getInstance().layers[key_layer].values():
-                position_key=list2str2(self.position_map)
-                S_c.getInstance().layers[key_layer].pop(position_key)
-                if len(S_c.getInstance().layers[key_layer].keys())==0:
-                    S_c.getInstance().layers.pop(key_layer)
-                    continue
-                return       
-            
+    def add_layer_below(self,image_item):
+        '''Cambia la layer a una debajo de image_item'''
+        self.layer=image_item.layer-0.1
+
+    def add_layer_above(self,image_item):
+        '''Cambia la layer a una encima de image_item'''
+        self.layer=image_item.layer+0.1
             
             
             

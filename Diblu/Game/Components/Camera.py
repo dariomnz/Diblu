@@ -75,9 +75,6 @@ class Camera():
         if self.actual_zoom-1 in self.posible_zoom:
             self.actual_zoom-=1
             self.zoom=self.posible_zoom[self.actual_zoom]
-#         self.zoom-=0.5
-#         if self.zoom<self.min_zoom:
-#             self.zoom=self.min_zoom
         print('Zoom: '+str(self.zoom))
         
     def zoom_out(self):
@@ -85,7 +82,4 @@ class Camera():
         if self.actual_zoom+1 in self.posible_zoom:
             self.actual_zoom+=1
             self.zoom=self.posible_zoom[self.actual_zoom]
-#         self.zoom+=0.5
-#         if self.zoom>self.max_zoom:
-#             self.zoom=self.max_zoom
         print('Zoom: '+str(self.zoom))
