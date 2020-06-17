@@ -2,7 +2,8 @@ import pygame
 from Game.Components.Image_item import Image_item
 from utils import JSONParser, load_image
 from Game.constants import TPS, TILE_SIZE_GENERAL_PIXEL, TILE_SIZE_GENERAL
-from Game.Components import Screen_container as S_c
+from Game.Components.Screen_container import getInstance as S_c
+from Game.Components.Camera import getInstance as camera
 from Game import Particle_manager
 
 
@@ -103,20 +104,20 @@ class AnimateSprite(pygame.sprite.Sprite,Image_item):
         #Generacion experimental de particulas
             Particle_manager.getInstance().spawn(self.position_map,self.layer-0.1, 20,Particle_manager.SMOKE_PRESET) 
      
-    def image_update(self, camera):
+    def image_update(self):
         '''Reescala las imagenes cuando es necesario'''
-        self.sprite_sheet_image=pygame.transform.scale(self.original_sprite_sheet_image, (int(self.original_sprite_sheet_image.get_width()*camera.zoom*S_c.getInstance().w_factor_image), int(self.original_sprite_sheet_image.get_height()*camera.zoom*S_c.getInstance().h_factor_image))) 
-        self.generate_sprite_sheet_images(camera.zoom)
+        self.sprite_sheet_image=pygame.transform.scale(self.original_sprite_sheet_image, (int(self.original_sprite_sheet_image.get_width()*camera().zoom*S_c().w_factor_image), int(self.original_sprite_sheet_image.get_height()*camera().zoom*S_c().h_factor_image))) 
+        self.generate_sprite_sheet_images(camera().zoom)
      
      
     def generate_sprite_sheet_images(self,camera_zoom):    
         
         self.images={}
         for image_key in self.image_sheet_dict.keys():
-            attr0=self.image_sheet_dict[image_key][0]*camera_zoom*S_c.getInstance().w_factor_image*self.scale_image
-            attr1=self.image_sheet_dict[image_key][1]*camera_zoom*S_c.getInstance().h_factor_image*self.scale_image
-            attr2=self.image_sheet_dict[image_key][2]*camera_zoom*S_c.getInstance().w_factor_image*self.scale_image
-            attr3=self.image_sheet_dict[image_key][3]*camera_zoom*S_c.getInstance().h_factor_image*self.scale_image
+            attr0=self.image_sheet_dict[image_key][0]*camera_zoom*S_c().w_factor_image*self.scale_image
+            attr1=self.image_sheet_dict[image_key][1]*camera_zoom*S_c().h_factor_image*self.scale_image
+            attr2=self.image_sheet_dict[image_key][2]*camera_zoom*S_c().w_factor_image*self.scale_image
+            attr3=self.image_sheet_dict[image_key][3]*camera_zoom*S_c().h_factor_image*self.scale_image
             rect_in_sprite_sheet_image=pygame.Rect(attr0,attr1,attr2,attr3)
             
             self.images[image_key]=self.sprite_sheet_image.subsurface(rect_in_sprite_sheet_image)

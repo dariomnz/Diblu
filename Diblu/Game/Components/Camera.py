@@ -1,13 +1,19 @@
 from utils import pos2center, list2str2
 from Game.constants import CHUNK_SIZE,TILE_SIZE_GENERAL_PIXEL
-from Game.Components import Screen_container as S_c
+from Game.Components.Screen_container import getInstance as S_c
+
+def getInstance():
+    return _instance
+
+def createInstance():
+    Camera()
 
 class Camera():
     
-    def __init__(self,position_map):
-        self.position_map=position_map
+    def __init__(self):
+        self.position_map=[0,0]
 
-        self.position_screen=pos2center([0,0],S_c.getInstance().get_screen_size())
+        self.position_screen=pos2center([0,0],S_c().get_screen_size())
         
         self.zoom=1
         
@@ -20,6 +26,9 @@ class Camera():
             5:self.zoom_in
             }
         
+        global _instance
+        _instance=self
+        
     def update_position(self,position_to_folow):
         '''Actualiza la posicion'''
 #         Partido de n para crear el movimiento suave
@@ -30,14 +39,14 @@ class Camera():
        
     def screen_update(self):
         '''Actualizar cuando se actualiza el tamano de la pantalla'''
-        self.position_screen=pos2center([0,0],S_c.getInstance().get_screen_size())
+        self.position_screen=pos2center([0,0],S_c().get_screen_size())
         
     def list_of_str_in_screen_chunks(self):
         '''Devuelve una lista de identificadores chunks que hay en pantalla. Ej: '0;0' '''
-        screen_size = S_c.getInstance().get_screen_size()
+        screen_size = S_c().get_screen_size()
         #Actualizaciones para cuando se cambie la resolucion
-        screen_size[0]//=S_c.getInstance().w_factor_position*self.zoom
-        screen_size[1]//=S_c.getInstance().h_factor_position*self.zoom
+        screen_size[0]//=S_c().w_factor_position*self.zoom
+        screen_size[1]//=S_c().h_factor_position*self.zoom
         
 #         Posiciones por pixeles en pantalla
 #                   y1

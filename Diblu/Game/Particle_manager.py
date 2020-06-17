@@ -1,6 +1,7 @@
 import random
 import pygame
 from Game.Components import Screen_container as S_c
+from Game.Components.Camera import getInstance as camera
 
 SMOKE_PRESET=[(230,230,230),(214,214,214),(180,180,180),(150,150,150),(130,130,130)]
 
@@ -26,9 +27,9 @@ class Particle_manager():
         
         self.particle_gloups.append(new_particle_group)
         
-    def camera_update(self,camera):
+    def camera_update(self):
         for particle in self.particle_gloups:
-            particle.camera_update(camera)
+            particle.camera_update()
         
         
     def add_to_self_layer(self):
@@ -51,14 +52,13 @@ class Particle_group():
             loop_index+=1
             
             
-    def camera_update(self,camera):
+    def camera_update(self):
         for particle in self.particles:
-            particle[1][0]=((particle[0][0]-camera.position_map[0])*camera.zoom*S_c.getInstance().w_factor_position)+camera.position_screen[0]
-            particle[1][1]=((particle[0][1]-camera.position_map[1])*camera.zoom*S_c.getInstance().w_factor_position)+camera.position_screen[1]
+            particle[1][0]=((particle[0][0]-camera().position_map[0])*camera().zoom*S_c.getInstance().w_factor_position)+camera().position_screen[0]
+            particle[1][1]=((particle[0][1]-camera().position_map[1])*camera().zoom*S_c.getInstance().w_factor_position)+camera().position_screen[1]
         
         
     def draw(self):
-#         pass
         for particle in self.particles:
             particle[0][0] += particle[2][0]
             particle[0][1] += particle[2][1]

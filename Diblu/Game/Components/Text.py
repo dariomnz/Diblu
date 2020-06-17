@@ -1,5 +1,5 @@
 import pygame
-from Game.Components import Screen_container as S_c
+from Game.Components.Screen_container import getInstance as S_c
 
 class Text():
     
@@ -11,7 +11,7 @@ class Text():
     def draw(self):
         '''Dibuja el texto en la pantalla'''
         rendered=self.font.render(self.text, 1, pygame.Color(255,255,255))
-        S_c.getInstance().screen.blit(rendered,self.position_screen)
+        S_c().screen.blit(rendered,self.position_screen)
         
         
     def update_text(self,text):

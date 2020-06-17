@@ -1,7 +1,8 @@
 import pygame
 from Game.constants import TILE_SIZE_GENERAL_PIXEL, TILE_SIZE_GENERAL
 from utils import load_image
-from Game.Components import Screen_container as S_c
+from Game.Components.Screen_container import getInstance as S_c
+from Game.Components.Camera import getInstance as camera
 
 
 class Image_item():
@@ -27,25 +28,25 @@ class Image_item():
         self.rect=[self.position_camera[0],self.position_camera[1],self.original_image.get_width(),self.original_image.get_height()]
         
         self.layer=layer
-        S_c.getInstance().add_to_self_layer(self)
+        S_c().add_to_self_layer(self)
         
     def draw(self):
         '''Pinta la imagen en su posicion respecto la camara'''
-        S_c.getInstance().screen.blit(self.image,self.position_camera)
+        S_c().screen.blit(self.image,self.position_camera)
         
     def update(self):
         '''Actualiza'''
         pass
     
-    def camera_update(self,camera):
+    def camera_update(self):
         '''Actualiza su posicion respecto a la camara'''
         self.rect=[self.position_camera[0],self.position_camera[1],self.original_image.get_width(),self.original_image.get_height()]
-        self.position_camera[0]=((self.position_map[0]-camera.position_map[0])*camera.zoom*S_c.getInstance().w_factor_image)+camera.position_screen[0]
-        self.position_camera[1]=((self.position_map[1]-camera.position_map[1])*camera.zoom*S_c.getInstance().h_factor_image)+camera.position_screen[1]
+        self.position_camera[0]=((self.position_map[0]-camera().position_map[0])*camera().zoom*S_c().w_factor_image)+camera().position_screen[0]
+        self.position_camera[1]=((self.position_map[1]-camera().position_map[1])*camera().zoom*S_c().h_factor_image)+camera().position_screen[1]
         
-    def image_update(self,camera):
+    def image_update(self):
         '''Actualiza la imagen escalada'''
-        self.image=pygame.transform.scale(self.original_image, (int(self.original_image.get_width()*camera.zoom*S_c.getInstance().w_factor_image), int(self.original_image.get_height()*camera.zoom*S_c.getInstance().h_factor_image)))
+        self.image=pygame.transform.scale(self.original_image, (int(self.original_image.get_width()*camera().zoom*S_c().w_factor_image), int(self.original_image.get_height()*camera().zoom*S_c().h_factor_image)))
         
     def get_image_size(self):
         '''Devuelve el tamano de la imagen actual'''

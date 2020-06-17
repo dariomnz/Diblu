@@ -4,6 +4,7 @@ from Game.Components.Sprite import Sprite
 from Game.constants import TILE_SIZE_GENERAL, CHUNK_SIZE, TILE_TYPES,\
     TILEMAP1_NAME, TILE_SIZE_GENERAL_PIXEL
 from Game.Components import Screen_container as S_c
+from Game.Components.Camera import getInstance as camera
 
 class TileMap():
     '''Clase que se encarga de guardar el tilemap'''
@@ -18,21 +19,21 @@ class TileMap():
         self.original_image=pygame.transform.scale(self.original_image, (original_image_size[0], original_image_size[1]))
         self.image=self.original_image.copy()
         self.original_image_size=[self.image.get_width(),self.image.get_height()]
-        self.generate_tiles(1)
+        self.generate_tiles()
      
-    def image_update(self,camera):
+    def image_update(self):
         '''Actualiza la imagen escalada'''
-        self.image=pygame.transform.scale(self.original_image, (int(self.original_image.get_width()*camera.zoom*S_c.getInstance().w_factor_image), int(self.original_image.get_height()*camera.zoom*S_c.getInstance().h_factor_image)))
-        self.generate_tiles(camera.zoom)
+        self.image=pygame.transform.scale(self.original_image, (int(self.original_image.get_width()*camera().zoom*S_c.getInstance().w_factor_image), int(self.original_image.get_height()*camera().zoom*S_c.getInstance().h_factor_image)))
+        self.generate_tiles()
         
         
-    def generate_tiles(self,camera_zoom):
+    def generate_tiles(self):
         self.image_tiles={}
         for tile_type in TILE_TYPES.keys():
-            attr0=TILE_TYPES[tile_type][0]*camera_zoom*S_c.getInstance().w_factor_image*self.scale_image
-            attr1=TILE_TYPES[tile_type][1]*camera_zoom*S_c.getInstance().h_factor_image*self.scale_image
-            attr2=TILE_TYPES[tile_type][2]*camera_zoom*S_c.getInstance().w_factor_image*self.scale_image
-            attr3=TILE_TYPES[tile_type][3]*camera_zoom*S_c.getInstance().h_factor_image*self.scale_image
+            attr0=TILE_TYPES[tile_type][0]*camera().zoom*S_c.getInstance().w_factor_image*self.scale_image
+            attr1=TILE_TYPES[tile_type][1]*camera().zoom*S_c.getInstance().h_factor_image*self.scale_image
+            attr2=TILE_TYPES[tile_type][2]*camera().zoom*S_c.getInstance().w_factor_image*self.scale_image
+            attr3=TILE_TYPES[tile_type][3]*camera().zoom*S_c.getInstance().h_factor_image*self.scale_image
             rect_in_tilemap=pygame.Rect(attr0,attr1,attr2,attr3)
             self.image_tiles[tile_type]=self.image.subsurface(rect_in_tilemap)
         
@@ -59,15 +60,15 @@ class Chunk():
 #         for tile in self.tile_group:
 #             tile.draw()
             
-    def camera_update(self,camera):
+    def camera_update(self):
         '''Actualiza la posicion de todas sus tile'''
         for tile in self.tiles.values():
-            tile.camera_update(camera)
+            tile.camera_update()
             
-    def image_update(self,camera):
+    def image_update(self):
         '''Actualiza la imagen de todas sus tile'''
         for tile in self.tiles.values():
-            tile.image_update(camera)    
+            tile.image_update()    
     
     def add_self_layer(self):
         '''Se anaden a su layer'''
@@ -90,7 +91,7 @@ class Tile(Sprite):
         position_map=[position_chunk[0]*TILE_SIZE_GENERAL[0],position_chunk[1]*TILE_SIZE_GENERAL[1]]
         super().__init__(position_map, image,layer)
         
-    def image_update(self,camera):
+    def image_update(self):
         '''Actualiza la imagen escalada, cogiendola del tilemap ya escalado'''
         self.image=self.tilemap.image_tiles[self.tile_type]
         

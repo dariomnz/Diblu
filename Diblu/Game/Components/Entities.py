@@ -1,6 +1,6 @@
 from utils import center2pos
 from Game.Components.Sprite import AnimateSprite
-from Game.Components import Screen_container as S_c
+from Game.Components.Screen_container import getInstance as S_c
 
 
 class Player(AnimateSprite):
@@ -37,7 +37,7 @@ class Player(AnimateSprite):
     
     def draw(self):
         '''Pinta al jugador en su posicion de la camara centrado'''
-        S_c.getInstance().screen.blit(self.image,center2pos(self.position_camera,self.get_image_size()))
+        S_c().screen.blit(self.image,center2pos(self.position_camera,self.get_image_size()))
                          
     def update(self):
         '''Actualiza la posicion en el mapa del jugador'''

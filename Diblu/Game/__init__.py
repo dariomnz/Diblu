@@ -7,11 +7,13 @@ def main():
     
     clock = pygame.time.Clock()
     
-    from Game.Components import Screen_container as S_c
-    S_c.createInstance()
+    from Game.Components import Screen_container
+    Screen_container.createInstance()
+    from Game.Components.Screen_container import getInstance as S_c
     
-    from Game.Components.Camera import Camera
-    camera = Camera([0,0])
+    from Game.Components import Camera
+    Camera.createInstance()
+    from Game.Components.Camera import getInstance as camera
     
     from Game.Components.Text import Text
     control_text=Text([10,0])
@@ -22,16 +24,18 @@ def main():
     
     from Game.Components.Tile import TILEMAP1
     from Game.Components.Map import Map
-    terrain_map=Map(load=True)
+    terrain_map=Map(load=False)
     
-    from Game import Particle_manager
+    from Game import Particle_manager as P_m 
     from Game.Particle_manager import SMOKE_PRESET
-    Particle_manager.createInstance()
+    P_m.createInstance()
+    from Game.Particle_manager import getInstance as Particle_manager
+    
     
     run=True
     
     while (run):
-        S_c.getInstance().screen.fill((0,0,0))
+        S_c().screen.fill((0,0,0))
         
         for e in pygame.event.get():
     #         For the exit
@@ -44,44 +48,44 @@ def main():
                     player.controls_press[pygame.key.name(e.key)]()
                 #Prueba de creacion de particulas
                 if pygame.key.name(e.key)=='p':
-                    Particle_manager.getInstance().spawn(player.position_map,player.layer-0.1, 20,SMOKE_PRESET)
+                    Particle_manager().spawn(player.position_map,player.layer-0.1, 20,SMOKE_PRESET)
             elif e.type == KEYUP:
                 if pygame.key.name(e.key) in player.controls_release.keys():
                     player.controls_release[pygame.key.name(e.key)]()
             
     #         For the camera controls
             if e.type == MOUSEBUTTONDOWN:
-                if e.button in camera.controls.keys():
-                    aux_camera_zoom=camera.zoom
-                    camera.controls[e.button]()
-                    if aux_camera_zoom!=camera.zoom:
-                        player.image_update(camera)
-                        TILEMAP1.image_update(camera)
+                if e.button in camera().controls.keys():
+                    aux_camera_zoom=camera().zoom
+                    camera().controls[e.button]()
+                    if aux_camera_zoom!=camera().zoom:
+                        player.image_update()
+                        TILEMAP1.image_update()
                         for chunk in terrain_map.chunks.values():
-                            chunk.image_update(camera)
+                            chunk.image_update()
            
     #         For the resizable
             if e.type == VIDEORESIZE:
-                S_c.getInstance().update_size([e.w,e.h])
-                camera.screen_update()
-                player.image_update(camera)
-                TILEMAP1.image_update(camera)
+                S_c().update_size([e.w,e.h])
+                camera().screen_update()
+                player.image_update()
+                TILEMAP1.image_update()
                 for chunk in terrain_map.chunks.values():
-                    chunk.image_update(camera)
+                    chunk.image_update()
     
     
     
-        camera.update_position(player.position_map)
+        camera().update_position(player.position_map)
         
     
         # Dibujado de las layers
-        S_c.getInstance().draw_layers()
+        S_c().draw_layers()
         
     #     Optimizacion de renderizado
     
-        for chunk_key in camera.list_of_str_in_screen_chunks():
+        for chunk_key in camera().list_of_str_in_screen_chunks():
             if chunk_key in terrain_map.chunks:
-                terrain_map.chunks[chunk_key].camera_update(camera)
+                terrain_map.chunks[chunk_key].camera_update()
                 terrain_map.chunks[chunk_key].add_self_layer()
         
         
@@ -92,13 +96,13 @@ def main():
     #      
         
         player.update()
-        player.camera_update(camera)
-        S_c.getInstance().add_to_self_layer(player)
+        player.camera_update()
+        S_c().add_to_self_layer(player)
     
         
-        Particle_manager.getInstance().camera_update(camera)
+        Particle_manager().camera_update()
         # Introducion en las layer para draw
-        Particle_manager.getInstance().add_to_self_layer()
+        Particle_manager().add_to_self_layer()
         
         
         
@@ -111,10 +115,11 @@ def main():
         control_text.draw()
         
         clock.tick(TPS)
+        
         pygame.display.update()
 #         run=False
         
-    terrain_map.save()
+#     terrain_map.save()
     pygame.quit()
     sys.exit()
     
