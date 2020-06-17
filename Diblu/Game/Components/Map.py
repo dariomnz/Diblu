@@ -1,8 +1,8 @@
 import random,noise,time
-from Game.Components.Tile import Tile,TileMap,Chunk
+from Game.Components.Tile import Tile,Chunk, TILEMAP1
 from utils import JSONParser,JSONsave,str2list3, list2str3, list2str2, str2list2,\
     list2str4, list2str9
-from Game.constants import CHUNK_SIZE, TILE_TYPES, TILEMAP1_NAME,\
+from Game.constants import CHUNK_SIZE, TILE_TYPES,\
     TILE_TYPES_4NEIGHBOUR_FIX,\
     TILE_TYPES_9NEIGHBOUR1, TILE_TYPES_9NEIGHBOUR2, TILE_TYPES_UPNEIGHBOUR,\
     TILE_SIZE
@@ -11,7 +11,7 @@ from Game.constants import CHUNK_SIZE, TILE_TYPES, TILEMAP1_NAME,\
 class Map():
     
     def __init__(self,load=True):
-        self.size_square_in_chunk=8
+        self.size_square_in_chunk=16
         # Si esta true lo carga sino genera un mapa nuevo
         # Estructura de chunks es un dict 'x,y' del chunk con un dict de tiles
         if load:
@@ -28,7 +28,7 @@ class Map():
 def map_load(name):
     '''Carga el mapa name'''
     start_time=time.time()
-    tilemap = TileMap(TILEMAP1_NAME)
+    tilemap = TILEMAP1
     chunks={}
     map_data = JSONParser(name)
     
@@ -75,7 +75,7 @@ def generate_map(map_size):
     
     start_time=time.time()
     map_size=[map_size[0]//2,map_size[1]//2]
-    tilemap = TileMap(TILEMAP1_NAME)
+    tilemap = TILEMAP1
     chunks={}
     aux_tiles_data={}
     scale = 25
@@ -204,7 +204,7 @@ def generate_big_tile(position,parent_tile_type,tile_type,chunks,map_data):
         chunks es dict de datos
         map_data dict de 'x;y':[x,y,type]'''
     
-    tilemap = TileMap(TILEMAP1_NAME)
+    tilemap = TILEMAP1
     chunk_position=list2str2([position[0]//8,position[1]//8])
     tile_position_in_chunk=[position[0]%CHUNK_SIZE[0],position[1]%CHUNK_SIZE[1],1]
     
