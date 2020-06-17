@@ -22,7 +22,7 @@ def main():
     
     from Game.Components.Tile import TILEMAP1
     from Game.Components.Map import Map
-    terrain_map=Map(load=False)
+    terrain_map=Map(load=True)
     
     from Game import Particle_manager
     from Game.Particle_manager import SMOKE_PRESET
@@ -85,9 +85,9 @@ def main():
                 terrain_map.chunks[chunk_key].add_self_layer()
         
         
-    #     for chunk in terrain_map.chunks.values():
-    #         chunk.camera_update(camera)
-    #         chunk.add_self_layer()
+#         for chunk in terrain_map.chunks.values():
+#             chunk.camera_update(camera)
+#             chunk.add_self_layer()
     #         chunk.draw()
     #      
         

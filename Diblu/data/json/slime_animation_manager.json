@@ -1,8 +1,8 @@
-{"idle_front":{"properties":[],"press_w":"jump_back","press_s":"jump_front","press_a":"jump_left","press_d":"jump_right"},
-"idle_back":{"properties":[],"press_w":"jump_back","press_s":"jump_front","press_a":"jump_left","press_d":"jump_right"},
-"idle_right":{"properties":[],"press_w":"jump_back","press_s":"jump_front","press_a":"jump_left","press_d":"jump_right"},
-"idle_left":{"properties":[],"press_w":"jump_back","press_s":"jump_front","press_a":"jump_left","press_d":"jump_right"},
-"jump_front":{"properties":["canSwitch"],"end_animation":"idle_front","press_w":"jump_back","press_a":"jump_left","press_d":"jump_right"},
-"jump_back":{"properties":["canSwitch"],"end_animation":"idle_back","press_s":"jump_front","press_a":"jump_left","press_d":"jump_right"},
-"jump_right":{"properties":["canSwitch"],"end_animation":"idle_right","press_w":"jump_back","press_s":"jump_front","press_a":"jump_left"},
-"jump_left":{"properties":["canSwitch"],"end_animation":"idle_left","press_w":"jump_back","press_s":"jump_front","press_d":"jump_right"}}
+{"idle_front":{"properties":["resetAnimation"],"press_w":"jump_back","press_s":"jump_front","press_a":"jump_left","press_d":"jump_right"},
+"idle_back":{"properties":["resetAnimation"],"press_w":"jump_back","press_s":"jump_front","press_a":"jump_left","press_d":"jump_right"},
+"idle_right":{"properties":["resetAnimation"],"press_w":"jump_back","press_s":"jump_front","press_a":"jump_left","press_d":"jump_right"},
+"idle_left":{"properties":["resetAnimation"],"press_w":"jump_back","press_s":"jump_front","press_a":"jump_left","press_d":"jump_right"},
+"jump_front":{"properties":[],"end_animation":"idle_front","press_w":"jump_back","press_a":"jump_left","press_d":"jump_right"},
+"jump_back":{"properties":[],"end_animation":"idle_back","press_s":"jump_front","press_a":"jump_left","press_d":"jump_right"},
+"jump_right":{"properties":[],"end_animation":"idle_right","press_w":"jump_back","press_s":"jump_front","press_a":"jump_left"},
+"jump_left":{"properties":[],"end_animation":"idle_left","press_w":"jump_back","press_s":"jump_front","press_d":"jump_right"}}

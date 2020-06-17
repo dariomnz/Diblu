@@ -12,11 +12,11 @@ class Image_item():
         if isinstance(image, str):
             image+='.png'
             self.original_image=load_image(image)
+            original_image_size=[int(self.original_image.get_width()*self.scale_image),int(self.original_image.get_height()*self.scale_image)]
+            self.original_image=pygame.transform.scale(self.original_image, (original_image_size[0], original_image_size[1]))
         else:
             self.original_image=image
         
-        original_image_size=[int(self.original_image.get_width()*self.scale_image),int(self.original_image.get_height()*self.scale_image)]
-        self.original_image=pygame.transform.scale(self.original_image, (original_image_size[0], original_image_size[1]))
         self.image=self.original_image.copy()
         
         self.position_map=position_map
@@ -24,7 +24,7 @@ class Image_item():
         self.position_map[1]*=self.scale_image
         self.position_camera=position_map.copy()
         #rect para dibujar la imagen
-        self.rect=[self.position_camera[0],self.position_camera[1],original_image_size[0],original_image_size[1]]
+        self.rect=[self.position_camera[0],self.position_camera[1],self.original_image.get_width(),self.original_image.get_height()]
         
         self.layer=layer
         S_c.getInstance().add_to_self_layer(self)
