@@ -149,7 +149,7 @@ if __name__=='__main__':
     # Codigo para hacer un profile
 #     file_profiling=os.path.join('..','data','profiling')
 #     cProfile.run('main()',filename=file_profiling)
-#      
+# 
 #     p = pstats.Stats(file_profiling)
 #     p.strip_dirs().sort_stats(1).print_stats()
 #     p.sort_stats('cumulative').print_stats(10)
