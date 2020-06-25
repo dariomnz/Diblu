@@ -12,7 +12,7 @@ class Player(AnimateSprite):
 #         self.position_camera.move([0,0])
         
         self.direction={'back':0,'front':0,'left':0,'right':0}
-        self.original_vel=1
+        self.original_vel=2
         self.sprint_vel=20
         self.vel=self.original_vel
         
@@ -39,9 +39,11 @@ class Player(AnimateSprite):
     def update(self):
         '''Actualiza la posicion en el mapa del jugador'''
         self.update_collision()
-            
-        self.position_map[0]=self.position_map[0]+((self.direction['right']-self.direction['left'])*self.vel)
-        self.position_map[1]=self.position_map[1]+((self.direction['front']-self.direction['back'])*self.vel)
+        
+        if self.current_tag.startswith('jump'):
+            if self.current_frame_position>2 and self.current_frame_position<12:     
+                self.position_map[0]=self.position_map[0]+((self.direction['right']-self.direction['left'])*self.vel)
+                self.position_map[1]=self.position_map[1]+((self.direction['front']-self.direction['back'])*self.vel)
         
         # Comprobaciones para las animaciones
         if self.direction['back']==1:   

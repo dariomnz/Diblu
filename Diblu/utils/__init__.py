@@ -44,7 +44,7 @@ def JSONsave(jsonfile,data:dict):
     jsonfile+='.json'
     pathfile = os.path.join('..','data','json',jsonfile)
     with open(pathfile, 'w') as file:
-        json.dump(data, file, indent=4)
+        json.dump(data, file, indent=1)
 
 
 def pos2center(pos,size):

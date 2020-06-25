@@ -153,7 +153,7 @@ def main():
         pygame.display.update([0,0,S_c().get_screen_size()[0],S_c().get_screen_size()[1]])
 #         run=False
         
-#     terrain_map.save()
+    terrain_map.save()
     pygame.quit()
     sys.exit()
     

@@ -182,7 +182,13 @@ class AnimateSprite(Sprite):
             aux_cB_image=self.image_sprite_sheet_collision_box.subsurface(rect_in_sprite_sheet_image) 
             
             aux_mask=pygame.mask.from_surface(aux_cB_image, 127)
-            self.cB_rects[image_key]=[getRect(aux_mask.outline())]   
+#             self.cB_rects[image_key]=[getRect(aux_mask.outline())]   
+            aux_outline=aux_mask.outline()
+            if len(aux_outline)>0:
+                self.cB_rects[image_key]=[getRect(aux_mask.outline())]
+            else:
+                self.cB_rects[image_key]=[]
+#                 self.cB_rects[image_key].append(getRect(aux_outline))  
   
     def update_cB_rect(self):
         self.cB_rect=[]
