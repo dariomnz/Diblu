@@ -22,8 +22,12 @@ class Screen_container(pygame.Surface):
         self.initial_size=[monitor_w//monitor_scaled,monitor_h//monitor_scaled]
         
         self.new_size=self.initial_size.copy()
+        
+        #Atributos de la pantalla
+        self.screen_attri=pygame.RESIZABLE | pygame.DOUBLEBUF
+        
         #Inicio de la pantalla
-        self.screen=pygame.display.set_mode(self.initial_size,pygame.RESIZABLE)
+        self.screen=pygame.display.set_mode(self.initial_size,self.screen_attri)
         
         pygame.display.set_caption("Diblu")
         
@@ -81,7 +85,7 @@ class Screen_container(pygame.Surface):
         self.update_factor_image()
         self.update_factor_position()
         
-        self.screen=pygame.display.set_mode(new_size,pygame.RESIZABLE)
+        self.screen=pygame.display.set_mode(new_size,self.screen_attri)
         
     def update_factor_position(self):
         '''Actualiza el factor de la posicion de los objetos'''

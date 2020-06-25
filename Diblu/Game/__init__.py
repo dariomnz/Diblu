@@ -6,6 +6,7 @@ import pstats
 
 def main():
     pygame.init()
+    pygame.event.set_allowed([QUIT, KEYDOWN, KEYUP])
     
     clock = pygame.time.Clock()
     
@@ -21,7 +22,7 @@ def main():
     control_text=Text([10,0])
     
     from Game.Components.Entities import Player
-    player=Player([1,0],"slime",layer=2)
+    player=Player([0,0],"slime",layer=2)
     
     
     from Game.Components.Tile import TILEMAP1
@@ -35,6 +36,7 @@ def main():
     
     
     run=True
+    debug_text=True
     
     while (run):
         S_c().screen.fill((0,0,0))
@@ -51,6 +53,11 @@ def main():
                 #Prueba de creacion de particulas
                 if pygame.key.name(e.key)=='p':
                     Particle_manager().spawn(player.position_map,player.layer-0.1, 20,SMOKE_PRESET)
+                if pygame.key.name(e.key)=='f3':
+                    if debug_text:
+                        debug_text=False
+                    else:
+                        debug_text=True
             elif e.type == KEYUP:
                 if pygame.key.name(e.key) in player.controls_release.keys():
                     player.controls_release[pygame.key.name(e.key)]()
@@ -77,18 +84,25 @@ def main():
     
     
     
-        camera().update_position(player.position_map)
+        camera().update_position(player.position_map.center)
         
     
         # Dibujado de las layers
         S_c().draw_layers()
         
     #     Optimizacion de renderizado
-    
+        isWaterCollision=False
         for chunk_key in camera().list_of_str_in_screen_chunks():
             if chunk_key in terrain_map.chunks:
                 terrain_map.chunks[chunk_key].camera_update()
                 terrain_map.chunks[chunk_key].add_self_layer()
+                if terrain_map.chunks[chunk_key].check_water_collisions(player):
+                    isWaterCollision=True
+#                 for tile in terrain_map.chunks[chunk_key].tiles.values():    
+#                     if tile.tile_type==1 and pygame.sprite.collide_rect(tile.collisionBox, player.collisionBox):
+#                         print(pygame.sprite.collide_rect(tile.collisionBox, player.collisionBox))
+#                         print(tile.position_map)
+#                         isWaterCollision=True
         
         
 #         for chunk in terrain_map.chunks.values():
@@ -108,20 +122,38 @@ def main():
         
         
         
+#         print(terrain_map.chunks['0;0'].tiles['4;0;0'].collisionBox.image)
+#         player_mask=pygame.mask.from_surface(player.collisionBox.image,0)
+#         points=player_mask.outline()
+# #         print(points)
+#         pygame.draw.polygon(player.image, (0,0,0), points)    
+#         aux_cB_rect=[player.cB_rect[0][0]+player.position_map[0],player.cB_rect[0][1]+player.position_map[1],player.cB_rect[0][2],player.cB_rect[0][3]]
+#         pygame.draw.rect(S_c().screen, (0,0,0), aux_cB_rect, 0)
+#         S_c().screen.blit(terrain_map.chunks['0;0'].tiles['4;0;0'].collisionBox.image,[10,10])
+#         (player_mask.to_surface(S_c().screen))
         
-        # Texto a mostrar por pantalla
-        fps = "FPS: " + str(int(clock.get_fps()))
-        player_x_text= " X: "+str(player.position_map[0])
-        player_y_text= " Y: "+str(player.position_map[1])
-        control_text.update_text(fps+player_x_text+player_y_text)
-        control_text.draw()
+#         for chunk in terrain_map.chunks.values():
+#             for tile in chunk.tiles.values():
+#                 if pygame.sprite.collide_mask(tile.collisionBox, player.collisionBox):
+#                     isWaterCollision=True
+        
+        
+        if debug_text:
+            # Texto a mostrar por pantalla
+            fps = "FPS: " + str(int(clock.get_fps()))
+            player_x_text= " X: "+str(player.position_map[0])
+            player_y_text= " Y: "+str(player.position_map[1])
+            isWaterCollision_str= ' Water: '+str(isWaterCollision)
+            control_text.update_text(fps+player_x_text+player_y_text+isWaterCollision_str)
+            control_text.draw()
+#             print(player.cB_rect_map)
         
         clock.tick(TPS)
         
         pygame.display.update([0,0,S_c().get_screen_size()[0],S_c().get_screen_size()[1]])
 #         run=False
         
-    terrain_map.save()
+#     terrain_map.save()
     pygame.quit()
     sys.exit()
     

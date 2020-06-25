@@ -7,6 +7,7 @@ from Game.constants import CHUNK_SIZE, TILE_TYPES,\
     TILE_TYPES_9NEIGHBOUR1, TILE_TYPES_9NEIGHBOUR2, TILE_TYPES_UPNEIGHBOUR,\
     TILE_SIZE
 import logging
+import sys
 
 
 class Map():
@@ -43,6 +44,7 @@ def map_load(name):
             tile_position=[tile_position[0]+chunk_position[0]*CHUNK_SIZE[0],tile_position[1]+chunk_position[1]*CHUNK_SIZE[1],tile_position[2]]
 
             chunks[chunk_data[0]][tile_data[0]]=Tile(tile_position[:2],tile_position[2],tile_data[1],tilemap)
+#             sys.exit()
         chunks[chunk_data[0]]=Chunk([chunk_data[0],chunks[chunk_data[0]]])
         
     logging.info('Time consumed in load the map: '+str(time.time()-start_time)+' seconds')
@@ -96,8 +98,8 @@ def generate_map(map_size):
                                             octaves=octaves,
                                             persistence=persistence,
                                             lacunarity=lacunarity,
-                                            repeatx=map_size[0],
-                                            repeaty=map_size[1],
+                                            repeatx=99999999,#map_size[0],
+                                            repeaty=99999999,#map_size[1],
                                             base=seed)
             if noise_at_xy< 0.1:
                 # Cesped

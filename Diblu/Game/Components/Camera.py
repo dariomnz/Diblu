@@ -2,6 +2,7 @@ from utils import pos2center, list2str2
 from Game.constants import CHUNK_SIZE,TILE_SIZE_GENERAL_PIXEL
 from Game.Components.Screen_container import getInstance as S_c
 import logging
+import pygame
 
 def getInstance():
     return _instance
@@ -12,10 +13,10 @@ def createInstance():
 class Camera():
     
     def __init__(self):
-        self.position_map=[0,0]
-
-        self.position_screen=pos2center([0,0],S_c().get_screen_size())
+        self.float_position_map=[0,0]
+        self.position_map=pygame.rect.Rect([0,0,0,0])
         
+        self.position_screen=pos2center([0,0],S_c().get_screen_size())
         self.zoom=1
         
         self.posible_zoom={0:0.125,1:0.25,2:0.5,3:0.75,4:1,5:2,6:3}
@@ -33,9 +34,11 @@ class Camera():
     def update_position(self,position_to_folow):
         '''Actualiza la posicion'''
 #         Partido de n para crear el movimiento suave
-        self.position_map[0]+=((position_to_folow[0]-self.position_map[0])/40)
-        self.position_map[1]+=((position_to_folow[1]-self.position_map[1])/40)
+        self.float_position_map[0]+=((position_to_folow[0]-self.float_position_map[0])/60)
+        self.float_position_map[1]+=((position_to_folow[1]-self.float_position_map[1])/60)
         
+        self.position_map[0]=int(self.float_position_map[0])
+        self.position_map[1]=int(self.float_position_map[1])
 
        
     def screen_update(self):

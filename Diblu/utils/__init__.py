@@ -1,5 +1,7 @@
 import json,os,pygame
 from pygame.locals import RLEACCEL
+from Game.constants import TILE_SIZE_GENERAL, TILE_SIZE_GENERAL_PIXEL
+import logging
 
 def load_image(name, colorkey = None):
     """Carga la imagen de nombre 'name' desde
@@ -19,7 +21,11 @@ def load_image(name, colorkey = None):
             image = image.convert()
         else:
             image = image.convert_alpha()
-                
+            
+    scale_image=TILE_SIZE_GENERAL_PIXEL[0]/TILE_SIZE_GENERAL[0]
+    original_image_size=[int(image.get_width()*scale_image),int(image.get_height()*scale_image)]
+    image=pygame.transform.scale(image, (original_image_size[0], original_image_size[1]))
+                    
     return image
 
 
@@ -38,7 +44,7 @@ def JSONsave(jsonfile,data:dict):
     jsonfile+='.json'
     pathfile = os.path.join('..','data','json',jsonfile)
     with open(pathfile, 'w') as file:
-        json.dump(data, file)
+        json.dump(data, file, indent=4)
 
 
 def pos2center(pos,size):
@@ -89,8 +95,32 @@ def nearValue(value_to_check,value,range_to_check):
     '''Comprueba si value_to_check esta cerca de value con un rango de error de range_to_check'''
     return (value-range_to_check)<value_to_check<(value+range_to_check)
 
+def getRect(pointList):
+#     if len(pointList)!=4:
+#         logging.ERROR('The point list:'+str(pointList)+' has less than 4 points')
+# #         print('The point list has less than 4 points') 
+#         return None
+#     print(pointList)
+    minPoint=pointList[0]
+    for point in pointList:
+        if point[0]<minPoint[0] or point[1]<minPoint[1]:
+            minPoint=point
+
+    pointList.remove(minPoint)
+    maxX=minPoint[0]
+    maxY=minPoint[1]
+    for point in pointList:
+        if maxX<point[0]:
+            maxX=point[0]
+        if maxY<point[1]:
+            maxY=point[1]
+            
+    return pygame.rect.Rect(minPoint,[maxX-minPoint[0],maxY-minPoint[1]])
+    
 #Pruebas
 
+# print(getRect([(10,4),(10,10),(15,4),(15,10)]))
+# <rect(10, 4, 5, 6)>
 # d={1:'123123',0:'123',5:'a',3:'d'}
 # print(nearValue(0.521234, 0.5, 0.01))
 

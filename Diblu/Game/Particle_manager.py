@@ -3,7 +3,7 @@ import pygame
 from Game.Components import Screen_container as S_c
 from Game.Components.Camera import getInstance as camera
 
-SMOKE_PRESET=[[lambda :random.randint(0,20)/10-1,lambda :random.randint(0,20)/10-1],lambda :random.randint(3,6),(255,255,255)]
+SMOKE_PRESET=[[lambda :random.randint(0,20)/10-1,lambda :random.randint(0,20)/10-1],lambda :random.randint(3,6),(80,80,80)]
 
 # [(230,230,230),(214,214,214),(180,180,180),(150,150,150),(130,130,130)]
 
@@ -50,7 +50,7 @@ class Particle_group():
         self.layer=layer
         loop_index=0
         while loop_index<number:
-            self.particles.append(Particle(position_map.copy(),preset))
+            self.particles.append(Particle([position_map[0],position_map[1]],preset))
 #                 [position_map.copy(),[0,0],[random.randint(0,20)/10-1,random.randint(0,20)/10-1],random.randint(3,6),preset[random.randint(0,len(preset)-1)]])
             loop_index+=1
             
@@ -62,14 +62,11 @@ class Particle_group():
         
     def draw(self):
         for particle in self.particles:
-            particle.position_map[0] += particle.velocity[0]
-            particle.position_map[1] += particle.velocity[1]
-            particle.timer-=0.1
-            particle.color=(particle.color[0]-2,particle.color[1]-2,particle.color[2]-2)
-#             particle.velocity[1] +=0.03
-            pygame.draw.circle(S_c.getInstance().screen, particle.color, [int(particle.position_camera[0]),int(particle.position_camera[1])] , int(particle.timer*2))
+            particle.draw()
             if particle.timer <=0:
                 self.particles.remove(particle) 
+    
+    
             
 class Particle():
     
@@ -79,6 +76,8 @@ class Particle():
         self.position_camera=self.position_map.copy()
         
         self.velocity=[preset[0][0](),preset[0][1]()]
+       
+        
         self.timer=preset[1]()
         self.color=preset[2]      
             
@@ -86,8 +85,44 @@ class Particle():
         self.position_camera[0]=((self.position_map[0]-camera().position_map[0])*camera().zoom*S_c.getInstance().w_factor_position)+camera().position_screen[0]
         self.position_camera[1]=((self.position_map[1]-camera().position_map[1])*camera().zoom*S_c.getInstance().w_factor_position)+camera().position_screen[1]
         
+    def draw(self):
         
-          
+        self.position_map[0] += self.velocity[0]
+        self.position_map[1] += self.velocity[1]
+#         print(self.position_map)
+        self.timer-=0.1
+        self.update_color_bright()
+#             particle.velocity[1] +=0.03
+        pygame.draw.circle(S_c.getInstance().screen, self.color, [int(self.position_camera[0]),int(self.position_camera[1])] , int(self.timer*2))
+                
+    
+    def update_color_bright(self):
+        update_factor=3
+        r=self.color[2]+update_factor
+        g=self.color[1]+update_factor
+        b=self.color[0]+update_factor
+        if r>255:
+            r=255
+        if g>255:
+            g=255
+        if b>255:
+            b=255
+        
+        self.color=(r,g,b)
+        
+    def update_color_dark(self): 
+        update_factor=3
+        r=self.color[2]-update_factor
+        g=self.color[1]-update_factor
+        b=self.color[0]-update_factor
+        if r<0:
+            r=0
+        if g<0:
+            g=0
+        if b<0:
+            b=0
+        
+        self.color=(r,g,b)        
             
             
             

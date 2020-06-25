@@ -1,6 +1,7 @@
 from utils import center2pos
 from Game.Components.Sprite import AnimateSprite
 from Game.Components.Screen_container import getInstance as S_c
+import pygame
 
 
 class Player(AnimateSprite):
@@ -8,7 +9,7 @@ class Player(AnimateSprite):
     def __init__(self,position_map,name,layer):
         super().__init__(position_map,name,layer)
         
-        self.position_camera=[0,0]
+#         self.position_camera.move([0,0])
         
         self.direction={'back':0,'front':0,'left':0,'right':0}
         self.original_vel=1
@@ -33,15 +34,11 @@ class Player(AnimateSprite):
             'd':self.del_move_right,
             'left shift':self.del_sprint
             }
-        
-    
-    def draw(self):
-        '''Pinta al jugador en su posicion de la camara centrado'''
-        S_c().screen.blit(self.image,center2pos(self.position_camera,self.get_image_size()))
-                         
+
+                 
     def update(self):
         '''Actualiza la posicion en el mapa del jugador'''
-       
+        self.update_collision()
             
         self.position_map[0]=self.position_map[0]+((self.direction['right']-self.direction['left'])*self.vel)
         self.position_map[1]=self.position_map[1]+((self.direction['front']-self.direction['back'])*self.vel)
