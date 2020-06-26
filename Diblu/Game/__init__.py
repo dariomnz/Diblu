@@ -107,7 +107,7 @@ def main():
     #         chunk.draw()
     #      
 #         print(player.collisions)
-#         print(player.image.get_alpha())
+#         print(help(player.image.set_alpha))
         player.update()
         player.camera_update()
         S_c().add_to_self_layer(player)

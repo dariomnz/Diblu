@@ -1,7 +1,7 @@
-from utils import center2pos
+# from utils import center2pos
 from Game.Components.Sprite import AnimateSprite
-from Game.Components.Screen_container import getInstance as S_c
-import pygame
+# from Game.Components.Screen_container import getInstance as S_c
+# import pygame
 
 
 class Player(AnimateSprite):
@@ -15,6 +15,8 @@ class Player(AnimateSprite):
         self.original_vel=2
         self.sprint_vel=20
         self.vel=self.original_vel
+        
+        self.original_layer=self.layer
         
         
         #Encargado de identificar los controles de pulsar una tecla
@@ -39,12 +41,15 @@ class Player(AnimateSprite):
     def update(self):
         '''Actualiza la posicion en el mapa del jugador'''
         self.update_collision()
+        self.layer=self.original_layer
         
         for sprite,collision in list(self.collisions.items()):
             if collision[0].startswith('block'):
+                self.add_layer_above(sprite)
                 self.repel(collision[1],collision[2])
-#             if collision[0].startswith('tree_leave'):
+            if collision[0].startswith('tree_leave'):
                 # Transparencia de arboles al pasar por ellos
+                self.add_layer_below(sprite)
 #                 print(sprite.image.get_alpha())
 #                 sprite.image.set_alpha(200)
             self.clear_collision(sprite)

@@ -1,6 +1,6 @@
 import pygame
 from Game.constants import TILE_SIZE_GENERAL_PIXEL, TILE_SIZE_GENERAL
-from utils import load_image, center2pos
+from utils import load_image
 from Game.Components.Screen_container import getInstance as S_c
 from Game.Components.Camera import getInstance as camera
 
@@ -29,6 +29,7 @@ class Image_item():
 #         self.rect=[self.position_camera[0],self.position_camera[1],self.original_image.get_width(),self.original_image.get_height()]
         
         self.layer=layer
+        
         S_c().add_to_self_layer(self)
         
     def draw(self):
