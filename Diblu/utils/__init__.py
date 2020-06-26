@@ -8,19 +8,19 @@ def load_image(name, colorkey = None):
        el directorio 'datadir'"""
     fullname = os.path.join('..','data','images',name)
 
-    image = pygame.image.load(fullname)
+    image = pygame.image.load(fullname).convert_alpha()
     
-    if colorkey is not None:
-        image = image.convert()
-        
-    if colorkey == -1:
-        colorkey = image.get_at((0, 0))
-        image.set_colorkey(colorkey, RLEACCEL)
-    else:
-        if image.get_alpha() is None:
-            image = image.convert()
-        else:
-            image = image.convert_alpha()
+#     if colorkey is not None:
+#         image = image.convert()
+#         
+#     if colorkey == -1:
+#         colorkey = image.get_at((0, 0))
+#         image.set_colorkey(colorkey, RLEACCEL)
+#     else:
+#         if image.get_alpha() is None:
+#             image = image.convert()
+#         else:
+#             image = image.convert_alpha()
             
     scale_image=TILE_SIZE_GENERAL_PIXEL[0]/TILE_SIZE_GENERAL[0]
     original_image_size=[int(image.get_width()*scale_image),int(image.get_height()*scale_image)]

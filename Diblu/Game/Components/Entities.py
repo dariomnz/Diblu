@@ -40,10 +40,23 @@ class Player(AnimateSprite):
         '''Actualiza la posicion en el mapa del jugador'''
         self.update_collision()
         
+        for sprite,collision in list(self.collisions.items()):
+            if collision[0].startswith('block'):
+                self.repel(collision[1],collision[2])
+#             if collision[0].startswith('tree_leave'):
+                # Transparencia de arboles al pasar por ellos
+#                 print(sprite.image.get_alpha())
+#                 sprite.image.set_alpha(200)
+            self.clear_collision(sprite)
+        
+        
         if self.current_tag.startswith('jump'):
             if self.current_frame_position>2 and self.current_frame_position<12:     
-                self.position_map[0]=self.position_map[0]+((self.direction['right']-self.direction['left'])*self.vel)
-                self.position_map[1]=self.position_map[1]+((self.direction['front']-self.direction['back'])*self.vel)
+                self.float_position_map[0]=self.float_position_map[0]+((self.direction['right']-self.direction['left'])*self.vel)
+                self.float_position_map[1]=self.float_position_map[1]+((self.direction['front']-self.direction['back'])*self.vel)
+                
+        self.position_map[0]=int(self.float_position_map[0])
+        self.position_map[1]=int(self.float_position_map[1])
         
         # Comprobaciones para las animaciones
         if self.direction['back']==1:   
@@ -57,7 +70,22 @@ class Player(AnimateSprite):
         
         super().update()
     
-    
+#     def repel(self,self_cB_map,sprite_cB_map):
+#         
+#         repel_vel=[0,0]
+# #         print(sprite_cB_map.center)
+#         repel_vel[0]=(sprite_cB_map.center[0]-self_cB_map.center[0])*self.vel/15
+#         repel_vel[1]=(sprite_cB_map.center[1]-self_cB_map.center[1])*self.vel/15
+#         
+#         self.float_position_map[0]+=repel_vel[0]
+#         self.float_position_map[1]+=repel_vel[1]
+     
+#     
+#     
+#     def repel(self,sprite):
+#         repel_vel=
+        
+        
     #Multiplicadores de movimiento, para los controles
     #Press
     def set_move_up(self):

@@ -59,7 +59,9 @@ class TileMap(Sprite):
         #Diccionario con los tipos de colisiones, y su lista de imagenes
         self.original_image_tilemap_collision_box={}
          
-        self.original_image_tilemap_collision_box['water']=[load_image(image_name) for image_name in self.cB_data['water']]
+        
+        for collision_type,image_name in self.cB_data.items():
+            self.original_image_tilemap_collision_box[collision_type]=load_image(image_name)
         
         self.image_tilemap_collision_box=self.original_image_tilemap_collision_box.copy()
           
@@ -75,16 +77,17 @@ class TileMap(Sprite):
             attr3=TILE_TYPES[tile_type][3]*camera().zoom*S_c().h_factor_image*self.scale_image
             rect_in_tilemap_image=pygame.Rect(attr0,attr1,attr2,attr3)
              
-            for aux_image_tilemap_collisionBox in self.image_tilemap_collision_box['water']: 
+            for collision_type,aux_image_tilemap_collisionBox in self.image_tilemap_collision_box.items(): 
+#                 for aux_image_tilemap_collisionBox in tilemap_collisionBox:
                 aux_cB_image=aux_image_tilemap_collisionBox.subsurface(rect_in_tilemap_image) 
-                 
+                  
                 aux_mask=pygame.mask.from_surface(aux_cB_image, 127)
                 if tile_type not in self.cB_rects:
-                    self.cB_rects[tile_type]=[]
-                    
+                    self.cB_rects[tile_type]={}
+                     
                 aux_outline=aux_mask.outline()
                 if len(aux_outline)>0:
-                    self.cB_rects[tile_type].append(getRect(aux_outline))  
+                    self.cB_rects[tile_type][collision_type]=getRect(aux_outline)
 #                     print(self.cB_rects)  
         
         
@@ -118,9 +121,9 @@ class Chunk():
         for tile in self.tiles.values():
             tile.image_update()    
     
-    def check_water_collisions(self,sprite):
+    def check_collisions(self,sprite):
         for tile in self.tiles.values():
-            if sprite.check_collision(tile):
+            if tile.check_collision(sprite):
                 return True
             
         return False
@@ -159,12 +162,12 @@ class Tile(Sprite):
 
     def setUp_collisionBox(self): 
         
-        self.cB_rect=[]
-        self.cB_rect_map=[]
-        for rect in self.tilemap.cB_rects[self.tile_type]:
-            self.cB_rect.append(rect.copy())
-            self.cB_rect_map.append(rect.copy())
-            
+        self.cB_rect={}
+        self.cB_rect_map={}
+        for collision_type,rect in self.tilemap.cB_rects[self.tile_type].items():
+            self.cB_rect[collision_type]=rect.copy()
+            self.cB_rect_map[collision_type]=rect.copy()
+        
 #         self.cB_rect=self.tilemap.cB_rects[self.tile_type].copy()
 #         self.cB_rect_map=self.cB_rect.copy()
 #         print(self.tilemap.cB_rects)

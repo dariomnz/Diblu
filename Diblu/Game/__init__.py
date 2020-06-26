@@ -91,18 +91,14 @@ def main():
         S_c().draw_layers()
         
     #     Optimizacion de renderizado
-        isWaterCollision=False
+#         isWaterCollision=False
         for chunk_key in camera().list_of_str_in_screen_chunks():
             if chunk_key in terrain_map.chunks:
                 terrain_map.chunks[chunk_key].camera_update()
                 terrain_map.chunks[chunk_key].add_self_layer()
-                if terrain_map.chunks[chunk_key].check_water_collisions(player):
-                    isWaterCollision=True
-#                 for tile in terrain_map.chunks[chunk_key].tiles.values():    
-#                     if tile.tile_type==1 and pygame.sprite.collide_rect(tile.collisionBox, player.collisionBox):
-#                         print(pygame.sprite.collide_rect(tile.collisionBox, player.collisionBox))
-#                         print(tile.position_map)
-#                         isWaterCollision=True
+                terrain_map.chunks[chunk_key].check_collisions(player)
+#                     isWaterCollision=True
+
         
         
 #         for chunk in terrain_map.chunks.values():
@@ -110,7 +106,8 @@ def main():
 #             chunk.add_self_layer()
     #         chunk.draw()
     #      
-        
+#         print(player.collisions)
+#         print(player.image.get_alpha())
         player.update()
         player.camera_update()
         S_c().add_to_self_layer(player)
@@ -143,8 +140,8 @@ def main():
             fps = "FPS: " + str(int(clock.get_fps()))
             player_x_text= " X: "+str(player.position_map[0])
             player_y_text= " Y: "+str(player.position_map[1])
-            isWaterCollision_str= ' Water: '+str(isWaterCollision)
-            control_text.update_text(fps+player_x_text+player_y_text+isWaterCollision_str)
+#             isWaterCollision_str= ' Water: '+str(isWaterCollision)
+            control_text.update_text(fps+player_x_text+player_y_text)#+isWaterCollision_str)
             control_text.draw()
 #             print(player.cB_rect_map)
         

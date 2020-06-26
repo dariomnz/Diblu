@@ -10,28 +10,51 @@ from Game import Particle_manager
 class Sprite(pygame.sprite.Sprite,Image_item):
     '''Super clase de los sprites, hereda de pygame Sprite y de Image_item'''
     def __init__(self,position_map,name,layer):
+        self.collisions={}
+        self.collision_type='None'
         pygame.sprite.Sprite.__init__(self)
         Image_item.__init__(self,position_map,name,layer)
+        
+        self.float_position_map=[self.position_map[0],self.position_map[1]]
     
+    
+    
+    def clear_collision(self,sprite):
+        self.collisions.pop(sprite)
+        sprite.collisions.pop(self)
+        
+    def repel(self,self_cB_map,sprite_cB_map):
+        
+        repel_vel=[0,0]
+#         print(sprite_cB_map.center)
+        repel_vel[0]=(sprite_cB_map.center[0]-self_cB_map.center[0])/15
+        repel_vel[1]=(sprite_cB_map.center[1]-self_cB_map.center[1])/15
+        
+        self.float_position_map[0]+=repel_vel[0]
+        self.float_position_map[1]+=repel_vel[1]
+        
+        
+        
+        
     def check_collision(self,sprite):
         '''Actualiza la posicion de las cB_rect_map y comprueba colisiones'''
-        
         # Comprobacion de la colision   
-        for rect in self.cB_rect_map:
-            if rect.collidelist(sprite.cB_rect_map)!=-1:
+        for collision_type,rect in self.cB_rect_map.items():
+            list_rects=list(sprite.cB_rect_map.values())
+            index_rect=rect.collidelist(list_rects)
+            if index_rect!=-1:
+                self.collisions[sprite]=[collision_type,list_rects[index_rect],rect]
+                sprite.collisions[self]=[collision_type,rect,list_rects[index_rect]]
                 return True
         return False
     
     def update_collision(self):
         self.update_cB_rect()
-#         print(self.cB_rect)
-        # Actualizacion con la posicion en el mapa 
-#         print(self.position_map)           
-        for index in range(len(self.cB_rect)):
-            self.cB_rect_map[index][0]=self.cB_rect[index][0]+self.position_map[0]
-            self.cB_rect_map[index][1]=self.cB_rect[index][1]+self.position_map[1]    
+        # Actualizacion con la posicion en el mapa        
+        for collision_type in self.cB_rect.keys():
+            self.cB_rect_map[collision_type][0]=self.cB_rect[collision_type][0]+self.position_map[0]
+            self.cB_rect_map[collision_type][1]=self.cB_rect[collision_type][1]+self.position_map[1]    
             
-#         print(self.cB_rect)
     
     def setUp_collisionBox(self,name):
         '''Metodo para override'''
@@ -185,17 +208,17 @@ class AnimateSprite(Sprite):
 #             self.cB_rects[image_key]=[getRect(aux_mask.outline())]   
             aux_outline=aux_mask.outline()
             if len(aux_outline)>0:
-                self.cB_rects[image_key]=[getRect(aux_mask.outline())]
+                self.cB_rects[image_key]={'body':getRect(aux_mask.outline())}
             else:
-                self.cB_rects[image_key]=[]
+                self.cB_rects[image_key]={}
 #                 self.cB_rects[image_key].append(getRect(aux_outline))  
   
     def update_cB_rect(self):
-        self.cB_rect=[]
-        self.cB_rect_map=[]
-        for rect in self.cB_rects[self.current_frame]:
-            self.cB_rect.append(rect.copy())
-            self.cB_rect_map.append(rect.copy())  
+        self.cB_rect={}
+        self.cB_rect_map={}
+        for collision_type,rect in self.cB_rects[self.current_frame].items():
+            self.cB_rect[collision_type]=rect.copy()
+            self.cB_rect_map[collision_type]=rect.copy()
         
         
         
