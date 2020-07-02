@@ -22,12 +22,12 @@ def main():
     control_text=Text([10,0])
     
     from Game.Components.Entities import Player
-    player=Player([0,0],"slime",layer=2)
+    player=Player([0,0],"slime")
     
     
     from Game.Components.Tile import TILEMAP1
     from Game.Components.Map import Map
-    terrain_map=Map(load=True)
+    terrain_map=Map(load=False)
     
     from Game import Particle_manager as P_m 
     from Game.Particle_manager import SMOKE_PRESET
@@ -94,6 +94,7 @@ def main():
 #         isWaterCollision=False
         for chunk_key in camera().list_of_str_in_screen_chunks():
             if chunk_key in terrain_map.chunks:
+                terrain_map.chunks[chunk_key].update()
                 terrain_map.chunks[chunk_key].camera_update()
                 terrain_map.chunks[chunk_key].add_self_layer()
                 terrain_map.chunks[chunk_key].check_collisions(player)
@@ -112,6 +113,7 @@ def main():
         player.camera_update()
         S_c().add_to_self_layer(player)
     
+#         print(player.image.get_alpha())
         
         Particle_manager().camera_update()
         # Introducion en las layer para draw
@@ -137,7 +139,7 @@ def main():
         
         if debug_text:
             # Texto a mostrar por pantalla
-            fps = "FPS: " + str(int(clock.get_fps()))
+            fps = "FPS: {:.2f}".format(clock.get_fps())
             player_x_text= " X: "+str(player.position_map[0])
             player_y_text= " Y: "+str(player.position_map[1])
 #             isWaterCollision_str= ' Water: '+str(isWaterCollision)
@@ -150,7 +152,7 @@ def main():
         pygame.display.update([0,0,S_c().get_screen_size()[0],S_c().get_screen_size()[1]])
 #         run=False
         
-    terrain_map.save()
+#     terrain_map.save()
     pygame.quit()
     sys.exit()
     

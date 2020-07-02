@@ -108,6 +108,9 @@ TILE_TYPES = {
     215:[80,224,32,48],
     #Arbol mediano 3
     216:[112,224,32,48],
+    
+    #Roca mediana
+    217:[48,192,16,32],
     }
 
 # Tamano de un tipo de tile en tiles

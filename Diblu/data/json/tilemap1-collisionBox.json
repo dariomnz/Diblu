@@ -1,4 +1,5 @@
 {"water1":"tilemap1-collisionBox1.png",
 "water2":"tilemap1-collisionBox2.png",
 "block1":"tilemap1-collisionBox3.png",
-"tree_leave":"tilemap1-collisionBox4.png"}
+"jump_block1":"tilemap1-collisionBox4.png",
+"tree_leave":"tilemap1-collisionBox5.png"}

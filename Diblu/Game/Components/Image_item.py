@@ -7,7 +7,7 @@ from Game.Components.Camera import getInstance as camera
 
 class Image_item():
     '''Super clase de objetos con imagen'''
-    def __init__(self,position_map,image,layer):
+    def __init__(self,position_map,image,layer=None):
         self.scale_image=TILE_SIZE_GENERAL_PIXEL[0]/TILE_SIZE_GENERAL[0]
         #Si es una imagen ya no la carga
         if isinstance(image, str):
@@ -24,11 +24,11 @@ class Image_item():
 #         self.position_map[0]-=self.position_map.centerx
 #         self.position_map[1]-=self.position_map.centery
         self.position_camera=self.position_map.copy()
-#         print(self.position_camera)
-        #rect para dibujar la imagen
-#         self.rect=[self.position_camera[0],self.position_camera[1],self.original_image.get_width(),self.original_image.get_height()]
         
-        self.layer=layer
+        if layer==None:
+            self.layer=self.position_map.bottom
+        else:
+            self.layer=self.position_map.bottom-1
         
         S_c().add_to_self_layer(self)
         
@@ -44,6 +44,8 @@ class Image_item():
     def update(self):
         '''Actualiza'''
         pass
+        
+        
     
     def camera_update(self):
         '''Actualiza su posicion respecto a la camara'''

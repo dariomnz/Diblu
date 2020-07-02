@@ -127,7 +127,7 @@ def generate_map(map_size):
         tile_position=[tile[0],tile[1]]
         chunk_position=list2str2([tile[0]//8,tile[1]//8])
         if tile[2]!=-10:
-            chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,0,tile[2],tilemap)
+            chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,tile[2],tilemap,0)
         
         #Anadido de detalles en la layer 1
 
@@ -146,12 +146,12 @@ def generate_map(map_size):
                         #layer
                         tile_position_in_chunk[2]=1
                         tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
-                        chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,1,numero_random,tilemap)
+                        chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,numero_random,tilemap)
             #Detalles del cesped
             elif tile[2]==0:
                 numero_random=random.randint(200,280)
                 if numero_random in TILE_TYPES:
-                    if numero_random in [213,214,215,216]:
+                    if numero_random in [213,214,215,216,217]:
                         
                         generate_big_tile(tile[:2],tile[2], numero_random, chunks, aux_tiles_data)
                         
@@ -159,7 +159,7 @@ def generate_map(map_size):
 #                         layer
                         tile_position_in_chunk[2]=1
                         tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
-                        chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,1,numero_random,tilemap)
+                        chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,numero_random,tilemap)
 #     Tercero creacion de los chunks
     for x in range(-map_size[0]//CHUNK_SIZE[0],map_size[0]//CHUNK_SIZE[0]):
         for y in range(-map_size[1]//CHUNK_SIZE[1],map_size[1]//CHUNK_SIZE[1]):
@@ -242,13 +242,13 @@ def generate_big_tile(position,parent_tile_type,tile_type,chunks,map_data):
             if x==0 and y==0:
                 aux_tile_position_in_chunk=[tile_position_in_chunk[0]+x,tile_position_in_chunk[1]+y,1]
                 aux_tile_position_in_chunk_str=list2str3(aux_tile_position_in_chunk)
-                chunks[chunk_position][aux_tile_position_in_chunk_str]=Tile(position,1,tile_type,tilemap)
+                chunks[chunk_position][aux_tile_position_in_chunk_str]=Tile(position,tile_type,tilemap)
             else:
                 aux_tile_position_in_chunk=[tile_position_in_chunk[0]+x,tile_position_in_chunk[1]+y,1]
                 aux_tile_position_in_chunk_str=list2str3(aux_tile_position_in_chunk)
                 position[0]+=x
                 position[1]+=y
-                chunks[chunk_position][aux_tile_position_in_chunk_str]=Tile(position,1,-10,tilemap)
+                chunks[chunk_position][aux_tile_position_in_chunk_str]=Tile(position,-10,tilemap)
     
     
         

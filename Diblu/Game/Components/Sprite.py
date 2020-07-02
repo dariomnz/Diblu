@@ -10,25 +10,34 @@ from Game import Particle_manager
 class Sprite(pygame.sprite.Sprite,Image_item):
     '''Super clase de los sprites, hereda de pygame Sprite y de Image_item'''
     def __init__(self,position_map,name,layer):
-        self.collisions={}
+        self.collisions=[]
         self.collision_type='None'
         pygame.sprite.Sprite.__init__(self)
         Image_item.__init__(self,position_map,name,layer)
         
         self.float_position_map=[self.position_map[0],self.position_map[1]]
     
+    def update(self):
+        self.clear_collision()
+        
+        super().update()
     
-    
-    def clear_collision(self,sprite):
-        self.collisions.pop(sprite)
-        sprite.collisions.pop(self)
+    def clear_collision(self):
+        self.collisions.clear()
+#         for i in range(len(self.collisions)):
+#             if sprite==self.collisions[i]['sprite']:
+#                 list_to_pop.append(i)
+#                 self.collisions.pop(i)
+#         for i in range(len(sprite.collisions)):
+#             if self==sprite.collisions[i]['sprite']:        
+#                 sprite.collisions.pop(i)
         
     def repel(self,self_cB_map,sprite_cB_map):
         
         repel_vel=[0,0]
 #         print(sprite_cB_map.center)
-        repel_vel[0]=(sprite_cB_map.center[0]-self_cB_map.center[0])/15
-        repel_vel[1]=(sprite_cB_map.center[1]-self_cB_map.center[1])/15
+        repel_vel[0]=(self_cB_map.center[0]-sprite_cB_map.center[0])/15
+        repel_vel[1]=(self_cB_map.center[1]-sprite_cB_map.center[1])/15
         
         self.float_position_map[0]+=repel_vel[0]
         self.float_position_map[1]+=repel_vel[1]
@@ -41,12 +50,14 @@ class Sprite(pygame.sprite.Sprite,Image_item):
         # Comprobacion de la colision   
         for collision_type,rect in self.cB_rect_map.items():
             list_rects=list(sprite.cB_rect_map.values())
-            index_rect=rect.collidelist(list_rects)
-            if index_rect!=-1:
-                self.collisions[sprite]=[collision_type,list_rects[index_rect],rect]
-                sprite.collisions[self]=[collision_type,rect,list_rects[index_rect]]
-                return True
-        return False
+            list_index_rect=rect.collidelistall(list_rects)
+            for index_rect in list_index_rect:
+                if index_rect!=-1:
+                    collision_type_sprite=list(sprite.cB_rect_map.keys())[index_rect]
+                    self.collisions.append({'self_type':collision_type,'self_rect':rect,'sprite':sprite,'sprite_type':collision_type_sprite,'sprite_rect':list_rects[index_rect]})
+                    sprite.collisions.append({'self_type':collision_type_sprite,'self_rect':list_rects[index_rect],'sprite':self,'sprite_type':collision_type,'sprite_rect':rect})
+#                     return True
+#         return False
     
     def update_collision(self):
         self.update_cB_rect()
@@ -145,9 +156,8 @@ class AnimateSprite(Sprite):
             self.current_frame_position = (self.current_frame_position+1)%len(self.tags[self.current_tag])
             self.current_frame=self.tags[self.current_tag][self.current_frame_position]
             self.image=self.images[self.current_frame]
-#             self.update_cB_rect()
-            # Para colisiones
-#             self.collisionBox.image=self.collisionBox.image_collision_box[self.current_frame]
+
+        super().update()
      
     def update_animation(self,input_action):
         '''Introduciendole el input deseado, se comprueba si desde la animacion que esta cambia a otra'''
@@ -184,7 +194,15 @@ class AnimateSprite(Sprite):
 #             self.collisionBox.image_collision_box[image_key]=self.collisionBox.image_sprite_sheet_collision_box.subsurface(rect_in_sprite_sheet_image)
     
     def setUp_collisionBox(self,name): 
-        self.original_image_sprite_sheet_collision_box=load_image(name+'-collisionBox.png')
+        
+        self.cB_data=JSONParser(name+'-collisionBox')
+        
+        self.original_image_sprite_sheet_collision_box={}
+        
+        for collision_type,image_name in self.cB_data.items():
+            self.original_image_sprite_sheet_collision_box[collision_type]=load_image(image_name)
+        
+#         self.original_image_sprite_sheet_collision_box=load_image(name+'-collisionBox.png')
          
         self.image_sprite_sheet_collision_box=self.original_image_sprite_sheet_collision_box.copy()
          
@@ -202,16 +220,22 @@ class AnimateSprite(Sprite):
             attr3=self.image_sheet_dict[image_key][3]*camera().zoom*S_c().h_factor_image*self.scale_image
             rect_in_sprite_sheet_image=pygame.Rect(attr0,attr1,attr2,attr3)
             
-            aux_cB_image=self.image_sprite_sheet_collision_box.subsurface(rect_in_sprite_sheet_image) 
+            for collision_type,aux_image_sprite_sheet_collisionBox in self.image_sprite_sheet_collision_box.items(): 
             
-            aux_mask=pygame.mask.from_surface(aux_cB_image, 127)
-#             self.cB_rects[image_key]=[getRect(aux_mask.outline())]   
-            aux_outline=aux_mask.outline()
-            if len(aux_outline)>0:
-                self.cB_rects[image_key]={'body':getRect(aux_mask.outline())}
-            else:
-                self.cB_rects[image_key]={}
-#                 self.cB_rects[image_key].append(getRect(aux_outline))  
+                aux_cB_image=aux_image_sprite_sheet_collisionBox.subsurface(rect_in_sprite_sheet_image) 
+                
+                aux_mask=pygame.mask.from_surface(aux_cB_image, 127)
+    #             self.cB_rects[image_key]=[getRect(aux_mask.outline())]   
+                aux_outline=aux_mask.outline()
+                
+                if image_key not in self.cB_rects:
+                    self.cB_rects[image_key]={}
+                    
+                if len(aux_outline)>0:
+                    self.cB_rects[image_key][collision_type]=getRect(aux_mask.outline())
+                else:
+                    self.cB_rects[image_key]={}
+    #                 self.cB_rects[image_key].append(getRect(aux_outline))  
   
     def update_cB_rect(self):
         self.cB_rect={}
