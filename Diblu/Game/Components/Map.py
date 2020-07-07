@@ -7,7 +7,7 @@ from Game.constants import CHUNK_SIZE, TILE_TYPES,\
     TILE_TYPES_9NEIGHBOUR1, TILE_TYPES_9NEIGHBOUR2, TILE_TYPES_UPNEIGHBOUR,\
     TILE_SIZE
 import logging
-import sys
+# import sys
 
 
 class Map():

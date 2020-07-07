@@ -37,9 +37,16 @@ class Image_item():
         
         S_c().screen.blit(self.image,self.position_camera)
         
-        # Para ver colisiones
-#         if len(self.cB_rect_map)>0:
-#             pygame.draw.rect(S_c().screen, (0,0,0), self.cB_rect_map[0])
+        # Para ver colisiones        
+#         for i in range(len(self.cB_rect_map)):
+#             aux_rect=list(self.cB_rect_map.values())[i].copy()
+#             aux_pos=[0,0]
+#             aux_pos[0]=((aux_rect[0]-camera().position_map[0])*camera().zoom*S_c().w_factor_image)+camera().position_screen[0]
+#             aux_pos[1]=((aux_rect[1]-camera().position_map[1])*camera().zoom*S_c().h_factor_image)+camera().position_screen[1]
+#             
+#             aux_surf=pygame.Surface(aux_rect.size,pygame.SRCALPHA)
+#             aux_surf.fill((0,0,0,100))
+#             S_c().screen.blit(aux_surf,aux_pos)
         
     def update(self):
         '''Actualiza'''

@@ -105,6 +105,7 @@ class Chunk():
         self.position=str2list2(chunk_data[0])
         self.position_map=[self.position[0]*CHUNK_SIZE[0]*TILE_SIZE_GENERAL[0],self.position[1]*CHUNK_SIZE[1]*TILE_SIZE_GENERAL[1]]
         self.tiles=chunk_data[1]
+        
 #         self.tile_group=list(self.tiles.values())
     
         

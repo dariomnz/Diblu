@@ -21,6 +21,8 @@ class Camera():
         
         self.posible_zoom={0:0.125,1:0.25,2:0.5,3:0.75,4:1,5:2,6:3}
         self.actual_zoom=4
+        
+
         #Encargado de identificar los controles con lo que hacen
         self.controls={
             2:self.zoom_reset,
@@ -82,7 +84,6 @@ class Camera():
         self.zoom=1
         self.actual_zoom=4
         logging.info('Zoom: '+str(self.zoom))
-#         print('Zoom: '+str(self.zoom))
         
     def zoom_in(self):
         '''Disminuye el zoom, lo que hace las cosas en pantalla mas grandes'''

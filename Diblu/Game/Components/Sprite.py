@@ -24,13 +24,7 @@ class Sprite(pygame.sprite.Sprite,Image_item):
     
     def clear_collision(self):
         self.collisions.clear()
-#         for i in range(len(self.collisions)):
-#             if sprite==self.collisions[i]['sprite']:
-#                 list_to_pop.append(i)
-#                 self.collisions.pop(i)
-#         for i in range(len(sprite.collisions)):
-#             if self==sprite.collisions[i]['sprite']:        
-#                 sprite.collisions.pop(i)
+
         
     def repel(self,self_cB_map,sprite_cB_map):
         

@@ -20,7 +20,7 @@ def main():
     
     from Game.Components.Text import Text
     control_text=Text([10,0])
-    
+
     from Game.Components.Entities import Player
     player=Player([0,0],"slime")
     
@@ -33,6 +33,9 @@ def main():
     from Game.Particle_manager import SMOKE_PRESET
     P_m.createInstance()
     from Game.Particle_manager import getInstance as Particle_manager
+    
+    
+    from Game.Components.Item import ITEMSSHEET1
     
     
     run=True
@@ -49,6 +52,7 @@ def main():
     #         For the player controls
             if e.type == KEYDOWN:
                 if pygame.key.name(e.key) in player.controls_press.keys():
+#                     print(pygame.key.name(e.key))
                     player.controls_press[pygame.key.name(e.key)]()
                 #Prueba de creacion de particulas
                 if pygame.key.name(e.key)=='p':
@@ -79,6 +83,7 @@ def main():
                 camera().screen_update()
                 player.image_update()
                 TILEMAP1.image_update()
+                ITEMSSHEET1.image_update()
                 for chunk in terrain_map.chunks.values():
                     chunk.image_update()
     

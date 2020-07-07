@@ -2,6 +2,18 @@
 #TPS
 TPS=60
 
+#ImageSheet1
+ITEMSSHEET1_NAME='itemssheet1'
+
+ITEMS_TYPE={
+    'wood_log':[96,96,16,16],
+    'leaf':[64,128,16,16],
+    'rock':[64,112,16,16],
+    'iron_ingot':[64,96,16,16],
+    
+    }
+
+
 # Tilemap1
 TILEMAP1_NAME='tilemap1'
 # Pixels iniciales
