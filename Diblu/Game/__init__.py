@@ -26,8 +26,9 @@ def main():
     
     
     from Game.Components.Tile import TILEMAP1
-    from Game.Components.Map import Map
-    terrain_map=Map(load=False)
+    from Game.Components import Map
+    Map.createInstance(load=False)
+    from Game.Components.Map import getInstance as terrain_map
     
     from Game import Particle_manager as P_m 
     from Game.Particle_manager import SMOKE_PRESET
@@ -36,6 +37,7 @@ def main():
     
     
     from Game.Components.Item import ITEMSSHEET1
+    from Game.Components.Item import Item
     
     
     run=True
@@ -54,14 +56,30 @@ def main():
                 if pygame.key.name(e.key) in player.controls_press.keys():
 #                     print(pygame.key.name(e.key))
                     player.controls_press[pygame.key.name(e.key)]()
-                #Prueba de creacion de particulas
-                if pygame.key.name(e.key)=='p':
-                    Particle_manager().spawn(player.position_map,player.layer-0.1, 20,SMOKE_PRESET)
+                    
+                #Activar desactivar testo de debug
                 if pygame.key.name(e.key)=='f3':
                     if debug_text:
                         debug_text=False
                     else:
                         debug_text=True
+                
+                #Prueba de creacion de particulas
+                if pygame.key.name(e.key)=='p':
+                    Particle_manager().spawn(player.position_map.center,player.layer-0.1, 20,SMOKE_PRESET)
+                #Prueba para crear items
+                if pygame.key.name(e.key)=='o':
+# #                     for i in range(5):
+#                     aux_mouse=pygame.mouse.get_pos()
+#                     aux_pos_x=camera().position_map[0]-aux_mouse[0]
+#                     aux_pos_y=camera().position_map[1]-aux_mouse[1]
+                    aux_pos=player.position_map.topleft
+                    Item(aux_pos,'wood_log',10)
+                    Item(aux_pos,'leaf',5)
+                    Item(aux_pos,'iron_ingot',2)
+                    Item(aux_pos,'rock',12)
+                    
+                
             elif e.type == KEYUP:
                 if pygame.key.name(e.key) in player.controls_release.keys():
                     player.controls_release[pygame.key.name(e.key)]()
@@ -74,7 +92,8 @@ def main():
                     if aux_camera_zoom!=camera().zoom:
                         player.image_update()
                         TILEMAP1.image_update()
-                        for chunk in terrain_map.chunks.values():
+                        ITEMSSHEET1.image_update()
+                        for chunk in terrain_map().chunks.values():
                             chunk.image_update()
            
     #         For the resizable
@@ -84,7 +103,7 @@ def main():
                 player.image_update()
                 TILEMAP1.image_update()
                 ITEMSSHEET1.image_update()
-                for chunk in terrain_map.chunks.values():
+                for chunk in terrain_map().chunks.values():
                     chunk.image_update()
     
     
@@ -98,11 +117,12 @@ def main():
     #     Optimizacion de renderizado
 #         isWaterCollision=False
         for chunk_key in camera().list_of_str_in_screen_chunks():
-            if chunk_key in terrain_map.chunks:
-                terrain_map.chunks[chunk_key].update()
-                terrain_map.chunks[chunk_key].camera_update()
-                terrain_map.chunks[chunk_key].add_self_layer()
-                terrain_map.chunks[chunk_key].check_collisions(player)
+            if chunk_key in terrain_map().chunks:
+                terrain_map().chunks[chunk_key].update()
+                terrain_map().chunks[chunk_key].camera_update()
+                terrain_map().chunks[chunk_key].add_self_layer()
+                terrain_map().chunks[chunk_key].check_collisions(player)
+                terrain_map().chunks[chunk_key].check_items_collisions()
 #                     isWaterCollision=True
 
         

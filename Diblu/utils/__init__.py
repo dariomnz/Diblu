@@ -1,9 +1,10 @@
 import json,os,pygame
 from pygame.locals import RLEACCEL
-from Game.constants import TILE_SIZE_GENERAL, TILE_SIZE_GENERAL_PIXEL
+from Game.constants import TILE_SIZE_GENERAL, TILE_SIZE_GENERAL_PIXEL,\
+    DEFAULT_SCALE
 import logging
 
-def load_image(name, colorkey = None):
+def load_image(name, scale=DEFAULT_SCALE, colorkey = None):
     """Carga la imagen de nombre 'name' desde
        el directorio 'datadir'"""
     fullname = os.path.join('..','data','images',name)
@@ -23,7 +24,7 @@ def load_image(name, colorkey = None):
         else:
             image = image.convert_alpha()
             
-    scale_image=TILE_SIZE_GENERAL_PIXEL[0]/TILE_SIZE_GENERAL[0]
+    scale_image=scale
     original_image_size=[int(image.get_width()*scale_image),int(image.get_height()*scale_image)]
     image=pygame.transform.scale(image, (original_image_size[0], original_image_size[1]))
     

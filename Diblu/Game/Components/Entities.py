@@ -1,6 +1,7 @@
 # from utils import center2pos
 from Game.Components.Sprite import AnimateSprite
 import pygame
+from Game.Components.Item import Item
 # from Game.Components.Screen_container import getInstance as S_c
 # import pygame
 
@@ -49,24 +50,20 @@ class Player(AnimateSprite):
         
         for collision in self.collisions:
             if collision['self_type'].startswith('body') and (collision['sprite_type'].startswith('block') or collision['sprite_type'].startswith('water')):
-                
-#                 self.add_layer_above(collision['sprite'])
-#                 sprite.do_transparent(100,1)
                 self.repel_block(collision['self_rect'],collision['sprite_rect'])
                 
             if collision['self_type'].startswith('jump_body') and collision['sprite_type'].startswith('jump_block'):
-#                 self.add_layer_above(collision['sprite'])
-                self.repel(collision['self_rect'],collision['sprite_rect'])
+                    self.repel(collision['self_rect'],collision['sprite_rect'])
+#                 if isinstance(collision['sprite'],Item):
+#                     print('asdff')
+#                     #arreglar
+#                     collision['sprite'].repel(collision['sprite_rect'],collision['self_rect'])
                 
             if collision['sprite_type'].startswith('tall_tile'):
 #                 # Transparencia de arboles al pasar por ellos
                 self.add_layer_below(collision['sprite'])
                 
-#                 print(sprite.image.get_alpha())
                 collision['sprite'].do_transparent(0.5)
-#                 print(sprite.image.get_alpha())
-#                 sprite.image.set_alpha(200)
-#             self.clear_collision(collision['sprite'])
         
         
         if self.current_tag.startswith('jump'):
@@ -81,8 +78,6 @@ class Player(AnimateSprite):
             self.float_position_map[0]=self.float_position_map[0]+((self.direction['right']-self.direction['left'])*self.vel)
             self.float_position_map[1]=self.float_position_map[1]+((self.direction['front']-self.direction['back'])*self.vel)  
                 
-        self.position_map[0]=int(self.float_position_map[0])
-        self.position_map[1]=int(self.float_position_map[1])
         
         # Comprobaciones para las animaciones
         if self.vel==1:

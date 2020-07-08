@@ -1,15 +1,103 @@
 import random,noise,time
-from Game.Components.Tile import Tile,Chunk, TILEMAP1
+from Game.Components.Tile import Tile, TILEMAP1
 from utils import JSONParser,JSONsave,str2list3, list2str3, list2str2, str2list2,\
     list2str4, list2str9
 from Game.constants import CHUNK_SIZE, TILE_TYPES,\
     TILE_TYPES_4NEIGHBOUR_FIX,\
     TILE_TYPES_9NEIGHBOUR1, TILE_TYPES_9NEIGHBOUR2, TILE_TYPES_UPNEIGHBOUR,\
-    TILE_SIZE
+    TILE_SIZE, TILE_SIZE_GENERAL, TILE_SIZE_GENERAL_PIXEL,\
+    TILE_TYPES_9NEIGHBOUR3
+from Game.Components.Screen_container import getInstance as S_c
 import logging
 # import sys
 
+class Chunk():
+    
+    def __init__(self,chunk_data):
+        '''chunk_data is a list, in [0]:the string of position, in [1] a dict with tiles'''
+        self.position=str2list2(chunk_data[0])
+        self.position_map=[self.position[0]*CHUNK_SIZE[0]*TILE_SIZE_GENERAL[0],self.position[1]*CHUNK_SIZE[1]*TILE_SIZE_GENERAL[1]]
+        self.tiles=chunk_data[1]
+        
+        self.items=[]
+        
+#         self.tile_group=list(self.tiles.values())
+    
+        
+#     def draw(self):
+#         '''Dibuja todas las tiles del chunk por capas'''
+#         #Ordenacion por capas
+#         self.tile_group.sort(key=lambda tile:tile.layer)
+#          
+#         for tile in self.tile_group:
+#             tile.draw()
+            
+    def camera_update(self):
+        '''Actualiza la posicion de todas sus tile'''
+        for tile in self.tiles.values():
+            tile.camera_update()
+            
+        for item in self.items:
+            item.camera_update()
+    
+    def update(self):
+        '''Actualiza la posicion de todas sus tile'''
+        for tile in self.tiles.values():
+            tile.update()
+            
+        for item in self.items:
+            item.update()
+            
+    def image_update(self):
+        '''Actualiza la imagen de todas sus tile'''
+        for tile in self.tiles.values():
+            tile.image_update()    
+            
+        for item in self.items:
+            item.image_update()
+    
+    def check_collisions(self,sprite):
+        for tile in self.tiles.values():
+            tile.check_collision(sprite)
+            
+        for item in self.items:
+            item.check_collision(sprite)
+    
+    def check_items_collisions(self):
+        for item in self.items:
+            for tile in self.tiles.values():
+                item.check_collision(tile)
+            for item2 in self.items:   
+                if item!=item2:
+                    item.check_collision(item2) 
+    
+    def add_self_layer(self):
+        '''Se anaden a su layer'''
+        for tile in self.tiles.values():
+            S_c().add_to_self_layer(tile)
+            
+        for item in self.items:
+            S_c().add_to_self_layer(item)
+        
+    
+    def del_layer(self):
+        '''Elimina de las layers el chunk'''
+        for tile in self.tiles.values():
+            tile.del_layer()    
+            
+    def del_item(self,item):
+        '''Elimina el item del chunk'''
+        if item in self.items:
+            self.items.pop(self.items.index(item))
+            
 
+
+def getInstance():
+    return _instance
+
+def createInstance(load):
+    Map(load)
+                
 class Map():
     
     def __init__(self,load=True):
@@ -21,10 +109,29 @@ class Map():
         else:
             self.chunks=generate_map([CHUNK_SIZE[0]*self.size_square_in_chunk,CHUNK_SIZE[0]*self.size_square_in_chunk])
         
+        global _instance
+        _instance=self
         
     def save(self):
         '''Guarda el mapa'''
         map_save(self.chunks, 'world')
+        
+    
+    def chunk_in_item(self,position_map):
+        '''Apartir de position_map devuelve el chunk en el que esta'''
+        
+        aux_size=CHUNK_SIZE[0]*TILE_SIZE_GENERAL_PIXEL[0]
+        
+        aux_x=(position_map.x-(position_map.width+1))//aux_size
+        aux_y=(position_map.y-(position_map.height+1))//aux_size
+        
+        chunk_key=list2str2([aux_x,aux_y])
+        
+        if chunk_key in self.chunks:
+            return self.chunks[chunk_key]
+        else:
+            return None
+        
         
 
 def map_load(name):
@@ -84,12 +191,16 @@ def generate_map(map_size):
     tilemap = TILEMAP1
     chunks={}
     aux_tiles_data={}
-    scale = 25
-    octaves = 4
+    scale = 18
+    octaves = 8
     persistence = 0.5
-    lacunarity = 1.0
+    lacunarity = 1
     random.seed()
     seed = int(random.random()*100)
+    
+    # Extension de 1 para comprobar los bordes
+    map_size[0]+=1
+    map_size[1]+=1
     
     for x in range(-map_size[0],map_size[0]):
         for y in range(-map_size[1],map_size[1]):
@@ -101,12 +212,18 @@ def generate_map(map_size):
                                             repeatx=99999999,#map_size[0],
                                             repeaty=99999999,#map_size[1],
                                             base=seed)
-            if noise_at_xy< 0.1:
-                # Cesped
-                tile_type=0
-            else:
+            
+            
+            if noise_at_xy< -0.1:
                 # Agua
                 tile_type=1
+            elif noise_at_xy< 0.1:
+                # Arena
+                tile_type=0
+            else:
+                # Cesped
+                tile_type=23
+
                   
             aux_tiles_data[list2str2([x,y])]=[x,y,tile_type]
     
@@ -114,7 +231,11 @@ def generate_map(map_size):
     
     aux_tiles_data=adapt_borders(aux_tiles_data)
     
-#     Primero cracion de chunks vacions en el dict chunks
+    # Vuelta a el tamaño del mapa
+    map_size[0]-=1
+    map_size[1]-=1
+    
+#     Primero crecion de chunks vacions en el dict chunks
     for x in range(-map_size[0]//CHUNK_SIZE[0],map_size[0]//CHUNK_SIZE[0]):
         for y in range(-map_size[1]//CHUNK_SIZE[1],map_size[1]//CHUNK_SIZE[1]):
             chunk_position=list2str2([x,y])
@@ -122,44 +243,60 @@ def generate_map(map_size):
 
 #     Segundo creacion de los tile de cada chunk guardados en un dict
     for tile in aux_tiles_data.values():
-        tile_position_in_chunk=[tile[0]%CHUNK_SIZE[0],tile[1]%CHUNK_SIZE[1],0]
-        tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
-        tile_position=[tile[0],tile[1]]
-        chunk_position=list2str2([tile[0]//8,tile[1]//8])
-        if tile[2]!=-10:
-            chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,tile[2],tilemap,0)
-        
-        #Anadido de detalles en la layer 1
-
-        tile_position_in_chunk[2]=1
-        tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
-        if tile_position_in_chunk_str not in chunks[chunk_position]:
-            #Detalles del agua
-            if tile[2]==1:
-                numero_random=random.randint(100,150)
-                if numero_random in TILE_TYPES:
-                    if numero_random==104:
-                        
-                        generate_big_tile(tile[:2],tile[2], numero_random, chunks, aux_tiles_data)
-
-                    else:
-                        #layer
-                        tile_position_in_chunk[2]=1
-                        tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
-                        chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,numero_random,tilemap)
-            #Detalles del cesped
-            elif tile[2]==0:
-                numero_random=random.randint(200,280)
-                if numero_random in TILE_TYPES:
-                    if numero_random in [213,214,215,216,217]:
-                        
-                        generate_big_tile(tile[:2],tile[2], numero_random, chunks, aux_tiles_data)
-                        
-                    else:
-#                         layer
-                        tile_position_in_chunk[2]=1
-                        tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
-                        chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,numero_random,tilemap)
+        if tile[0]>-map_size[0] and tile[0]<map_size[0] and tile[1]>-map_size[1] and tile[1]<map_size[1]:
+            tile_position_in_chunk=[tile[0]%CHUNK_SIZE[0],tile[1]%CHUNK_SIZE[1],0]
+            tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
+            tile_position=[tile[0],tile[1]]
+            chunk_position=list2str2([tile[0]//8,tile[1]//8])
+            if tile[2]!=-10:
+                chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,tile[2],tilemap,0)
+            
+            #Anadido de detalles en la layer 1
+    
+            tile_position_in_chunk[2]=1
+            tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
+            if tile_position_in_chunk_str not in chunks[chunk_position]:
+                #Detalles del agua
+                if tile[2]==1:
+                    numero_random=random.randint(100,150)
+                    if numero_random in TILE_TYPES:
+                        if TILE_TYPES[numero_random][2]!=TILE_SIZE_GENERAL[0] or TILE_TYPES[numero_random][3]!=TILE_SIZE_GENERAL[1]:
+                            
+                            generate_big_tile(tile[:2],tile[2], numero_random, chunks, aux_tiles_data)
+    
+                        else:
+                            #layer
+                            tile_position_in_chunk[2]=1
+                            tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
+                            chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,numero_random,tilemap)
+                #Detalles del cesped
+                elif tile[2]==23:
+                    numero_random=random.randint(200,280)
+                    if numero_random in TILE_TYPES:
+                        if TILE_TYPES[numero_random][2]!=TILE_SIZE_GENERAL[0] or TILE_TYPES[numero_random][3]!=TILE_SIZE_GENERAL[1]:
+                            
+                            generate_big_tile(tile[:2],tile[2], numero_random, chunks, aux_tiles_data)
+                            
+                        else:
+    #                         layer
+                            tile_position_in_chunk[2]=1
+                            tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
+                            chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,numero_random,tilemap)
+                #Detalles de la arena
+                elif tile[2]==0:
+                    numero_random=random.randint(300,380)
+                    if numero_random in TILE_TYPES:
+                        if TILE_TYPES[numero_random][2]!=TILE_SIZE_GENERAL[0] or TILE_TYPES[numero_random][3]!=TILE_SIZE_GENERAL[1]:
+                            
+                            generate_big_tile(tile[:2],tile[2], numero_random, chunks, aux_tiles_data)
+                            
+                        else:
+    #                         layer
+                            tile_position_in_chunk[2]=1
+                            tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
+                            chunks[chunk_position][tile_position_in_chunk_str]=Tile(tile_position,numero_random,tilemap)
+                            
+                
 #     Tercero creacion de los chunks
     for x in range(-map_size[0]//CHUNK_SIZE[0],map_size[0]//CHUNK_SIZE[0]):
         for y in range(-map_size[1]//CHUNK_SIZE[1],map_size[1]//CHUNK_SIZE[1]):
@@ -182,7 +319,7 @@ def adapt_borders(aux_tiles_data):
     #Genero una copia para no reescribir aux_tiles_data
     change_data=aux_tiles_data.copy()
     
-    #Segunda pasada para los bordes principales
+    #Segunda pasada para los bordes principales del agua
     for change_data_key,change_data_item in aux_tiles_data.items():
         key_tile_tipe_neirbours=neirbours9([change_data_item[0],change_data_item[1]],aux_tiles_data)
         if key_tile_tipe_neirbours in TILE_TYPES_9NEIGHBOUR2:
@@ -193,8 +330,26 @@ def adapt_borders(aux_tiles_data):
         key_tile_tipe_neirbours=upNeirbour([change_data_item[0],change_data_item[1]],change_data)
         if key_tile_tipe_neirbours in TILE_TYPES_UPNEIGHBOUR:
             change_data[change_data_key]=[change_data_item[0],change_data_item[1],TILE_TYPES_UPNEIGHBOUR[key_tile_tipe_neirbours]]
+    
+    
+    # Copia interna
+    change_data_sand={}
+    
+    for aux_key,aux_value in aux_tiles_data.items():
+        change_data_sand[aux_key]=aux_value.copy()
+    
+    # Elimminado del agua
+    for aux_tiles_data_key in list(change_data_sand.keys()):
+        if change_data_sand[aux_tiles_data_key][2]==1:
+            change_data_sand[aux_tiles_data_key][2]=0
+    
+    #Cuarta pasada para los bordes principales de la arena
+    for change_data_key,change_data_item in change_data_sand.items():
+        key_tile_tipe_neirbours=neirbours9([change_data_item[0],change_data_item[1]],change_data_sand)
+        if key_tile_tipe_neirbours in TILE_TYPES_9NEIGHBOUR3:
+            change_data[change_data_key]=[change_data_item[0],change_data_item[1],TILE_TYPES_9NEIGHBOUR3[key_tile_tipe_neirbours]] 
      
-    #Cuarta pasada para realizar el arreglo de unas texturas    
+    #Quinta pasada para realizar el arreglo de unas texturas    
     for change_data_key,change_data_item in change_data.items():
         key_tile_tipe_neirbours=neirbours4([change_data_item[0],change_data_item[1]],change_data)
         if key_tile_tipe_neirbours in TILE_TYPES_4NEIGHBOUR_FIX:

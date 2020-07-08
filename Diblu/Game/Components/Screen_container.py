@@ -67,12 +67,12 @@ class Screen_container(pygame.Surface):
     
     def draw_layers(self):
         '''Pinta en pantalla todas las layers'''
-        
         for item_layer in sorted(list(self.layers.items())):
             for i in range(len(item_layer[1])):
                 item_layer[1][i].draw()
                 
-            item_layer[1].clear()
+            self.layers.pop(item_layer[0])
+#             item_layer[1].clear()
 
                 
     def mean_factor_position(self):

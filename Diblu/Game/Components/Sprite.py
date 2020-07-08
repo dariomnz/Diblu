@@ -20,6 +20,10 @@ class Sprite(pygame.sprite.Sprite,Image_item):
     def update(self):
         self.clear_collision()
         
+        
+        self.position_map[0]=int(self.float_position_map[0])
+        self.position_map[1]=int(self.float_position_map[1])
+        
         super().update()
     
     def clear_collision(self):
@@ -49,7 +53,8 @@ class Sprite(pygame.sprite.Sprite,Image_item):
                 if index_rect!=-1:
                     collision_type_sprite=list(sprite.cB_rect_map.keys())[index_rect]
                     self.collisions.append({'self_type':collision_type,'self_rect':rect,'sprite':sprite,'sprite_type':collision_type_sprite,'sprite_rect':list_rects[index_rect]})
-                    sprite.collisions.append({'self_type':collision_type_sprite,'self_rect':list_rects[index_rect],'sprite':self,'sprite_type':collision_type,'sprite_rect':rect})
+                    if not (collision_type=='item_body' and collision_type_sprite=='item_body'):
+                        sprite.collisions.append({'self_type':collision_type_sprite,'self_rect':list_rects[index_rect],'sprite':self,'sprite_type':collision_type,'sprite_rect':rect})
 #                     return True
 #         return False
     
@@ -82,12 +87,7 @@ class AnimateSprite(Sprite):
         
         image=self.images[0] 
         
-        
         super().__init__(position_map,image,layer)
-        # Escalamos todas las imagenes para que sean iguales
-#         for keys,value in self.images.items():
-#             image_size=[int(value.get_width()*self.scale_image),int(value.get_height()*self.scale_image)]
-#             self.images[keys]=pygame.transform.scale(value, (image_size[0], image_size[1]))
         
         
         
@@ -123,18 +123,14 @@ class AnimateSprite(Sprite):
         self.original_sprite_sheet_image=load_image(name+'.png')  
         
         self.scale_image=TILE_SIZE_GENERAL_PIXEL[0]/TILE_SIZE_GENERAL[0]
-#         self.original_sprite_sheet_image=pygame.transform.scale(self.original_sprite_sheet_image, (int(self.original_sprite_sheet_image.get_width()*self.scale_image), int(self.original_sprite_sheet_image.get_height()*self.scale_image)))
-            
+        
         self.sprite_sheet_image=self.original_sprite_sheet_image.copy()
         
         
         self.images={}
-#         self.original_images=self.images.copy()
         
         self.current_frame=self.tags[self.current_tag][0]
-        
-#         self.collisionBox=CollisionBox(name,'AnimateSprite')
-        
+               
         self.generate_sprite_sheet_images(1)
         
         self.setUp_collisionBox(name)
@@ -162,7 +158,7 @@ class AnimateSprite(Sprite):
             self.current_tag=self.animation_manager[self.current_tag][input_action]
                 
         #Generacion experimental de particulas
-            Particle_manager.getInstance().spawn(self.position_map.center,self.layer-0.1, 20,Particle_manager.SMOKE_PRESET) 
+#             Particle_manager.getInstance().spawn(self.position_map.center,self.layer-0.1, 20,Particle_manager.SMOKE_PRESET) 
      
     def image_update(self):
         '''Reescala las imagenes cuando es necesario'''

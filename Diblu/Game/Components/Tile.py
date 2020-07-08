@@ -98,56 +98,7 @@ class TileMap(Sprite):
         
 TILEMAP1=TileMap(TILEMAP1_NAME)
 
-class Chunk():
-    
-    def __init__(self,chunk_data):
-        '''chunk_data is a list, in [0]:the string of position, in [1] a dict with tiles'''
-        self.position=str2list2(chunk_data[0])
-        self.position_map=[self.position[0]*CHUNK_SIZE[0]*TILE_SIZE_GENERAL[0],self.position[1]*CHUNK_SIZE[1]*TILE_SIZE_GENERAL[1]]
-        self.tiles=chunk_data[1]
-        
-#         self.tile_group=list(self.tiles.values())
-    
-        
-#     def draw(self):
-#         '''Dibuja todas las tiles del chunk por capas'''
-#         #Ordenacion por capas
-#         self.tile_group.sort(key=lambda tile:tile.layer)
-#          
-#         for tile in self.tile_group:
-#             tile.draw()
-            
-    def camera_update(self):
-        '''Actualiza la posicion de todas sus tile'''
-        for tile in self.tiles.values():
-            tile.camera_update()
-    
-    def update(self):
-        '''Actualiza la posicion de todas sus tile'''
-        for tile in self.tiles.values():
-            tile.update()
-            
-    def image_update(self):
-        '''Actualiza la imagen de todas sus tile'''
-        for tile in self.tiles.values():
-            tile.image_update()    
-    
-    def check_collisions(self,sprite):
-        for tile in self.tiles.values():
-            if tile.check_collision(sprite):
-                return True
-            
-        return False
-    
-    def add_self_layer(self):
-        '''Se anaden a su layer'''
-        for tile in self.tiles.values():
-            S_c().add_to_self_layer(tile) 
-    
-    def del_layer(self):
-        '''Elimina de las layers el chunk'''
-        for tile in self.tiles.values():
-            tile.del_layer()    
+
         
 class Tile(Sprite):
     '''Porcion de un chunk para mostrar objetos'''
