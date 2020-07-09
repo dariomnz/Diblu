@@ -74,9 +74,9 @@ class Player(AnimateSprite):
                 self.float_position_map[1]=self.float_position_map[1]+((self.direction['front']-self.direction['back'])*self.vel)
         
         if self.current_tag.startswith('run'):      
-#             if self.current_frame_position>3:
-            self.float_position_map[0]=self.float_position_map[0]+((self.direction['right']-self.direction['left'])*self.vel)
-            self.float_position_map[1]=self.float_position_map[1]+((self.direction['front']-self.direction['back'])*self.vel)  
+            if self.current_frame_position>2:
+                self.float_position_map[0]=self.float_position_map[0]+((self.direction['right']-self.direction['left'])*self.vel)
+                self.float_position_map[1]=self.float_position_map[1]+((self.direction['front']-self.direction['back'])*self.vel)  
                 
         
         # Comprobaciones para las animaciones
