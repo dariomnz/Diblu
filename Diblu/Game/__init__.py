@@ -124,7 +124,9 @@ def main():
                 terrain_map().chunks[chunk_key].check_collisions(player)
                 terrain_map().chunks[chunk_key].check_items_collisions()
 #                     isWaterCollision=True
-
+            else:
+#                 if chunk_key=='0;0' or chunk_key=='0;1':
+                terrain_map().generate_chunk_map(chunk_key)
         
         
 #         for chunk in terrain_map.chunks.values():

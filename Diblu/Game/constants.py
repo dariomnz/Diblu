@@ -25,7 +25,7 @@ DEFAULT_SCALE=3
 # Escala de los items
 ITEMS_SCALE=2
 # Tiles
-CHUNK_SIZE=(8,8)
+CHUNK_SIZE=(16,16)
 # Respecto al tipo de tile, su posicion en el tilemap 0,1 y su tamaño 2,3
 TILE_TYPES = {
     #vacio
