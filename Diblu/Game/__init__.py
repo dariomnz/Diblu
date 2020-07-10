@@ -3,6 +3,7 @@ from pygame.locals import *
 from Game.constants import TPS
 import profile
 import pstats
+from utils import str2list2
 
 def main():
     pygame.init()
@@ -21,14 +22,21 @@ def main():
     from Game.Components.Text import Text
     control_text=Text([10,0])
 
-    from Game.Components.Entities import Player
-    player=Player([0,0],"slime")
     
     
     from Game.Components.Tile import TILEMAP1
     from Game.Components import Map
     Map.createInstance(load=False)
     from Game.Components.Map import getInstance as terrain_map
+    
+    
+    from Game.Components.Entities import Player
+    if hasattr(terrain_map(), 'player_saved_pos'):
+        player=Player(terrain_map().player_saved_pos,"slime")
+    else:
+        player=Player([0,0],"slime")
+        
+    camera().move(player.position_map.center)
     
     from Game import Particle_manager as P_m 
     from Game.Particle_manager import SMOKE_PRESET
@@ -118,15 +126,17 @@ def main():
 #         isWaterCollision=False
         for chunk_key in camera().list_of_str_in_screen_chunks():
             if chunk_key in terrain_map().chunks:
-                terrain_map().chunks[chunk_key].update()
-                terrain_map().chunks[chunk_key].camera_update()
-                terrain_map().chunks[chunk_key].add_self_layer()
-                terrain_map().chunks[chunk_key].check_collisions(player)
-                terrain_map().chunks[chunk_key].check_items_collisions()
+                terrain_map().chunks[chunk_key].update([player])
+#                 terrain_map().chunks[chunk_key].camera_update()
+#                 terrain_map().chunks[chunk_key].add_self_layer()
+#                 terrain_map().chunks[chunk_key].check_collisions(player)
+#                 terrain_map().chunks[chunk_key].check_items_collisions()
 #                     isWaterCollision=True
             else:
-#                 if chunk_key=='0;0' or chunk_key=='0;1':
-                terrain_map().generate_chunk_map(chunk_key)
+                list_chunk_key=str2list2(chunk_key)
+                if list_chunk_key[0]>=-terrain_map().chunk_limit and list_chunk_key[0]<=terrain_map().chunk_limit:
+                    if list_chunk_key[1]>=-terrain_map().chunk_limit and list_chunk_key[1]<=terrain_map().chunk_limit:
+                        terrain_map().generate_chunk_map(chunk_key)
         
         
 #         for chunk in terrain_map.chunks.values():
@@ -179,7 +189,7 @@ def main():
         pygame.display.update([0,0,S_c().get_screen_size()[0],S_c().get_screen_size()[1]])
 #         run=False
         
-    terrain_map().save()
+    terrain_map().save([player.position_map[0],player.position_map[1]])
     pygame.quit()
     sys.exit()
     

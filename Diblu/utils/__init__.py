@@ -3,6 +3,7 @@ from pygame.locals import RLEACCEL
 from Game.constants import TILE_SIZE_GENERAL, TILE_SIZE_GENERAL_PIXEL,\
     DEFAULT_SCALE
 import logging
+import numpy
 
 def load_image(name, scale=DEFAULT_SCALE, colorkey = None):
     """Carga la imagen de nombre 'name' desde
@@ -122,9 +123,15 @@ def getRect(pointList):
             maxY=point[1]
             
     return pygame.rect.Rect(minPoint,[maxX-minPoint[0],maxY-minPoint[1]])
-    
+#     
+# def dist(pos1,pos2):
+#     pos1=numpy.array(pos1)
+#     pos2=numpy.array(pos2)
+#     
+#     return numpy.linalg.norm(pos1 - pos2)
 #Pruebas
-
+# 
+# dist([1,4], [3,5])
 # print(getRect([(10,4),(10,10),(15,4),(15,10)]))
 # <rect(10, 4, 5, 6)>
 # d={1:'123123',0:'123',5:'a',3:'d'}

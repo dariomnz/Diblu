@@ -1,7 +1,7 @@
 import pygame
 from Game.Components.Image_item  import Image_item
 from utils import JSONParser, load_image, getRect
-from Game.constants import TPS, TILE_SIZE_GENERAL_PIXEL, TILE_SIZE_GENERAL
+from Game.constants import TPS,DEFAULT_SCALE
 from Game.Components.Screen_container import getInstance as S_c
 from Game.Components.Camera import getInstance as camera
 from Game import Particle_manager
@@ -86,8 +86,11 @@ class AnimateSprite(Sprite):
         self.setup(name)
         
         image=self.images[0] 
-        
+        last_scale=self.scale_image
+        self.scale_image=1
         super().__init__(position_map,image,layer)
+        
+        self.scale_image=last_scale
         
         
         
@@ -122,7 +125,7 @@ class AnimateSprite(Sprite):
         # Carga de el sprite_sheet    
         self.original_sprite_sheet_image=load_image(name+'.png')  
         
-        self.scale_image=TILE_SIZE_GENERAL_PIXEL[0]/TILE_SIZE_GENERAL[0]
+        self.scale_image=DEFAULT_SCALE
         
         self.sprite_sheet_image=self.original_sprite_sheet_image.copy()
         

@@ -19,7 +19,7 @@ class Camera():
         self.position_screen=pos2center([0,0],S_c().get_screen_size())
         self.zoom=1
         
-        self.posible_zoom={0:0.125,1:0.25,2:0.5,3:0.75,4:1,5:2,6:3}
+        self.posible_zoom={-1:0.0625,0:0.125,1:0.25,2:0.5,3:0.75,4:1,5:2,6:3}
         self.actual_zoom=4
         
 
@@ -32,7 +32,12 @@ class Camera():
         
         global _instance
         _instance=self
-        
+     
+    def move(self,position):
+        '''Mueve la camara a la posicion especificada'''
+        self.float_position_map[0]=position[0]
+        self.float_position_map[1]=position[1]
+           
     def update_position(self,position_to_folow):
         '''Actualiza la posicion'''
 #         Partido de n para crear el movimiento suave

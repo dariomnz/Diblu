@@ -1,9 +1,6 @@
 # from utils import center2pos
 from Game.Components.Sprite import AnimateSprite
 import pygame
-from Game.Components.Item import Item
-# from Game.Components.Screen_container import getInstance as S_c
-# import pygame
 
 
 class Player(AnimateSprite):
@@ -16,10 +13,13 @@ class Player(AnimateSprite):
         self.direction={'back':0,'front':0,'left':0,'right':0}
         self.original_vel=1
         self.original_jump_vel=2
-        self.sprint_vel=20
+        self.god_vel=20
         self.vel=self.original_vel
         
         self.original_layer=self.layer
+        
+        from Game.Components import Camera
+        Camera.createInstance()
         
         
         #Encargado de identificar los controles de pulsar una tecla
@@ -54,15 +54,10 @@ class Player(AnimateSprite):
                 
             if collision['self_type'].startswith('jump_body') and collision['sprite_type'].startswith('jump_block'):
                     self.repel(collision['self_rect'],collision['sprite_rect'])
-#                 if isinstance(collision['sprite'],Item):
-#                     print('asdff')
-#                     #arreglar
-#                     collision['sprite'].repel(collision['sprite_rect'],collision['self_rect'])
                 
             if collision['sprite_type'].startswith('tall_tile'):
-#                 # Transparencia de arboles al pasar por ellos
+#                 # Transparencia de tiles altas al pasar por detras de ellos
                 self.add_layer_below(collision['sprite'])
-                
                 collision['sprite'].do_transparent(0.5)
         
         
@@ -74,10 +69,14 @@ class Player(AnimateSprite):
                 self.float_position_map[1]=self.float_position_map[1]+((self.direction['front']-self.direction['back'])*self.vel)
         
         if self.current_tag.startswith('run'):      
-            if self.current_frame_position>2:
+            if self.current_frame_position>2 or self.current_frame_position<1:
                 self.float_position_map[0]=self.float_position_map[0]+((self.direction['right']-self.direction['left'])*self.vel)
                 self.float_position_map[1]=self.float_position_map[1]+((self.direction['front']-self.direction['back'])*self.vel)  
-                
+        if self.vel==self.god_vel:
+            self.float_position_map[0]=self.float_position_map[0]+((self.direction['right']-self.direction['left'])*self.vel)
+            self.float_position_map[1]=self.float_position_map[1]+((self.direction['front']-self.direction['back'])*self.vel)  
+        
+                   
         
         # Comprobaciones para las animaciones
         if self.vel==1:
@@ -188,7 +187,7 @@ class Player(AnimateSprite):
     def set_jump(self):
         self.vel=self.original_jump_vel
     def set_sprint(self):
-        self.vel=self.sprint_vel
+        self.vel=self.god_vel
     
     #Release 
     def del_move_up(self):

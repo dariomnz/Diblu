@@ -1,5 +1,6 @@
 import pygame
-from Game.constants import TILE_SIZE_GENERAL_PIXEL, TILE_SIZE_GENERAL
+from Game.constants import TILE_SIZE_GENERAL,\
+    DEFAULT_SCALE, TILE_SIZE_GENERAL
 from utils import load_image
 from Game.Components.Screen_container import getInstance as S_c
 from Game.Components.Camera import getInstance as camera
@@ -9,7 +10,7 @@ class Image_item():
     '''Super clase de objetos con imagen'''
     def __init__(self,position_map,image,layer=None):
         if not hasattr(self, 'scale_image'):
-            self.scale_image=TILE_SIZE_GENERAL_PIXEL[0]/TILE_SIZE_GENERAL[0]
+            self.scale_image=DEFAULT_SCALE
         #Si es una imagen ya no la carga
         if isinstance(image, str):
             image+='.png'
@@ -29,7 +30,7 @@ class Image_item():
         if layer==None:
             self.layer=self.position_map.bottom
         else:
-            self.layer=self.position_map.bottom-100
+            self.layer=self.position_map.bottom-1000
         
         S_c().add_to_self_layer(self)
         
@@ -44,7 +45,7 @@ class Image_item():
 #             aux_pos=[0,0]
 #             aux_pos[0]=((aux_rect[0]-camera().position_map[0])*camera().zoom*S_c().w_factor_image)+camera().position_screen[0]
 #             aux_pos[1]=((aux_rect[1]-camera().position_map[1])*camera().zoom*S_c().h_factor_image)+camera().position_screen[1]
-#              
+#               
 #             aux_surf=pygame.Surface(aux_rect.size,pygame.SRCALPHA)
 #             aux_surf.fill((0,0,0,100))
 #             S_c().screen.blit(aux_surf,aux_pos)
