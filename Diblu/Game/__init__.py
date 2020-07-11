@@ -38,10 +38,9 @@ def main():
         
     camera().move(player.position_map.center)
     
-    from Game import Particle_manager as P_m 
-    from Game.Particle_manager import SMOKE_PRESET
-    P_m.createInstance()
-    from Game.Particle_manager import getInstance as Particle_manager
+    from Game import Particle_manager
+    Particle_manager.createInstance()
+    from Game.Particle_manager import getInstance as P_m
     
     
     from Game.Components.Item import ITEMSSHEET1
@@ -74,7 +73,7 @@ def main():
                 
                 #Prueba de creacion de particulas
                 if pygame.key.name(e.key)=='p':
-                    Particle_manager().spawn(player.position_map.center,player.layer-0.1, 20,SMOKE_PRESET)
+                    P_m().spawn(player.position_map.center,player.layer-0.1, 20,P_m().SMOKE_PRESET)
                 #Prueba para crear items
                 if pygame.key.name(e.key)=='o':
 # #                     for i in range(5):
@@ -152,9 +151,9 @@ def main():
     
 #         print(player.image.get_alpha())
         
-        Particle_manager().camera_update()
+        P_m().camera_update()
         # Introducion en las layer para draw
-        Particle_manager().add_to_self_layer()
+        P_m().add_to_self_layer()
         
         
         

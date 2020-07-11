@@ -1,10 +1,10 @@
 import random,noise,time
 from Game.Components.Tile import Tile, TILEMAP1
 from utils import JSONParser,JSONsave,str2list3, list2str3, list2str2, str2list2,\
-    list2str4, list2str9, str2list4
+    list2str4
 from Game.constants import CHUNK_SIZE, TILE_TYPES,\
     TILE_SIZE, TILE_SIZE_GENERAL, TILE_SIZE_GENERAL_PIXEL,\
-    AUTO_TILE_TYPE, AUTO_TILE_BORDERS
+    AUTO_TILE_TYPE, CAPAS
 from Game.Components.Screen_container import getInstance as S_c
 import logging
 # import sys
@@ -310,9 +310,15 @@ class Map():
                 elif noise_at_xy< -0.1:
                     # Arena
                     tile_type=3
-                else:
+                elif noise_at_xy< 0.3:
                     # Cesped
                     tile_type=0
+                elif noise_at_xy< 0.85:
+                    # Cesped elevado
+                    tile_type=4
+                else:
+                    # Acua con cesped elevado
+                    tile_type=5
     
                       
                 aux_tiles_data[list2str2([x,y])]=[x,y,tile_type]
@@ -362,7 +368,7 @@ class Map():
                                 tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
                                 chunks[chunk_key][tile_position_in_chunk_str]=Tile(tile_position,numero_random,tilemap)
                     #Detalles del cesped
-                    elif tile[2]==0:
+                    elif tile[2]==0 or tile[2]==4:
                         numero_random=random.randint(200,280)
                         if numero_random in TILE_TYPES:
                             if TILE_TYPES[numero_random][2]!=TILE_SIZE_GENERAL[0] or TILE_TYPES[numero_random][3]!=TILE_SIZE_GENERAL[1]:
@@ -387,6 +393,19 @@ class Map():
                                 tile_position_in_chunk[2]=1
                                 tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
                                 chunks[chunk_key][tile_position_in_chunk_str]=Tile(tile_position,numero_random,tilemap)
+                    #Detalles del agua alta
+                    elif tile[2]==5:
+                        numero_random=random.randint(500,525)
+                        if numero_random in TILE_TYPES:
+                            if TILE_TYPES[numero_random][2]!=TILE_SIZE_GENERAL[0] or TILE_TYPES[numero_random][3]!=TILE_SIZE_GENERAL[1]:
+                                
+                                self.generate_chunk_big_tile(tile[:2],chunk_key,tile[2], numero_random, chunks, aux_tiles_data)
+                                
+                            else:
+        #                         layer
+                                tile_position_in_chunk[2]=1
+                                tile_position_in_chunk_str=list2str3(tile_position_in_chunk)
+                                chunks[chunk_key][tile_position_in_chunk_str]=Tile(tile_position,numero_random,tilemap)
                                 
                     
     #     Tercero creacion del chunk
@@ -400,11 +419,14 @@ class Map():
 
     def auto_tile(self,aux_tiles_data):
         '''Formato aux_tiles_data key='x;y', valor=[x,y,type]'''
-        capas=[0,3,1,2]
+        capas=CAPAS
         capas_dict={}
         
         # Relleno de capas segun el tipo
-        for capa in capas:
+                    
+        for i in range(len(capas)):
+            capa=capas[i]
+            
             aux_capa={}
             for aux_key,aux_value in aux_tiles_data.items():
                 aux_capa[aux_key]=aux_value.copy()
@@ -414,29 +436,22 @@ class Map():
                 if capa==capas[0]:
                     aux_value[2]=capa
                 else:
-                    if capa==capas[1]:
-                        if aux_value[2] in capas[1:]:
-                            aux_value[2]=capas[1]
-                        else:
-                            capas_dict[capa].pop(aux_key)
-                    if capa==capas[2]:
-                        if aux_value[2] in capas[2:]:
-                            aux_value[2]=capas[2]
-                        else:
-                            capas_dict[capa].pop(aux_key)
-                    if capa==capas[3]:
-                        if aux_value[2] in capas[3:]:
-                            aux_value[2]=capas[3]
-                        else:
-                            capas_dict[capa].pop(aux_key)
-                
+                    if aux_value[2] in capas[i:]:
+                        aux_value[2]=capa
+                    else:
+                        capas_dict[capa].pop(aux_key)
                     
         
         # Rellenado de la capa default
         for aux_key,aux_value in list(aux_tiles_data.items()):
             aux_tiles_data[aux_key][2]=capas[0]
     
-    
+        # Calculo de AUTO-TILE-BORDERS si no existe ya
+        if not hasattr(self, 'AUTO_TILE_BORDERS'):
+            self.AUTO_TILE_BORDERS={}
+            for key_value,value_value in AUTO_TILE_TYPE.items():
+                self.AUTO_TILE_BORDERS[list2str4(value_value)]=key_value
+        
         # Insertado de una a una cada capa
         for capa in capas:  
             for aux_key,aux_value in capas_dict[capa].items():
@@ -454,7 +469,6 @@ class Map():
         neirbours=neirbours9(tile_pos, aux_tiles_data)
         list_pos_neirbours=list(neirbours.keys())
              
-#         print(neirbours)
         
         for indice in range(len(list_pos_neirbours)):
             
@@ -491,9 +505,9 @@ class Map():
                     aux_borders[0]=aux_auto_tile_type[3]
                 # Con el cambio calculo el nuevo tipo
                 key_auto_tile_borders=list2str4(aux_borders)
-                if key_auto_tile_borders in AUTO_TILE_BORDERS:
+                if key_auto_tile_borders in self.AUTO_TILE_BORDERS:
 #                 if not -1 in aux_borders:
-                    aux_type_neirbour=AUTO_TILE_BORDERS[key_auto_tile_borders]
+                    aux_type_neirbour=self.AUTO_TILE_BORDERS[key_auto_tile_borders]
                     # Le cambio el tipo
                     if key_pos in aux_tiles_data:
                         aux_tiles_data[key_pos][2]=aux_type_neirbour

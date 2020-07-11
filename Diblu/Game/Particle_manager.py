@@ -2,8 +2,8 @@ import random
 import pygame
 from Game.Components import Screen_container as S_c
 from Game.Components.Camera import getInstance as camera
+import types
 
-SMOKE_PRESET=[[lambda :random.randint(0,20)/10-1,lambda :random.randint(0,20)/10-1],lambda :random.randint(3,6),(80,80,80)]
 
 # [(230,230,230),(214,214,214),(180,180,180),(150,150,150),(130,130,130)]
 
@@ -17,6 +17,12 @@ class Particle_manager():
     
     def __init__(self):
         self.particle_gloups=[]
+        
+        self.SMOKE_PRESET={
+            'velocity':[lambda :random.randint(0,20)/10-1,lambda :random.randint(0,20)/10-1],
+            'timer':lambda :random.randint(3,6),
+            'color':(80,80,80)}
+
         
         global _instance
         _instance=self
@@ -75,11 +81,16 @@ class Particle():
         self.position_map=position_map
         self.position_camera=self.position_map.copy()
         
-        self.velocity=[preset[0][0](),preset[0][1]()]
-       
-        
-        self.timer=preset[1]()
-        self.color=preset[2]      
+        for name_attr,value_attr in preset.items():
+            if isinstance(value_attr, types.LambdaType):
+                value_attr=value_attr()
+                
+            setattr(self, name_attr, value_attr)
+#         self.velocity=[preset[0][0](),preset[0][1]()]
+#        
+#         
+#         self.timer=preset[1]()
+#         self.color=preset[2]      
             
     def camera_update(self):
         self.position_camera[0]=((self.position_map[0]-camera().position_map[0])*camera().zoom*S_c.getInstance().w_factor_position)+camera().position_screen[0]

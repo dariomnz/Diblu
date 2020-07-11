@@ -1,5 +1,6 @@
 # from utils import center2pos
 from Game.Components.Sprite import AnimateSprite
+from Game.Particle_manager import getInstance as P_m
 import pygame
 
 
@@ -67,9 +68,14 @@ class Player(AnimateSprite):
                      
                 self.float_position_map[0]=self.float_position_map[0]+((self.direction['right']-self.direction['left'])*self.vel)
                 self.float_position_map[1]=self.float_position_map[1]+((self.direction['front']-self.direction['back'])*self.vel)
-        
+            #Genera partigulas al saltar
+            if self.current_frame_position==2:
+                P_m().spawn(self.cB_rect_map['body'].center,self.layer-0.1,5 ,P_m().SMOKE_PRESET) 
+     
+            
+            
         if self.current_tag.startswith('run'):      
-            if self.current_frame_position>2 or self.current_frame_position<1:
+            if self.current_frame_position>2 or self.current_frame_position<2:
                 self.float_position_map[0]=self.float_position_map[0]+((self.direction['right']-self.direction['left'])*self.vel)
                 self.float_position_map[1]=self.float_position_map[1]+((self.direction['front']-self.direction['back'])*self.vel)  
         if self.vel==self.god_vel:
@@ -124,31 +130,6 @@ class Player(AnimateSprite):
     def repel_block(self,self_cB_map,sprite_cB_map):
         
         repel_vel=[0,0]
-#         x_div=((self_cB_map.center[0]-sprite_cB_map.center[0])/10)
-#         if x_div==0:
-#             repel_vel[0]=0
-#         else:
-#             repel_vel[0]=self.vel
-#          
-#         y_div=((self_cB_map.center[1]-sprite_cB_map.center[1])/10)
-#         if y_div==0:
-#             repel_vel[1]=0
-#         else:
-#             repel_vel[1]=self.vel  
-            
-#         if self_cB_map.centerx<=sprite_cB_map.centerx:
-#             if self_cB_map.centery<=sprite_cB_map.bottom-(self_cB_map.height//2) and self_cB_map.centery>=sprite_cB_map.top+(self_cB_map.height//2):
-#                 repel_vel[0]=-self.vel
-#         else:
-#             if self_cB_map.centery<=sprite_cB_map.bottom-(self_cB_map.height//2) and self_cB_map.centery>=sprite_cB_map.top+(self_cB_map.height//2):
-#                 repel_vel[0]=self.vel
-# 
-#         if self_cB_map.centery<=sprite_cB_map.centery:
-#             if self_cB_map.centerx<=sprite_cB_map.left+(self_cB_map.width//2) and self_cB_map.centery>=sprite_cB_map.right-(self_cB_map.width//2):
-#                 repel_vel[1]=self.vel
-#         else:
-#             if self_cB_map.centerx<=sprite_cB_map.left+(self_cB_map.width//2) and self_cB_map.centery>=sprite_cB_map.right-(self_cB_map.width//2):
-#                 repel_vel[1]=-self.vel
 
         aux_size=[sprite_cB_map.height-self.vel*2,sprite_cB_map.width-self.vel*2]
         left_sprite_cB_map=pygame.rect.Rect([sprite_cB_map.x-sprite_cB_map.width,sprite_cB_map.y],aux_size)
