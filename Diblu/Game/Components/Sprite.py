@@ -4,7 +4,6 @@ from utils import JSONParser, load_image, getRect
 from Game.constants import TPS,DEFAULT_SCALE
 from Game.Components.Screen_container import getInstance as S_c
 from Game.Components.Camera import getInstance as camera
-from Game import Particle_manager
 
 
 class Sprite(pygame.sprite.Sprite,Image_item):

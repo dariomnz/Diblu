@@ -69,7 +69,7 @@ class Player(AnimateSprite):
                 self.float_position_map[0]=self.float_position_map[0]+((self.direction['right']-self.direction['left'])*self.vel)
                 self.float_position_map[1]=self.float_position_map[1]+((self.direction['front']-self.direction['back'])*self.vel)
             #Genera partigulas al saltar
-            if self.current_frame_position==2:
+            if self.current_frame_position==3:
                 P_m().spawn(self.cB_rect_map['body'].center,self.layer-0.1,5 ,P_m().SMOKE_PRESET) 
      
             

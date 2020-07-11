@@ -20,11 +20,11 @@ class Particle_manager():
         
         self.SMOKE_PRESET={
             'type':'smoke',
-            'velocity':[lambda :random.randint(0,20)/10-1,lambda :random.randint(5,10)/10-1],
+            'velocity':[lambda :random.randint(10,30)/10-2,lambda :random.randint(5,10)/10-1],
             'add_pos':[lambda :random.randint(-10,10),lambda :random.randint(-10,10)],
-            'size':lambda :random.randint(5,10),
-            'timer':lambda :random.randint(3,6),
-            'color':(80,80,80)}
+            'size':lambda :random.randint(4,7),
+            'timer':lambda :random.randint(4,7),
+            'color':lambda :random.randint(80,130)}
 
         
         global _instance
@@ -104,7 +104,8 @@ class Particle():
         
         self.position_map=[position_map[0]+self.add_pos[0],position_map[1]+self.add_pos[1]]
         self.position_camera=self.position_map.copy()
-            
+        if isinstance(self.color, int):
+            self.color=(self.color,self.color,self.color)    
             
     def camera_update(self):
         self.position_camera[0]=((self.position_map[0]-camera().position_map[0])*camera().zoom*S_c.getInstance().w_factor_position)+camera().position_screen[0]
@@ -117,14 +118,14 @@ class Particle():
         
         self.timer-=0.1
         if self.size-0.1>0:
-            self.size-=0.1
+            self.size-=0.15
         self.update_color_bright()
         
         pygame.draw.circle(S_c.getInstance().screen, self.color, [int(self.position_camera[0]),int(self.position_camera[1])] , int(self.size*2))
                 
     
     def update_color_bright(self):
-        update_factor=3
+        update_factor=2
         r=self.color[2]+update_factor
         g=self.color[1]+update_factor
         b=self.color[0]+update_factor
