@@ -19,7 +19,10 @@ class Particle_manager():
         self.particle_gloups=[]
         
         self.SMOKE_PRESET={
-            'velocity':[lambda :random.randint(0,20)/10-1,lambda :random.randint(0,20)/10-1],
+            'type':'smoke',
+            'velocity':[lambda :random.randint(0,20)/10-1,lambda :random.randint(5,10)/10-1],
+            'add_pos':[lambda :random.randint(-10,10),lambda :random.randint(-10,10)],
+            'size':lambda :random.randint(5,10),
             'timer':lambda :random.randint(3,6),
             'color':(80,80,80)}
 
@@ -78,19 +81,30 @@ class Particle():
     
     def __init__(self,position_map,preset):
         '''Formato de preset= [velocity,timer,color]'''
-        self.position_map=position_map
-        self.position_camera=self.position_map.copy()
         
         for name_attr,value_attr in preset.items():
-            if isinstance(value_attr, types.LambdaType):
-                value_attr=value_attr()
+            if isinstance(value_attr, list):
+                aux_value=[]
+                for value_data in value_attr:
+                    if isinstance(value_data, types.LambdaType):
+                        aux_value_data=value_data()
+                    else:
+                        aux_value_data=value_data
+                    aux_value.append(aux_value_data)
+                    
+                setattr(self, name_attr, aux_value)
+            
+            else:   
+                if isinstance(value_attr, types.LambdaType):
+                    value_attr=value_attr()
+                    
+                setattr(self, name_attr, value_attr)
                 
-            setattr(self, name_attr, value_attr)
-#         self.velocity=[preset[0][0](),preset[0][1]()]
-#        
-#         
-#         self.timer=preset[1]()
-#         self.color=preset[2]      
+                
+        
+        self.position_map=[position_map[0]+self.add_pos[0],position_map[1]+self.add_pos[1]]
+        self.position_camera=self.position_map.copy()
+            
             
     def camera_update(self):
         self.position_camera[0]=((self.position_map[0]-camera().position_map[0])*camera().zoom*S_c.getInstance().w_factor_position)+camera().position_screen[0]
@@ -100,11 +114,13 @@ class Particle():
         
         self.position_map[0] += self.velocity[0]
         self.position_map[1] += self.velocity[1]
-#         print(self.position_map)
+        
         self.timer-=0.1
+        if self.size-0.1>0:
+            self.size-=0.1
         self.update_color_bright()
-#             particle.velocity[1] +=0.03
-        pygame.draw.circle(S_c.getInstance().screen, self.color, [int(self.position_camera[0]),int(self.position_camera[1])] , int(self.timer*2))
+        
+        pygame.draw.circle(S_c.getInstance().screen, self.color, [int(self.position_camera[0]),int(self.position_camera[1])] , int(self.size*2))
                 
     
     def update_color_bright(self):
