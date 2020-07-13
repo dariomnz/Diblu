@@ -1,6 +1,5 @@
 import pygame
-from Game.constants import TILE_SIZE_GENERAL,\
-    DEFAULT_SCALE, TILE_SIZE_GENERAL
+from Game.constants import DEFAULT_SCALE
 from utils import load_image
 from Game.Components.Screen_container import getInstance as S_c
 from Game.Components.Camera import getInstance as camera
@@ -21,8 +20,8 @@ class Image_item():
         self.image=self.original_image.copy()
         
         self.position_map=pygame.rect.Rect(position_map,[self.original_image.get_width(),self.original_image.get_height()])
-        self.position_map[0]*=self.scale_image
-        self.position_map[1]*=self.scale_image
+#         self.position_map[0]*=self.scale_image
+#         self.position_map[1]*=self.scale_image
 #         self.position_map[0]-=self.position_map.centerx
 #         self.position_map[1]-=self.position_map.centery
         self.position_camera=self.position_map.copy()
@@ -32,7 +31,7 @@ class Image_item():
         else:
             self.layer=self.position_map.bottom-1000
         
-        S_c().add_to_self_layer(self)
+#         S_c().add_to_self_layer(self)
         
     def draw(self):
         '''Pinta la imagen en su posicion respecto la camara'''

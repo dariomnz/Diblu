@@ -100,7 +100,7 @@ def main():
                         player.image_update()
                         TILEMAP1.image_update()
                         ITEMSSHEET1.image_update()
-                        for chunk in terrain_map().chunks.values():
+                        for chunk in list(terrain_map().chunks.values()):
                             chunk.image_update()
            
     #         For the resizable
@@ -110,7 +110,7 @@ def main():
                 player.image_update()
                 TILEMAP1.image_update()
                 ITEMSSHEET1.image_update()
-                for chunk in terrain_map().chunks.values():
+                for chunk in list(terrain_map().chunks.values()):
                     chunk.image_update()
     
     
@@ -132,10 +132,9 @@ def main():
 #                 terrain_map().chunks[chunk_key].check_items_collisions()
 #                     isWaterCollision=True
             else:
-                list_chunk_key=str2list2(chunk_key)
-                if list_chunk_key[0]>=-terrain_map().chunk_limit and list_chunk_key[0]<=terrain_map().chunk_limit:
-                    if list_chunk_key[1]>=-terrain_map().chunk_limit and list_chunk_key[1]<=terrain_map().chunk_limit:
-                        terrain_map().generate_chunk_map(chunk_key)
+                terrain_map().generate_chunk(chunk_key)
+                
+                
         
         
 #         for chunk in terrain_map.chunks.values():

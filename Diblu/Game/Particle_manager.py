@@ -21,10 +21,9 @@ class Particle_manager():
         self.SMOKE_PRESET={
             'type':'smoke',
             'velocity':[lambda :random.randint(10,30)/10-2,lambda :random.randint(5,10)/10-1],
-            'add_pos':[lambda :random.randint(-10,10),lambda :random.randint(-10,10)],
             'size':lambda :random.randint(4,7),
             'timer':lambda :random.randint(4,7),
-            'color':lambda :random.randint(80,130)}
+            'color':lambda :random.randint(100,150)}
 
         
         global _instance
@@ -100,9 +99,10 @@ class Particle():
                     
                 setattr(self, name_attr, value_attr)
                 
-                
+         
+        # Para randomizar la posicion original dependiendo de la direccion
+        self.position_map=[position_map[0]+self.velocity[0]*10,position_map[1]+self.velocity[1]*10]   
         
-        self.position_map=[position_map[0]+self.add_pos[0],position_map[1]+self.add_pos[1]]
         self.position_camera=self.position_map.copy()
         if isinstance(self.color, int):
             self.color=(self.color,self.color,self.color)    

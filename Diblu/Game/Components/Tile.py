@@ -1,8 +1,8 @@
 import pygame
-from utils import  str2list2, load_image, JSONParser, getRect
+from utils import  load_image, JSONParser, getRect
 from Game.Components.Sprite import Sprite
-from Game.constants import TILE_SIZE_GENERAL, CHUNK_SIZE, TILE_TYPES,\
-    TILEMAP1_NAME, TILE_SIZE_GENERAL_PIXEL
+from Game.constants import TILE_SIZE_GENERAL, TILE_TYPES,\
+    TILEMAP1_NAME, TILE_SIZE_GENERAL_PIXEL, DEFAULT_SCALE
 from Game.Components.Screen_container import getInstance as S_c
 from Game.Components.Camera import getInstance as camera
 # from Game.Components.Image_item import CollisionBox
@@ -115,7 +115,12 @@ class Tile(Sprite):
 #         self.image_transparent=self.tilemap.image_tiles_transparent[self.tile_type]
         #Posicion calculada con su posicion dentro de la grid de chunks por su tamaño
         position_map=[position_chunk[0]*TILE_SIZE_GENERAL[0],position_chunk[1]*TILE_SIZE_GENERAL[1]]
+        
+        position_map[0]*=DEFAULT_SCALE
+        position_map[1]*=DEFAULT_SCALE
+        
         super().__init__(position_map, image,layer)
+        self.position_camera=self.position_map.copy()
         
         self.setUp_collisionBox()
      
@@ -150,6 +155,29 @@ class Tile(Sprite):
     def do_transparent(self,sec_delay):
         self.image=self.tilemap.image_tiles_transparent[self.tile_type]
         self.delay_transparent=sec_delay*60
+        
+        
+# class Group_chunk_tile(Sprite):
+#      
+#     def __init__(self,position_map):
+#          
+#         image=pygame.Surface([TILE_SIZE_GENERAL_PIXEL[0]*CHUNK_SIZE[0],TILE_SIZE_GENERAL_PIXEL[1]*CHUNK_SIZE[1]])
+#         super().__init__(position_map, image)
+#          
+#     def add_tile(self,tile):
+#         if tile.layer<self.layer:
+#             self.layer=tile.layer
+# #         print(self.position_map,self.layer)
+#         aux_position_tile=[tile.position_chunk[0]*tile.position_map.width,tile.position_chunk[1]*tile.position_map.height]
+# 
+#         self.image.blit(tile.image,aux_position_tile)
+        
+    
+        
+        
+    
+        
+    
         
         
         

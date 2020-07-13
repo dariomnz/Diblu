@@ -1,8 +1,7 @@
 import pygame
 from utils import  load_image, JSONParser, getRect
 from Game.Components.Sprite import Sprite
-from Game.constants import TILE_SIZE_GENERAL,\
-    TILE_SIZE_GENERAL_PIXEL, ITEMSSHEET1_NAME, ITEMS_TYPE, ITEMS_SCALE
+from Game.constants import ITEMSSHEET1_NAME, ITEMS_TYPE, ITEMS_SCALE
 from Game.Components.Screen_container import getInstance as S_c
 from Game.Components.Camera import getInstance as camera
 from Game.Components.Map import getInstance as terrain_map
@@ -103,10 +102,10 @@ class Item(Sprite):
         self.chunk.items.append(self)
         
         self.amount=amount
-        self.text_amount=Text((0,0),size=12)
+        self.amount_limit=999
+        self.text_amount=Text((0,0),size=15)
         
-        self.text_amount.update_text(self.amount)
-        self.text_amount.draw_in(self.image)
+        self.image_update()
         
         self.setUp_collisionBox()
         
@@ -124,10 +123,11 @@ class Item(Sprite):
             # Para empujar otros items
             if collision['sprite_type'].startswith('item_body'):
                 if self.item_type==collision['sprite'].item_type:
-                    collision['sprite'].delete_self()
-                    self.add_amount(collision['sprite'].amount)
-                else:
-                    self.repel(collision['self_rect'],collision['sprite_rect'])
+                    if (self.amount+collision['sprite'].amount)<=self.amount_limit:
+                        collision['sprite'].delete_self()
+                        self.add_amount(collision['sprite'].amount)
+                
+                self.repel(collision['self_rect'],collision['sprite_rect'])
                 
             # Para ponerse detras de las tiles altas
             if collision['sprite_type'].startswith('tall_tile'):

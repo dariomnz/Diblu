@@ -1,7 +1,7 @@
-import random,noise,time
-from Game.Components.Tile import Tile, TILEMAP1
-from utils import JSONParser,JSONsave,str2list3, list2str3, list2str2, str2list2,\
-    list2str4
+import random,noise,time,threading
+from Game.Components.Tile import Tile, TILEMAP1#, Group_chunk_tile
+from utils import str2list3, list2str3, list2str2, str2list2,\
+    list2str4, pickle_JSONParser, pickle_JSONsave
 from Game.constants import CHUNK_SIZE, TILE_TYPES,\
     TILE_SIZE, TILE_SIZE_GENERAL, TILE_SIZE_GENERAL_PIXEL,\
     AUTO_TILE_TYPE, CAPAS
@@ -18,6 +18,12 @@ class Chunk():
         self.tiles=chunk_data[1]
         
         self.items=[]
+        
+#         self.group_tile=Group_chunk_tile(self.position_map)
+#         for tile in self.tiles.values():
+#             self.group_tile.add_tile(tile)
+             
+#         self.image_prefab=self.group_prefab.image
         
 #         self.tile_group=list(self.tiles.values())
     
@@ -40,7 +46,9 @@ class Chunk():
     
     def update(self,sprite_collisions_list):
         '''Actualiza la posicion de todas sus tile'''
-        for key,tile in sorted(list(self.tiles.items()),key=lambda x:str2list3(x[0])[2]):
+        for tile in sorted(list(self.tiles.items()),key=lambda x:str2list3(x[0])[2]):
+            # Solo es necesaria la tile no la key
+            tile=tile[1]
             
             tile.update()
             tile.camera_update()
@@ -48,7 +56,10 @@ class Chunk():
             # check_collisions
             for sprite in sprite_collisions_list:
                 tile.check_collision(sprite)
-            
+        
+#         self.group_tile.camera_update()        
+#         S_c().add_to_self_layer(self.group_tile) 
+          
         for item in self.items:
             item.update()
             item.camera_update()
@@ -66,7 +77,7 @@ class Chunk():
         '''Actualiza la imagen de todas sus tile'''
         for tile in self.tiles.values():
             tile.image_update()    
-            
+#         self.group_tile.image_update()    
         for item in self.items:
             item.image_update()
     
@@ -121,6 +132,13 @@ class Map():
         _instance=self
         
         self.chunk_limit=10
+        # Dict para comprobar que un chunk esta cargando key=chunk_key,value=thread
+        self.chunks_loading=[]
+        # Variable para comprobar que esta corriendo el juego
+        self.thread_run=True
+        # Creacion del thread para cargar el mapa
+        self.thread_to_load_chunks=threading.Thread(target=self.generate_chunk_thread)
+        self.thread_to_load_chunks.start()
         
         # Si esta true lo carga sino genera un mapa nuevo
         # Estructura de chunks es un dict 'x,y' del chunk con un dict de tiles
@@ -159,7 +177,7 @@ class Map():
         start_time=time.time()
         tilemap = TILEMAP1
         chunks={}
-        map_data = JSONParser(name)
+        map_data = pickle_JSONParser(name)
         self.seed1=map_data['seed1']
         
         self.seed2=map_data['seed2']
@@ -199,10 +217,14 @@ class Map():
     def map_save(self,name,player_pos):
         '''Guarda los chunks en el mapa name'''
         start_time=time.time()
+        
+        # Determina que ha dejado de correr el mapa
+        self.thread_run=False
+        
         map_data={'name':'world','seed1':self.seed1,'seed2':self.seed2,'player_saved_pos':player_pos}
         
         chunks_data={}
-        for chunk_item in self.chunks.items():
+        for chunk_item in list(self.chunks.items()):
             chunks_data[chunk_item[0]]={}
             chunks_data[chunk_item[0]]['tiles']={}
             for tile_key,tile_data in self.chunks[chunk_item[0]].tiles.items():
@@ -217,11 +239,44 @@ class Map():
         
         map_data['chunks']=chunks_data
         
-        JSONsave(name, map_data)
+        pickle_JSONsave(name, map_data)
         logging.info('Time consumed in save the map: '+str(time.time()-start_time)+' seconds')
     #     print('Time consumed in save the map:',time.time()-start_time,' seconds')
         
+    def generate_chunk(self,chunk_key):
         
+        if chunk_key in self.chunks_loading:
+            return 
+        else:
+            
+            #Se comprueba que esta dentro de los limites del mapa
+            list_chunk_key=str2list2(chunk_key)
+            if list_chunk_key[0]>=-self.chunk_limit and list_chunk_key[0]<=self.chunk_limit:
+                if list_chunk_key[1]>=-self.chunk_limit and list_chunk_key[1]<=self.chunk_limit:
+                    
+                    #Indica que esta cargando
+                    self.chunks_loading.append(chunk_key)
+                    
+#                     self.chunks_loading[chunk_key]=
+#                     self.chunks_loading[chunk_key]
+#                     self.generate_chunk_map(chunk_key)
+                    #Indica que ya no esta cargando
+                    
+    
+    def generate_chunk_thread(self):
+        
+        while(self.thread_run):
+            
+            for chunk_key in self.chunks_loading:
+                aux_thread=threading.Thread(target=self.generate_chunk_map(chunk_key),args=(chunk_key,))
+                aux_thread.start()
+#                 self.generate_chunk_map(chunk_key)
+#                 self.chunks_loading.remove(chunk_key)
+                
+            time.sleep(0.1)
+        
+    
+    
     def generate_chunk_map(self,chunk_key):
         '''map_size is the number or tiles [tiles_w,tiles_h], it must be multiple of 16'''
         
@@ -284,7 +339,7 @@ class Map():
                 
                 
                 # Reducion por los bordes del mapa para que sea como una gran isla
-                border_chunks=3
+                border_chunks=2
                 
                 noise_reduct_x=0
                 noise_reduct_y=0
@@ -297,7 +352,7 @@ class Map():
                 or y>(self.chunk_limit*CHUNK_SIZE[1])-CHUNK_SIZE[1]*border_chunks:
                     noise_reduct_y=abs(abs(y)-((self.chunk_limit*CHUNK_SIZE[1])-CHUNK_SIZE[1]*border_chunks))
                     
-                noise_reduct=1.1**(noise_reduct_x+noise_reduct_y)
+                noise_reduct=1.2**(noise_reduct_x+noise_reduct_y)
                 noise_at_xy-=noise_reduct/100
                     
                     
@@ -415,6 +470,10 @@ class Map():
         
         for aux_key,aux_chunk in chunks.items():
             self.chunks[aux_key]=aux_chunk
+            self.chunks_loading.remove(aux_key)
+            
+            
+        
         
 
     def auto_tile(self,aux_tiles_data):
@@ -597,6 +656,8 @@ class Map():
 #         neirbours4[3]=map_data[position_right][2]
 # 
 #     return list2str4(neirbours4)
+
+
 
 def neirbours9(position,map_data):  
     '''Position in form [x,y] Map in form of a dic of [x,y,type]

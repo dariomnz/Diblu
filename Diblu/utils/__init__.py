@@ -4,6 +4,7 @@ from Game.constants import TILE_SIZE_GENERAL, TILE_SIZE_GENERAL_PIXEL,\
     DEFAULT_SCALE
 import logging
 import numpy
+import pickle 
 
 def load_image(name, scale=DEFAULT_SCALE, colorkey = None):
     """Carga la imagen de nombre 'name' desde
@@ -52,6 +53,23 @@ def JSONsave(jsonfile,data:dict):
     pathfile = os.path.join('..','data','json',jsonfile)
     with open(pathfile, 'w') as file:
         json.dump(data, file, indent=1)
+        
+def pickle_JSONParser(jsonfile)->dict:
+    '''Recoje los datos de un jsonfile y los devuelve en forma de dict'''
+    jsonfile+='.json'
+    pathfile = os.path.join('..','data','json',jsonfile)
+    
+    with open(pathfile, 'rb') as json_data:
+        data = pickle.load(json_data)
+        
+    return data
+
+def pickle_JSONsave(jsonfile,data:dict):
+    '''Guarda en el archivo jsonfile los datos de data'''
+    jsonfile+='.json'
+    pathfile = os.path.join('..','data','json',jsonfile)
+    with open(pathfile, 'wb') as file:
+        pickle.dump(data, file, pickle.HIGHEST_PROTOCOL)
 
 
 def pos2center(pos,size):

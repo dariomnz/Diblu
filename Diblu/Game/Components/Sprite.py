@@ -8,7 +8,7 @@ from Game.Components.Camera import getInstance as camera
 
 class Sprite(pygame.sprite.Sprite,Image_item):
     '''Super clase de los sprites, hereda de pygame Sprite y de Image_item'''
-    def __init__(self,position_map,name,layer):
+    def __init__(self,position_map,name,layer=None):
         self.collisions=[]
         self.collision_type='None'
         pygame.sprite.Sprite.__init__(self)
