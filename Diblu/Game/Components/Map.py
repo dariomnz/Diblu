@@ -131,6 +131,9 @@ class Map():
         global _instance
         _instance=self
         
+        # Comprobante de si guarda el mapa o no
+        self.is_goint_to_save=False
+        
         self.chunk_limit=10
         # Dict para comprobar que un chunk esta cargando key=chunk_key,value=thread
         self.chunks_loading=[]
@@ -220,6 +223,7 @@ class Map():
         
         # Determina que ha dejado de correr el mapa
         self.thread_run=False
+        self.thread_to_load_chunks.join()
         
         map_data={'name':'world','seed1':self.seed1,'seed2':self.seed2,'player_saved_pos':player_pos}
         

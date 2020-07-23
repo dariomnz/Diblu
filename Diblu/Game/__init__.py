@@ -26,7 +26,7 @@ def main():
     
     from Game.Components.Tile import TILEMAP1
     from Game.Components import Map
-    Map.createInstance(load=False)
+    Map.createInstance(load=True)
     from Game.Components.Map import getInstance as terrain_map
     
     
@@ -58,8 +58,14 @@ def main():
             if e.type == QUIT or (e.type == KEYDOWN and e.key == K_ESCAPE):
                 run = False
                 
-    #         For the player controls
             if e.type == KEYDOWN:
+                # Para cerrar el juego guardando
+                if pygame.key.name(e.key)=='f1':
+                    terrain_map().is_goint_to_save=True
+                    run = False
+                
+                
+    #         For the player controls
                 if pygame.key.name(e.key) in player.controls_press.keys():
 #                     print(pygame.key.name(e.key))
                     player.controls_press[pygame.key.name(e.key)]()
@@ -187,7 +193,10 @@ def main():
         pygame.display.update([0,0,S_c().get_screen_size()[0],S_c().get_screen_size()[1]])
 #         run=False
         
-    terrain_map().save([player.position_map[0],player.position_map[1]])
+        
+    if terrain_map().is_goint_to_save:
+        terrain_map().save([player.position_map[0],player.position_map[1]])
+    
     pygame.quit()
     sys.exit()
     
