@@ -1,0 +1,250 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://assets/entity/chicken/chicken.png" type="Texture" id=1]
+[ext_resource path="res://assets/entity/shadow.png" type="Texture" id=2]
+[ext_resource path="res://scripts/entity/HurtBox.gd" type="Script" id=3]
+[ext_resource path="res://scripts/entity/Chicken/Chicken_animation_manager.gd" type="Script" id=4]
+[ext_resource path="res://prefabs/GUI/HP bar.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scripts/entity/Chicken/Chicken.gd" type="Script" id=6]
+
+[sub_resource type="OccluderPolygon2D" id=1]
+polygon = PoolVector2Array( -2.26593, 0.401609, 1.93252, 0.445805, 1.79994, -1.94068, 4.00479, -3.79572, -4.47826, -3.76438, -2.28719, -1.97216 )
+
+[sub_resource type="Animation" id=2]
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Chicken_sprite:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Rect2( 160, 170, 32, 34 ), Rect2( 160, 170, 32, 34 ), Rect2( 192, 170, 32, 34 ), Rect2( 0, 204, 32, 34 ), Rect2( 32, 204, 32, 34 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Chicken_sprite:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Chicken_sprite:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Rect2( 64, 204, 32, 34 ), Rect2( 64, 204, 32, 34 ), Rect2( 96, 204, 32, 34 ), Rect2( 128, 204, 32, 34 ), Rect2( 160, 204, 32, 34 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Chicken_sprite:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+length = 1.04
+tracks/0/type = "value"
+tracks/0/path = NodePath("Chicken_sprite:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.08, 0.16, 0.24, 0.32, 0.4, 0.48, 0.56, 0.64, 0.72, 0.8, 0.88, 0.96 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Rect2( 0, 0, 32, 34 ), Rect2( 32, 0, 32, 34 ), Rect2( 64, 0, 32, 34 ), Rect2( 96, 0, 32, 34 ), Rect2( 96, 0, 32, 34 ), Rect2( 128, 0, 32, 34 ), Rect2( 160, 0, 32, 34 ), Rect2( 192, 0, 32, 34 ), Rect2( 0, 34, 32, 34 ), Rect2( 32, 34, 32, 34 ), Rect2( 32, 34, 32, 34 ), Rect2( 32, 34, 32, 34 ), Rect2( 64, 34, 32, 34 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Chicken_sprite:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.08, 0.16, 0.24, 0.32, 0.4, 0.48, 0.56, 0.64, 0.72, 0.8, 0.88, 0.96 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+length = 1.04
+tracks/0/type = "value"
+tracks/0/path = NodePath("Chicken_sprite:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.08, 0.16, 0.24, 0.32, 0.4, 0.48, 0.56, 0.64, 0.72, 0.8, 0.88, 0.96 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Rect2( 96, 34, 32, 34 ), Rect2( 128, 34, 32, 34 ), Rect2( 160, 34, 32, 34 ), Rect2( 192, 34, 32, 34 ), Rect2( 192, 34, 32, 34 ), Rect2( 0, 68, 32, 34 ), Rect2( 32, 68, 32, 34 ), Rect2( 64, 68, 32, 34 ), Rect2( 96, 68, 32, 34 ), Rect2( 128, 68, 32, 34 ), Rect2( 128, 68, 32, 34 ), Rect2( 128, 68, 32, 34 ), Rect2( 160, 68, 32, 34 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Chicken_sprite:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.08, 0.16, 0.24, 0.32, 0.4, 0.48, 0.56, 0.64, 0.72, 0.8, 0.88, 0.96 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+length = 0.84
+tracks/0/type = "value"
+tracks/0/path = NodePath("Chicken_sprite:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.06, 0.12, 0.18, 0.24, 0.3, 0.36, 0.42, 0.48, 0.54, 0.6, 0.66, 0.72, 0.78 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Rect2( 192, 68, 32, 34 ), Rect2( 0, 102, 32, 34 ), Rect2( 0, 102, 32, 34 ), Rect2( 32, 102, 32, 34 ), Rect2( 64, 102, 32, 34 ), Rect2( 96, 102, 32, 34 ), Rect2( 96, 102, 32, 34 ), Rect2( 128, 102, 32, 34 ), Rect2( 160, 102, 32, 34 ), Rect2( 160, 102, 32, 34 ), Rect2( 192, 102, 32, 34 ), Rect2( 0, 136, 32, 34 ), Rect2( 32, 136, 32, 34 ), Rect2( 32, 136, 32, 34 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Chicken_sprite:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.06, 0.12, 0.18, 0.24, 0.3, 0.36, 0.42, 0.48, 0.54, 0.6, 0.66, 0.72, 0.78 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+length = 0.84
+tracks/0/type = "value"
+tracks/0/path = NodePath("Chicken_sprite:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.06, 0.12, 0.18, 0.24, 0.3, 0.36, 0.42, 0.48, 0.54, 0.6, 0.66, 0.72, 0.78 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Rect2( 64, 136, 32, 34 ), Rect2( 96, 136, 32, 34 ), Rect2( 96, 136, 32, 34 ), Rect2( 128, 136, 32, 34 ), Rect2( 160, 136, 32, 34 ), Rect2( 192, 136, 32, 34 ), Rect2( 192, 136, 32, 34 ), Rect2( 0, 170, 32, 34 ), Rect2( 32, 170, 32, 34 ), Rect2( 32, 170, 32, 34 ), Rect2( 64, 170, 32, 34 ), Rect2( 96, 170, 32, 34 ), Rect2( 128, 170, 32, 34 ), Rect2( 64, 136, 32, 34 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Chicken_sprite:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.06, 0.12, 0.18, 0.24, 0.3, 0.36, 0.42, 0.48, 0.54, 0.6, 0.66, 0.72, 0.78 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="CapsuleShape2D" id=8]
+radius = 2.94692
+height = 4.86448
+
+[sub_resource type="CircleShape2D" id=9]
+radius = 59.8606
+
+[sub_resource type="CapsuleShape2D" id=10]
+radius = 6.33178
+height = 5.59431
+
+[node name="Entity Chicken" type="KinematicBody2D" groups=[
+"entity",
+"moveables",
+]]
+script = ExtResource( 6 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource( 1 )
+
+[node name="Shadow" type="Sprite" parent="."]
+position = Vector2( 0.0150681, -4.78838 )
+scale = Vector2( 0.698338, 0.698338 )
+texture = ExtResource( 2 )
+
+[node name="Chicken_sprite" type="Sprite" parent="."]
+position = Vector2( 0, -8 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 32, 34 )
+
+[node name="Chicken_animation" type="AnimationPlayer" parent="."]
+autoplay = "idle_left"
+anims/hit_left = SubResource( 2 )
+anims/hit_right = SubResource( 3 )
+anims/idle_left = SubResource( 4 )
+anims/idle_right = SubResource( 5 )
+anims/run_left = SubResource( 6 )
+anims/run_right = SubResource( 7 )
+script = ExtResource( 4 )
+
+[node name="collision_body" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( 0, -1 )
+rotation = 1.5708
+shape = SubResource( 8 )
+
+[node name="HP bar" parent="." instance=ExtResource( 5 )]
+margin_left = -11.0
+margin_right = 273.0
+rect_scale = Vector2( 0.08, 0.08 )
+number = 75
+value_max = 75
+
+[node name="Vision_area" type="Area2D" parent="."]
+visible = false
+collision_layer = 2147483649
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Vision_area"]
+shape = SubResource( 9 )
+
+[node name="Escape timer" type="Timer" parent="."]
+
+[node name="HurtBox" type="Area2D" parent="."]
+visible = false
+script = ExtResource( 3 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+position = Vector2( 0, -6.43877 )
+shape = SubResource( 10 )
+[connection signal="death" from="HP bar" to="." method="_on_HP_bar_death"]
+[connection signal="body_entered" from="Vision_area" to="." method="_on_Vision_area_body_entered"]
+[connection signal="body_exited" from="Vision_area" to="." method="_on_Vision_area_body_exited"]
+[connection signal="timeout" from="Escape timer" to="." method="_on_Escape_timer_timeout"]

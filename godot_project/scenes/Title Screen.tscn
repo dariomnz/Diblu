@@ -1,0 +1,83 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/GUI/theme.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/Title Screen.gd" type="Script" id=2]
+[ext_resource path="res://assets/GUI/label_DIBLU.png" type="Texture" id=3]
+[ext_resource path="res://scripts/shaders/Title Screen.shader" type="Shader" id=4]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 4 )
+shader_param/tiled_factor = Vector2( 1.1, 1.12 )
+shader_param/tiled_offset = Vector2( 0.05, 0.05 )
+shader_param/time_scale = Vector2( 2, 2 )
+shader_param/offset_scale = Vector2( 2, 2 )
+shader_param/amplitude = Vector2( 0.01, 0.03 )
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -120.0
+margin_top = 100.0
+margin_right = 120.0
+margin_bottom = 184.0
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Play" type="Button" parent="VBoxContainer"]
+margin_right = 240.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 40 )
+text = "Play"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Exit" type="Button" parent="VBoxContainer"]
+margin_top = 44.0
+margin_right = 240.0
+margin_bottom = 84.0
+rect_min_size = Vector2( 0, 40 )
+text = "Exit"
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.7072
+margin_top = -16.4645
+margin_right = 19.2928
+margin_bottom = 23.5355
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="Control" parent="CenterContainer"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 20.0
+margin_bottom = 20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Sprite" type="Sprite" parent="CenterContainer/Control"]
+material = SubResource( 1 )
+position = Vector2( 0, -145.561 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 3 )
+region_rect = Rect2( 9, 0, 0, 0 )
+[connection signal="pressed" from="VBoxContainer/Play" to="." method="_on_Play_pressed"]
+[connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_Exit_pressed"]

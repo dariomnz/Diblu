@@ -1,0 +1,77 @@
+{ "frames": {
+   "iron_sword 0.aseprite": {
+    "frame": { "x": 0, "y": 0, "w": 48, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 48, "h": 54 },
+    "sourceSize": { "w": 48, "h": 54 },
+    "duration": 80
+   },
+   "iron_sword 1.aseprite": {
+    "frame": { "x": 48, "y": 0, "w": 48, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 48, "h": 54 },
+    "sourceSize": { "w": 48, "h": 54 },
+    "duration": 80
+   },
+   "iron_sword 2.aseprite": {
+    "frame": { "x": 96, "y": 0, "w": 48, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 48, "h": 54 },
+    "sourceSize": { "w": 48, "h": 54 },
+    "duration": 80
+   },
+   "iron_sword 3.aseprite": {
+    "frame": { "x": 144, "y": 0, "w": 48, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 48, "h": 54 },
+    "sourceSize": { "w": 48, "h": 54 },
+    "duration": 80
+   },
+   "iron_sword 4.aseprite": {
+    "frame": { "x": 192, "y": 0, "w": 48, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 48, "h": 54 },
+    "sourceSize": { "w": 48, "h": 54 },
+    "duration": 120
+   },
+   "iron_sword 5.aseprite": {
+    "frame": { "x": 240, "y": 0, "w": 48, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 48, "h": 54 },
+    "sourceSize": { "w": 48, "h": 54 },
+    "duration": 80
+   },
+   "iron_sword 6.aseprite": {
+    "frame": { "x": 288, "y": 0, "w": 48, "h": 54 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 48, "h": 54 },
+    "sourceSize": { "w": 48, "h": 54 },
+    "duration": 80
+   }
+ },
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.19.2-dev",
+  "image": "iron_sword.png",
+  "format": "I8",
+  "size": { "w": 336, "h": 54 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "idle", "from": 0, "to": 0, "direction": "forward" },
+   { "name": "attack", "from": 1, "to": 6, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "dash", "opacity": 255, "blendMode": "normal" },
+   { "name": "Sword", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

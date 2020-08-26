@@ -1,0 +1,336 @@
+[gd_scene load_steps=20 format=2]
+
+[ext_resource path="res://assets/entity/Dino/green_Dino.png" type="Texture" id=1]
+[ext_resource path="res://scripts/entity/Dino/Dino_animation_manager.gd" type="Script" id=2]
+[ext_resource path="res://scripts/entity/Dino/Dino.gd" type="Script" id=3]
+[ext_resource path="res://prefabs/GUI/HP bar.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/entity/shadow.png" type="Texture" id=5]
+[ext_resource path="res://scripts/entity/HurtBox.gd" type="Script" id=6]
+
+[sub_resource type="OccluderPolygon2D" id=1]
+polygon = PoolVector2Array( -3.43774, -0.942689, 4.35814, -0.872456, 4.89659, -3.19015, -0.0665522, -4.50117, -4.70194, -3.35403 )
+
+[sub_resource type="Animation" id=2]
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("Dino_sprite:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Rect2( 72, 96, 24, 24 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Dino_sprite:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Dino_sprite:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Rect2( 144, 72, 24, 24 ), Rect2( 0, 96, 24, 24 ), Rect2( 24, 96, 24, 24 ), Rect2( 48, 96, 24, 24 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Dino_sprite:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Dino_sprite:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Rect2( 48, 72, 24, 24 ), Rect2( 72, 72, 24, 24 ), Rect2( 96, 72, 24, 24 ), Rect2( 120, 72, 24, 24 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Dino_sprite:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Dino_sprite:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Rect2( 96, 0, 24, 24 ), Rect2( 120, 0, 24, 24 ), Rect2( 144, 0, 24, 24 ), Rect2( 0, 24, 24, 24 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Dino_sprite:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("Dino_sprite:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Rect2( 0, 0, 24, 24 ), Rect2( 24, 0, 24, 24 ), Rect2( 48, 0, 24, 24 ), Rect2( 72, 0, 24, 24 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Dino_sprite:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=7]
+length = 1.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Dino_sprite:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 1.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Rect2( 144, 48, 24, 24 ), Rect2( 0, 72, 24, 24 ), Rect2( 24, 72, 24, 24 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Dino_sprite:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1, 1.1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=8]
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("Dino_sprite:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Rect2( 0, 48, 24, 24 ), Rect2( 24, 48, 24, 24 ), Rect2( 48, 48, 24, 24 ), Rect2( 72, 48, 24, 24 ), Rect2( 96, 48, 24, 24 ), Rect2( 120, 48, 24, 24 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Dino_sprite:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=9]
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("Dino_sprite:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Rect2( 24, 24, 24, 24 ), Rect2( 48, 24, 24, 24 ), Rect2( 72, 24, 24, 24 ), Rect2( 96, 24, 24, 24 ), Rect2( 120, 24, 24, 24 ), Rect2( 144, 24, 24, 24 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Dino_sprite:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=10]
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("Dino_sprite:region_rect")
+tracks/0/interp = 0
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Rect2( 96, 96, 24, 24 ), Rect2( 120, 96, 24, 24 ), Rect2( 144, 96, 24, 24 ), Rect2( 0, 120, 24, 24 ), Rect2( 24, 120, 24, 24 ), Rect2( 48, 120, 24, 24 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Dino_sprite:offset")
+tracks/1/interp = 0
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="CapsuleShape2D" id=11]
+radius = 2.07253
+height = 6.76428
+
+[sub_resource type="CircleShape2D" id=12]
+radius = 59.8606
+
+[sub_resource type="CapsuleShape2D" id=13]
+radius = 7.68191
+height = 2.90834
+
+[node name="Entity Dino" type="KinematicBody2D" groups=[
+"entity",
+"moveables",
+]]
+script = ExtResource( 3 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource( 1 )
+
+[node name="Shadow" type="Sprite" parent="."]
+position = Vector2( 0, -6 )
+scale = Vector2( 0.778342, 0.778342 )
+texture = ExtResource( 5 )
+
+[node name="Dino_sprite" type="Sprite" parent="."]
+position = Vector2( 0.278408, -8.39881 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 24, 24 )
+
+[node name="Dino_animation" type="AnimationPlayer" parent="."]
+autoplay = "idle_right"
+anims/crouch = SubResource( 2 )
+anims/hit_left = SubResource( 3 )
+anims/hit_right = SubResource( 4 )
+anims/idle_left = SubResource( 5 )
+anims/idle_right = SubResource( 6 )
+anims/kick = SubResource( 7 )
+anims/run_left = SubResource( 8 )
+anims/run_right = SubResource( 9 )
+anims/sneak = SubResource( 10 )
+script = ExtResource( 2 )
+
+[node name="collision_body" type="CollisionShape2D" parent="."]
+position = Vector2( -3.8147e-06, -1.61475 )
+rotation = 1.5708
+shape = SubResource( 11 )
+
+[node name="HP bar" parent="." instance=ExtResource( 4 )]
+margin_left = -10.9443
+margin_top = -22.0045
+margin_right = 273.056
+margin_bottom = 17.9955
+rect_scale = Vector2( 0.08, 0.08 )
+number = 75
+value_max = 75
+
+[node name="Vision_area" type="Area2D" parent="."]
+visible = false
+collision_layer = 2147483649
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Vision_area"]
+position = Vector2( 0.222733, -7.79536 )
+shape = SubResource( 12 )
+
+[node name="Escape timer" type="Timer" parent="."]
+
+[node name="HurtBox" type="Area2D" parent="."]
+visible = false
+script = ExtResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+position = Vector2( 0, -8 )
+scale = Vector2( 1, 1.10317 )
+shape = SubResource( 13 )
+[connection signal="death" from="HP bar" to="." method="_on_HP_bar_death"]
+[connection signal="body_entered" from="Vision_area" to="." method="_on_Vision_area_body_entered"]
+[connection signal="body_exited" from="Vision_area" to="." method="_on_Vision_area_body_exited"]
+[connection signal="timeout" from="Escape timer" to="." method="_on_Escape_timer_timeout"]
