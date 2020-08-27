@@ -10,4 +10,5 @@ func _ready():
 
 
 func _on_HitBox_area_entered(area):
-	player._on_HitBox_area_entered(area)
+	if not area.get_parent() == get_parent():
+		player._on_HitBox_area_entered(area)

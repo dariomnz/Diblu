@@ -188,4 +188,9 @@ func update_item_hand(item_image : Item_image):
 		
 	add_child(new_item_hand)
 	
+func _hit(hitter : Node2D):
+	animationPlayer.travel("hit")
+	$"HP bar".number-=hitter.attack_damage
+	global.create_float_text(self,hitter.attack_damage)
 	
+	velocity += hitter.global_position.direction_to(global_position) * global_var.NORMAL_KNOCKBACK/2

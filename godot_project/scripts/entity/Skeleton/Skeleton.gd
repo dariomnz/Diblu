@@ -13,6 +13,16 @@ var rand = RandomNumberGenerator.new()
 
 onready var animationPlayer : = $Skeleton_animation
 
+var move_speed = 25
+var escape_speed = 20
+var is_escape_to = null
+
+var wait_time = 0
+
+var knockback = Vector2.ZERO
+
+var attack_damage = 15
+
 func _ready():
 	rand.seed=randi()
 	
@@ -25,20 +35,13 @@ func _ready():
 		path.append(point)
 
 
-var move_speed = 25
-var escape_speed = 20
-var is_escape_to = null
-
-var wait_time = 0
-
-var knockback = Vector2.ZERO
 #var is_death = false
 
 func _physics_process(delta):
 	
 	var velocity = Vector2(0,0)
 	if is_escape_to:
-		velocity = (is_escape_to.position - position).normalized() * escape_speed
+		velocity = (position - is_escape_to.position).normalized() * escape_speed
 		velocity*=-1
 		velocity = move_and_slide(velocity)
 	else:
@@ -102,7 +105,11 @@ func _hit(hitter : Node2D):
 #	else:
 #		knockback = hitter.velocity*hitter.direction
 		
-
+func _on_HitBox_area_entered(area):
+	if area.get_parent() in get_tree().get_nodes_in_group("player"):
+		if area.has_method("hit"):
+			area.hit(self)
+		
 func _on_HP_bar_death():
 	var death_particles = preload("res://prefabs/particles/Death particles.tscn").instance()
 	
