@@ -6,6 +6,9 @@ const ChickenID = 0
 const Dino = preload("res://prefabs/entity/Dino/Dino.tscn")
 const DinoID = 1
 
+const Skeleton = preload("res://prefabs/entity/Skeleton/Skeleton.tscn")
+const SkeletonID = 2
+
 var _childs = []
 
 func _ready():
@@ -15,9 +18,11 @@ func _ready():
 func update_tile2obj():
 	var chickens = get_used_cells_by_id(ChickenID)
 	var dinos = get_used_cells_by_id(DinoID)
+	var skeletons = get_used_cells_by_id(SkeletonID)
 	
 	replaceChickens(chickens)
 	replaceDinos(dinos)
+	replaceSkeletons(skeletons)
 
 func replaceChickens(tileArr):
 	var tilepos
@@ -40,6 +45,17 @@ func replaceDinos(tileArr):
 		_childs.append(newDino)
 		newDino.connect("death",self,"delete_child")
 		get_tree().get_nodes_in_group("world")[0].call_deferred("add_child",newDino)
+
+func replaceSkeletons(tileArr):
+	var tilepos
+	for tile in tileArr:
+		var newSkeleton = self.Skeleton.instance()
+		tilepos = map_to_world(tile)+get_parent().position
+		newSkeleton.set_position(tilepos)
+		set_cell(tile.x,tile.y,-1)
+		_childs.append(newSkeleton)
+		newSkeleton.connect("death",self,"delete_child")
+		get_tree().get_nodes_in_group("world")[0].call_deferred("add_child",newSkeleton)
 
 func delete_child(child):
 	if child in _childs:

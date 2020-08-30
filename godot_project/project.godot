@@ -24,6 +24,26 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/aseprite_importer/classes/EditorTheme.gd"
 }, {
+"base": "Control",
+"class": "Inventory",
+"language": "GDScript",
+"path": "res://scripts/GUI/Inventory.gd"
+}, {
+"base": "Control",
+"class": "Inventory_bar",
+"language": "GDScript",
+"path": "res://scripts/GUI/Bar Inventory.gd"
+}, {
+"base": "Control",
+"class": "Inventory_control",
+"language": "GDScript",
+"path": "res://scripts/GUI/Control Inventory.gd"
+}, {
+"base": "Node",
+"class": "Inventory_keeper",
+"language": "GDScript",
+"path": "res://scripts/GUI/Inventory keeper.gd"
+}, {
 "base": "Position2D",
 "class": "Item_hand",
 "language": "GDScript",
@@ -33,13 +53,29 @@ _global_script_classes=[ {
 "class": "Item_image",
 "language": "GDScript",
 "path": "res://scripts/entity/item/Item image.gd"
+}, {
+"base": "Control",
+"class": "Menu_control",
+"language": "GDScript",
+"path": "res://scripts/GUI/Control menu.gd"
+}, {
+"base": "Button",
+"class": "Slot_buttom",
+"language": "GDScript",
+"path": "res://scripts/GUI/Slot Inventory.gd"
 } ]
 _global_script_class_icons={
 "AsepriteImportData": "",
 "AsepriteImporter": "",
 "EditorTheme": "",
+"Inventory": "",
+"Inventory_bar": "",
+"Inventory_control": "",
+"Inventory_keeper": "",
 "Item_hand": "",
-"Item_image": ""
+"Item_image": "",
+"Menu_control": "",
+"Slot_buttom": ""
 }
 
 [application]

@@ -1,4 +1,5 @@
 extends Button
+class_name Slot_buttom
 
 signal clicked
 

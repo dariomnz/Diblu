@@ -1,5 +1,8 @@
 extends Control
-
+class_name Inventory_control
+"""
+Controls the inventory, like the move of items and the organization of them
+"""
 
 var item_focus = null
 
@@ -7,9 +10,17 @@ var open_crate = null
 
 var slot_focus setget set_slot_focus,get_slot_focus
 
+onready var inventory_keeper = get_node("Inventory keeper")
 
 func _ready():
 	set_process(false)
+	
+	inventory_keeper.load_inventory()
+	
+	sync_bar()
+
+func _exit_tree():
+	inventory_keeper.save_inventory()
 	
 	
 func _process(_delta):
@@ -167,7 +178,7 @@ func remove_amount(item_image,amount):
 	var n_slot = inventory.search(item_image)
 	
 	if n_slot in [1,2,3,4,5,6,7,8]:
-		sync_slot(n_slot)
+		sync_bar_slot(n_slot)
 		return
 		
 	#Busca en la barra
@@ -182,9 +193,9 @@ func sync_bar():
 	inventory_bar.clear()
 	
 	for slot_key in inventory_bar.slots.keys():
-		sync_slot(slot_key)
+		sync_bar_slot(slot_key)
 	
-func sync_slot(n_slot):
+func sync_bar_slot(n_slot):
 	var inventory = $Inventory
 	var inventory_bar = $"Inventory bar"
 	if n_slot:

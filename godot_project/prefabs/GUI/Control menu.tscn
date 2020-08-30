@@ -253,7 +253,7 @@ tracks/4/keys = {
 "values": [ Color( 1, 1, 1, 0.784314 ), Color( 1, 1, 1, 0.784314 ) ]
 }
 
-[node name="Control menu" type="Control"]
+[node name="Menu control" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2

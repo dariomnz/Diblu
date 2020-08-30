@@ -1,0 +1,40 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/GUI/theme.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/GUI/Command panel.gd" type="Script" id=2]
+
+[node name="Command panel" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Command line" type="LineEdit" parent="."]
+anchor_left = 0.017
+anchor_top = 0.923
+anchor_right = 0.983
+anchor_bottom = 0.97
+text = "set speed 3"
+placeholder_text = "Write a command"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Command history panel" type="TextEdit" parent="."]
+self_modulate = Color( 1, 1, 1, 0.784314 )
+anchor_left = 0.0166016
+anchor_top = 0.045
+anchor_right = 0.982359
+anchor_bottom = 0.907
+margin_right = 0.0639992
+margin_bottom = -0.200001
+text = "asdaf"
+readonly = true
+highlight_all_occurrences = true
+__meta__ = {
+"_edit_use_anchors_": true
+}
+[connection signal="text_entered" from="Command line" to="." method="_on_LineEdit_text_entered"]

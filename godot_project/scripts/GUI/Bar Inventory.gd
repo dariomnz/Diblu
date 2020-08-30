@@ -1,4 +1,8 @@
 extends Control
+class_name Inventory_bar
+"""
+Control the inventory bar, like set the slot focus
+"""
 
 onready var slots = {
 	1:get_node("Slot1"),

@@ -27,6 +27,7 @@ const decorations = {
 const entities = {
 	"CHICKEN":0,
 	"DINO":1,
+	"SKELETON":2,
 }
 
 var _childs = []
@@ -205,6 +206,8 @@ func create_entities(x,y,tile_type):
 			entities_tilemap.set_cell(x,y,entities["CHICKEN"])
 		elif rand_num < 4:
 			entities_tilemap.set_cell(x,y,entities["DINO"])
+		elif rand_num < 9:
+			entities_tilemap.set_cell(x,y,entities["SKELETON"])
 
 func create_furniture():
 	for _filename in furniture_data_chunk.keys():

@@ -1,4 +1,9 @@
 extends Control
+class_name Menu_control
+"""
+
+"""
+
 
 var out_rect_position : = Vector2(-600,-1024) setget set_out_rect_position
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://assets/tilemap/tilemap1.png" type="Texture" id=1]
 [ext_resource path="res://scripts/tilemap/Map_Decorations.gd" type="Script" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://assets/entity/chicken/Idle (32x34).png" type="Texture" id=6]
 [ext_resource path="res://assets/entity/Dino/green_Dino.png" type="Texture" id=7]
 [ext_resource path="res://assets/tilemap/decoration tileset.tres" type="TileSet" id=8]
+[ext_resource path="res://assets/entity/Skeleton/Skeleton.png" type="Texture" id=9]
 
 [sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 0, 0.676134, 16, 0.805944, 16, 3.92141, 0, 3.92141 )
@@ -208,6 +209,20 @@ points = PoolVector2Array( 11.0545, 3.01111, 0, 3.01111, 0, 0, 11.0545, 0 )
 1/shape_one_way_margin = 0.0
 1/shapes = [  ]
 1/z_index = 0
+2/name = "Skeleton 2"
+2/texture = ExtResource( 9 )
+2/tex_offset = Vector2( 0, 0 )
+2/modulate = Color( 1, 1, 1, 1 )
+2/region = Rect2( 57, 24, 12, 19 )
+2/tile_mode = 0
+2/occluder_offset = Vector2( 0, 0 )
+2/navigation_offset = Vector2( 0, 0 )
+2/shape_offset = Vector2( 0, 0 )
+2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+2/shape_one_way = false
+2/shape_one_way_margin = 0.0
+2/shapes = [  ]
+2/z_index = 0
 
 [node name="Chunk" type="TileMap"]
 z_index = -2
