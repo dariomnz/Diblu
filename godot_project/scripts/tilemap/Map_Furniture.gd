@@ -28,10 +28,10 @@ func replaceCrates():
 		var newCrate = Crate.instance()
 		var tilepos = map_to_world(tile)
 		var adjustment = Vector2(32/2,32/2)
-		newCrate.set_position(tilepos + adjustment)
+#		newCrate.set_position(tilepos + adjustment)
 		set_cell(tile.x,tile.y,-1)
 		
-		add_to_chunk(newCrate)
+		add_to_chunk(newCrate,tilepos + adjustment)
 		
 		
 		
@@ -41,18 +41,23 @@ func replaceCampfire():
 		var newCampfire = Campfire.instance()
 		var tilepos = map_to_world(tile)
 		var adjustment = Vector2(32/2,32/2+10)
-		newCampfire.set_position(tilepos + adjustment)
+#		newCampfire.set_position(tilepos + adjustment)
 		set_cell(tile.x,tile.y,-1)
 		
-		add_to_chunk(newCampfire)
+		add_to_chunk(newCampfire,tilepos + adjustment)
 		
 		
-func add_to_chunk(obj):
-	var chunk = get_parent().get_chunk_by_position(obj.position)
+func add_to_chunk(obj : Furniture,world_position : Vector2):
+	var chunk = get_parent().get_chunk_by_position(world_position)
 	
-	chunk._childs.append(obj)
-	obj.connect("destroy",chunk,"delete_child")
-	get_tree().get_nodes_in_group("world")[0].call_deferred("add_child",obj)
+	if chunk:
+		var new_position = world_position-chunk.global_position
+		obj.set_position(new_position)
+		obj.chunk_position = chunk.position
+		chunk.call_deferred("add_child",obj)
+#	chunk._childs.append(obj)
+		var _err = obj.connect("destroy",chunk,"delete_furniture")
+#	get_tree().get_nodes_in_group("world")[0].call_deferred("add_child",obj)
 	
 	var chunk_key = str(chunk.chunk_pos.x)+","+str(chunk.chunk_pos.y)
 	save(chunk_key, obj)

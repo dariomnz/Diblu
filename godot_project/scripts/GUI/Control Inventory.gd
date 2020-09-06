@@ -18,6 +18,7 @@ func _ready():
 	inventory_keeper.load_inventory()
 	
 	sync_bar()
+	$"Inventory bar".update_item_hand()
 
 func _exit_tree():
 	inventory_keeper.save_inventory()

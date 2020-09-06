@@ -1,4 +1,5 @@
 extends TileMap
+class_name Chunk
 
 const CLEAR_WATER = 1
 const DARK_WATER = 2
@@ -38,6 +39,7 @@ var noise2 : OpenSimplexNoise
 onready var decoration_tilemap : = $Decorations
 onready var can_jump : = $"Can jump"
 onready var entities_tilemap : = $Entities
+onready var ground : = $Ground
 
 var chunk_pos : Vector2
 
@@ -47,7 +49,7 @@ var rand : = RandomNumberGenerator.new()
 
 var furniture_data_chunk = {}
 
-func initialize(_chunk_pos,_noise1,_noise2,decoration_seed,_furniture_data_chunk):
+func initialize(_chunk_pos : Vector2,_noise1 : OpenSimplexNoise,_noise2 : OpenSimplexNoise,decoration_seed : int,_furniture_data_chunk : Dictionary) -> void:
 	self.chunk_pos = _chunk_pos
 	self.noise1 = _noise1
 	self.noise2 = _noise2
@@ -55,19 +57,19 @@ func initialize(_chunk_pos,_noise1,_noise2,decoration_seed,_furniture_data_chunk
 	self.furniture_data_chunk = _furniture_data_chunk
 
 	
-func _ready():
+func _ready() -> void:
 	position = chunk_pos*(global_var.CHUNK_SIZE-Vector2(1,1))*global_var.TILE_SIZE
 	create_chunk()
 	
 	create_furniture()
 
-func create_chunk():
+func create_chunk() -> void:
 	# Creamos la capa principal del suelo
 	for i in range(chunk_pos.x-2,chunk_pos.x+global_var.CHUNK_SIZE.x+3):
 		for j in range(chunk_pos.y-2,chunk_pos.y+global_var.CHUNK_SIZE.y+3):
-			var tile_type = tile_type_at_xy(i+(global_var.CHUNK_SIZE.x-1)*chunk_pos.x,j+(global_var.CHUNK_SIZE.y-1)*chunk_pos.y)
-			set_cell(i,j,tile_type)
-			update_bitmask_area(Vector2(i,j))
+			var tile_type = tile_type_at_xy(int(i+(global_var.CHUNK_SIZE.x-1)*chunk_pos.x),int(j+(global_var.CHUNK_SIZE.y-1)*chunk_pos.y))
+			ground.set_cell(i,j,tile_type)
+			ground.update_bitmask_area(Vector2(i,j))
 			
 	# Arreglamos los picos
 	var posible_no_type =[
@@ -78,19 +80,19 @@ func create_chunk():
 			]
 	for i in range(chunk_pos.x,chunk_pos.x+global_var.CHUNK_SIZE.x):
 		for j in range(chunk_pos.y,chunk_pos.y+global_var.CHUNK_SIZE.y):
-			var aux_data = same_cell_neirbours(i,j,get_cell(i,j))
+			var aux_data = same_cell_neirbours(i,j,ground.get_cell(i,j))
 			var count_no_type=aux_data[0]
 			var arr_no_type=aux_data[1]
 			var aux_tile_type = aux_data[2]
 			if arr_no_type in posible_no_type or count_no_type>=6:
-				set_cell(i,j,aux_tile_type)
-				update_bitmask_area(Vector2(i,j))
+				ground.set_cell(i,j,aux_tile_type)
+				ground.update_bitmask_area(Vector2(i,j))
 
 
 	# Creamos las decoraciones y creacion del nuevo mapa para poder saltar tiles
 	for i in range(chunk_pos.x-2,chunk_pos.x+global_var.CHUNK_SIZE.x+3):
 		for j in range(chunk_pos.y-2,chunk_pos.y+global_var.CHUNK_SIZE.y+3):
-			var cell_tipe = get_cell(i,j)
+			var cell_tipe = ground.get_cell(i,j)
 			if not (i < chunk_pos.x or i >= chunk_pos.x+global_var.CHUNK_SIZE.x or \
 				j < chunk_pos.y or j >= chunk_pos.y+global_var.CHUNK_SIZE.y):	
 				if same_cell_neirbours(i,j,cell_tipe)[0]==0:
@@ -107,7 +109,7 @@ func create_chunk():
 		for j in range(chunk_pos.y-2,chunk_pos.y+global_var.CHUNK_SIZE.y+3):
 			if i < chunk_pos.x or i >= chunk_pos.x+global_var.CHUNK_SIZE.x or \
 				j < chunk_pos.y or j >= chunk_pos.y+global_var.CHUNK_SIZE.y:
-					set_cell(i,j,-1)
+					ground.set_cell(i,j,-1)
 					can_jump.set_cell(i,j,-1)
 					
 	# Añadimos las decoraciones
@@ -115,8 +117,9 @@ func create_chunk():
 	# Añadimos las entities
 	entities_tilemap.update_tile2obj()
 	
-func same_cell_neirbours(x,y,tile_type):
-	"""Devuelve una cuenta y un array de 0 con 1 en los vecinos diferentes"""
+func same_cell_neirbours(x : int,y : int,tile_type : int) -> Array:
+	"""Devuelve una cuenta y un array de 0 con 1 en los vecinos diferentes,
+	 y el tipo de vecino diferente, si hay varios el ultimo encontrado"""
 	var count_no_type = 0
 	var arr_no_type = [[0,0,0],[0,0,0],[0,0,0]]
 	
@@ -128,7 +131,7 @@ func same_cell_neirbours(x,y,tile_type):
 		di=x+aux_i
 		for aux_j in range(-1,2):
 			dj=y+aux_j
-			var get_cell_type = get_cell(di,dj)
+			var get_cell_type = ground.get_cell(di,dj)
 			if get_cell_type != tile_type:
 				neirbour_type = get_cell_type
 				arr_no_type[aux_i+1][aux_j+1]=1
@@ -136,7 +139,7 @@ func same_cell_neirbours(x,y,tile_type):
 
 	return [count_no_type,arr_no_type,neirbour_type]
 	
-func tile_type_at_xy(x,y):
+func tile_type_at_xy(x : int,y : int) -> int:
 	var tile_type
 	var noise_at_xy = noise_x_y(x,y)
 	
@@ -161,14 +164,14 @@ func tile_type_at_xy(x,y):
 	
 	return tile_type
 	
-func noise_x_y(x,y):
+func noise_x_y(x : int,y : int) -> float:
 	
 	var noise_x_y1 = noise1.get_noise_2d(x,y)
 	var noise_x_y2 = noise2.get_noise_2d(x,y)
 	
 	return (noise_x_y1*0.8+noise_x_y2*0.2)
 	
-func create_decorations(x,y,tile_type):
+func create_decorations(x : int,y : int,tile_type : int) -> void:
 	var rand_num = rand.randi()%1000
 	
 	if tile_type == GRASS or tile_type == HIGH_GRASS:
@@ -197,7 +200,7 @@ func create_decorations(x,y,tile_type):
 		elif rand_num < 190:
 			decoration_tilemap.set_cell(x,y,decorations["SAND"]["ROCK"][rand.randi()%len(decorations["SAND"]["ROCK"])])
 		
-func create_entities(x,y,tile_type):
+func create_entities(x : int,y : int,tile_type : int) -> void:
 	
 	var rand_num = rand.randi()%1000
 	
@@ -209,7 +212,7 @@ func create_entities(x,y,tile_type):
 		elif rand_num < 9:
 			entities_tilemap.set_cell(x,y,entities["SKELETON"])
 
-func create_furniture():
+func create_furniture() -> void:
 	for _filename in furniture_data_chunk.keys():
 		for id in furniture_data_chunk[_filename].keys():
 			
@@ -217,51 +220,55 @@ func create_furniture():
 			
 			furniture.id = id
 			
-			_childs.append(furniture)
-			furniture.connect("destroy",self,"delete_child")
-			get_tree().get_nodes_in_group("world")[0].call_deferred("add_child",furniture)
+#			_childs.append(furniture)
+#			furniture.connect("destroy",self,"delete_child")
+#			get_tree().get_nodes_in_group("world")[0].call_deferred("add_child",furniture)
+			call_deferred("add_child",furniture)
 	
 	
-func spawn_item(position,item_name,amount=1):
+func spawn_item(world_position : Vector2,item_name : String,amount : int = 1) -> void:
 	var item = preload("res://prefabs/entity/item/Item.tscn").instance()
 	
-	item.initialize(position,item_name,amount)
+	var new_position = world_position-global_position
 	
-	_childs.append(item)
-	item.connect("pickup",self,"delete_child")
-	get_tree().get_nodes_in_group("world")[0].call_deferred("add_child",item)
+	item.initialize(new_position,item_name,amount)
+	
+#	_childs.append(item)
+#	item.connect("pickup",self,"delete_child")
+	call_deferred("add_child",item)
+#	get_tree().get_nodes_in_group("world")[0].call_deferred("add_child",item)
 	
 func is_water(check_position):
 	check_position -= position
 	check_position = world_to_map(check_position)
 	
-	return get_cellv(check_position) == CLEAR_WATER
+	return ground.get_cellv(check_position) == CLEAR_WATER
 
-func delete_child(child):
+func delete_furniture(furniture : Furniture):
 #	print(furniture_data_chunk)
-	if child.filename in furniture_data_chunk:
-		if child.id in furniture_data_chunk[child.filename]:
+	if furniture.filename in furniture_data_chunk:
+		if furniture.id in furniture_data_chunk[furniture.filename]:
 #		print(furniture_data_chunk)
 #			print(furniture_data_chunk[child.filename][child.id])
-			furniture_data_chunk[child.filename].erase(child.id)
+			furniture_data_chunk[furniture.filename].erase(furniture.id)
 			
 #			print(furniture_data_chunk[child.filename][child.id])
 			var key = str(chunk_pos.x)+","+str(chunk_pos.y)
-			get_parent().furniture_data[key][child.filename].erase(child.id)
+			get_parent().furniture_data[key][furniture.filename].erase(furniture.id)
 			
-			if len(furniture_data_chunk[child.filename]) == 0:
-				furniture_data_chunk.erase(child.filename)
-				get_parent().furniture_data[key].erase(child.filename)
+			if len(furniture_data_chunk[furniture.filename]) == 0:
+				furniture_data_chunk.erase(furniture.filename)
+				get_parent().furniture_data[key].erase(furniture.filename)
 				
 			if len(furniture_data_chunk) == 0:
 				get_parent().furniture_data.erase(key)
 	
-	if child in _childs:
-		_childs.erase(child)
+#	if child in _childs:
+#		_childs.erase(child)
 	
-func queue_free():
-	for child in get_children():
-		child.queue_free()
-	for child in _childs:
-		child.queue_free()
-	.queue_free()
+#func queue_free():
+#	for child in get_children():
+#		child.queue_free()
+#	for child in _childs:
+#		child.queue_free()
+#	.queue_free()

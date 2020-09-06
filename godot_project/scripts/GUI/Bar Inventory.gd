@@ -22,13 +22,15 @@ func _ready():
 		slot.connect("clicked",self,"click_item")
 		
 	upgrade_slot_size(slot_focus,3)
+	
+	set_slot_focus(slots[1])
 		
 func _unhandled_input(_event):
 	for slot_key in slots.keys():
 		if Input.is_action_just_pressed("ui_"+str(slot_key)):
 			set_slot_focus(slots[slot_key])
 	
-func set_slot_focus(newSlot_focus):
+func set_slot_focus(newSlot_focus : Control):
 	
 	var theme_slot_focus = preload("res://assets/GUI/focus_slot.tres")
 	

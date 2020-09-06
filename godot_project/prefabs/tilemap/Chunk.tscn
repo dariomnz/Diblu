@@ -225,18 +225,26 @@ points = PoolVector2Array( 11.0545, 3.01111, 0, 3.01111, 0, 0, 11.0545, 0 )
 2/z_index = 0
 
 [node name="Chunk" type="TileMap"]
-z_index = -2
 tile_set = ExtResource( 4 )
 cell_size = Vector2( 16, 16 )
-cell_tile_origin = 2
+cell_y_sort = true
 collision_layer = 3
 collision_mask = 3
 format = 1
 script = ExtResource( 3 )
 
+[node name="Ground" type="TileMap" parent="."]
+z_index = -2
+tile_set = ExtResource( 4 )
+cell_size = Vector2( 16, 16 )
+format = 1
+
 [node name="Decorations" type="TileMap" parent="."]
+position = Vector2( 1, 1 )
+z_index = -2
 tile_set = ExtResource( 8 )
 cell_size = Vector2( 16, 16 )
+cell_y_sort = true
 format = 1
 script = ExtResource( 2 )
 
@@ -249,5 +257,6 @@ format = 1
 [node name="Entities" type="TileMap" parent="."]
 tile_set = SubResource( 18 )
 cell_size = Vector2( 16, 16 )
+cell_y_sort = true
 format = 1
 script = ExtResource( 5 )

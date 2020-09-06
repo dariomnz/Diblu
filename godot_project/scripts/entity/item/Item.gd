@@ -10,7 +10,7 @@ export var amount = 1 setget set_amount
 
 var is_pickable = false
 
-var body_to_pickup
+var body_to_pickup : Node2D
 
 onready var myTween : = $Tween
 
@@ -29,7 +29,7 @@ func _process(delta):
 		
 	if is_pickable:
 		if body_to_pickup:
-			if position.distance_to(body_to_pickup.position) < 1:
+			if global_position.distance_to(body_to_pickup.global_position) < 1:
 				if body_to_pickup.item_pickup(self):
 					emit_signal("pickup",self)
 					queue_free()
@@ -37,7 +37,7 @@ func _process(delta):
 					body_to_pickup = null
 			else:
 				var move_speed = 60
-				velocity = (body_to_pickup.position - position).normalized() * move_speed
+				velocity = (body_to_pickup.global_position - global_position).normalized() * move_speed
 				translate(velocity*delta)
 	else:
 		velocity += spawn_gravity * mass * delta

@@ -16,7 +16,7 @@ var noise1=OpenSimplexNoise.new()
 
 var decoration_seed = randi()
 
-func _ready():
+func _ready() -> void:
 	cell_size=global_var.CHUNK_SIZE*global_var.TILE_SIZE
 	
 	camera = get_tree().get_nodes_in_group("player")[0]
@@ -38,10 +38,10 @@ func _ready():
 	
 	load_furniture()
 
-func _exit_tree():
+func _exit_tree() -> void:
 	save_furniture()
 
-func add_chunk(chunk_pos):
+func add_chunk(chunk_pos : Vector2) -> void:
 	var key = str(chunk_pos.x)+","+str(chunk_pos.y)
 	if active_chunks.has(key) or unready_chunks.has(key):
 		return
@@ -50,7 +50,7 @@ func add_chunk(chunk_pos):
 		var _err = thread.start(self,"load_chunk", [thread,chunk_pos])
 		unready_chunks[key] = 1
 		
-func load_chunk(arr):
+func load_chunk(arr : Array) -> void:
 	var _thread = arr[0]
 	var chunk_pos = arr[1]
 	
@@ -63,7 +63,7 @@ func load_chunk(arr):
 	
 	call_deferred("load_done",chunk,_thread)
 
-func load_done(chunk,_thread):
+func load_done(chunk : Chunk,_thread : Thread) -> void:
 	add_child(chunk)
 	var key = str(chunk.chunk_pos.x)+","+str(chunk.chunk_pos.y)
 	active_chunks[key] = chunk
@@ -71,34 +71,34 @@ func load_done(chunk,_thread):
 	set_cellv(chunk.chunk_pos,0)
 	_thread.wait_to_finish()
 	
-func remove_chunk(chunk):
+func remove_chunk(chunk : Chunk) -> void:
 	if not thread.is_active():
 		var _err = thread.start(self,"_remove_chunk", [thread,chunk])
 	
-func _remove_chunk(arr):
+func _remove_chunk(arr : Array) -> void:
 	var _thread = arr[0]
 	var chunk = arr[1]
 	
 	call_deferred("remove_done",chunk,_thread)
 	
-func remove_done(chunk,_thread):
+func remove_done(chunk : Chunk,_thread : Thread) -> void:
 	var key = str(chunk.chunk_pos.x)+","+str(chunk.chunk_pos.y)
 	active_chunks.erase(key)
 	chunk.queue_free()
 	_thread.wait_to_finish()
 	
-func get_chunk(chunk_pos):
+func get_chunk(chunk_pos : Vector2) -> Chunk:
 	var key = str(chunk_pos.x)+","+str(chunk_pos.y)
 	if active_chunks.has(key):
 		return active_chunks[key]
 	return null
 
-func _process(_delta):
+func _process(_delta : float) -> void:
 	update_chunks()
 	clean_up_chunks()
 	reset_chunks()
 	
-func update_chunks():
+func update_chunks() -> void:
 	var check_pos = world_to_map(camera.position)
 	
 	var chunk_amount = global_var.CHUNK_AMOUNT
@@ -116,25 +116,25 @@ func update_chunks():
 			if chunk != null:
 				chunk.should_remove = false
 	
-func clean_up_chunks():
+func clean_up_chunks() -> void:
 	for key in active_chunks:
 		var chunk = active_chunks[key]
 		if chunk.should_remove:
 			remove_chunk(chunk)
 				
-func reset_chunks():
+func reset_chunks() -> void:
 	for key in active_chunks:
 		active_chunks[key].should_remove = true
 		
 		
-func spawn_item(position,item_name,amount=1):
-	var chunk = get_chunk_by_position(position)
+func spawn_item(world_position : Vector2,item_name : String,amount : int = 1) -> void:
+	var chunk = get_chunk_by_position(world_position)
 	
 	if chunk:
-		chunk.spawn_item(position,item_name,amount)
+		chunk.spawn_item(world_position,item_name,amount)
 		
 		
-func get_chunk_by_position(gorld_position):
+func get_chunk_by_position(gorld_position : Vector2) -> Chunk:
 	var chunk_pos = world_to_map(gorld_position)
 	
 	var key = str(chunk_pos.x)+","+str(chunk_pos.y)
@@ -147,7 +147,7 @@ func get_chunk_by_position(gorld_position):
 var furniture_directory_path = "res://save/chunk/"
 var furniture_file_name = "furniture.save"
 
-func save_furniture():
+func save_furniture() -> void:
 	var file : = File.new()
 	var directory : = Directory.new()
 	
@@ -159,7 +159,7 @@ func save_furniture():
 	
 	file.close()
 	
-func load_furniture():
+func load_furniture() -> void:
 	
 	var file : = File.new()
 	
@@ -172,9 +172,9 @@ func load_furniture():
 		
 	file.close()
 
-func construct_mode():
+func construct_mode() -> void:
 	$Furniture.construct_mode()
 	
 	
-func construct():
+func construct() -> void:
 	$Furniture.contruct()

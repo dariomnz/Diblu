@@ -11,7 +11,7 @@ const Palm_treeID = 1
 #var trees = []
 #var palm_trees = []
 
-var _childs = []
+#var _childs = []
 
 func _ready():
 	update_tile2obj()
@@ -27,25 +27,27 @@ func replaceTree(tileArr):
 	var tilepos
 	for tile in tileArr:
 		var newTree = Tree.instance()
-		tilepos = map_to_world(tile)+get_parent().position
+		tilepos = map_to_world(tile)#+get_parent().position
 		newTree.set_position(tilepos)
 		set_cell(tile.x,tile.y,-1)
-		_childs.append(newTree)
-		get_tree().get_nodes_in_group("world")[0].call_deferred("add_child",newTree)
+#		_childs.append(newTree)
+		get_parent().call_deferred("add_child",newTree)
+#		get_tree().get_nodes_in_group("world")[0].call_deferred("add_child",newTree)
 		
 func replacePalm_tree(tileArr):
 	var tilepos
 	for tile in tileArr:
 		var newTree = Palm_tree.instance()
-		tilepos = map_to_world(tile)+get_parent().position
+		tilepos = map_to_world(tile)#+get_parent().position
 		newTree.set_position(tilepos)
 		set_cell(tile.x,tile.y,-1)
-		_childs.append(newTree)
-		get_tree().get_nodes_in_group("world")[0].call_deferred("add_child",newTree)
+#		_childs.append(newTree)
+		get_parent().call_deferred("add_child",newTree)
+#		get_tree().get_nodes_in_group("world")[0].call_deferred("add_child",newTree)
 
-func queue_free():
-	for child in _childs:
-		child.queue_free()
-	.queue_free()
+#func queue_free():
+#	for child in _childs:
+#		child.queue_free()
+#	.queue_free()
 	
 

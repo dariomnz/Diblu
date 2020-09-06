@@ -183,7 +183,7 @@ radius = 120.0
 radius = 7.68191
 height = 2.90834
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=11]
 resource_name = "action1"
 length = 0.58
 step = 0.05
@@ -210,7 +210,7 @@ tracks/1/keys = {
 "values": [ true, false, true, true ]
 }
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=12]
 resource_name = "setup"
 length = 0.08
 tracks/0/type = "animation"
@@ -236,7 +236,7 @@ tracks/1/keys = {
 "values": [ true ]
 }
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=13]
 resource_name = "attack"
 length = 0.52
 tracks/0/type = "value"
@@ -276,7 +276,7 @@ tracks/2/keys = {
 "values": [ 20.0 ]
 }
 
-[sub_resource type="Animation" id=15]
+[sub_resource type="Animation" id=14]
 resource_name = "idle"
 length = 0.08
 tracks/0/type = "value"
@@ -316,11 +316,11 @@ tracks/2/keys = {
 "values": [ 0.0 ]
 }
 
-[sub_resource type="CapsuleShape2D" id=16]
+[sub_resource type="CapsuleShape2D" id=15]
 radius = 11.8893
 height = 19.3291
 
-[sub_resource type="CircleShape2D" id=11]
+[sub_resource type="CircleShape2D" id=16]
 radius = 30.2645
 
 [node name="Entity Skeleton" type="KinematicBody2D" groups=[
@@ -359,15 +359,6 @@ position = Vector2( -3.8147e-06, -1.61475 )
 rotation = 1.5708
 shape = SubResource( 8 )
 
-[node name="HP bar" parent="." instance=ExtResource( 7 )]
-margin_left = -10.9443
-margin_top = -22.0045
-margin_right = 273.056
-margin_bottom = 17.9955
-rect_scale = Vector2( 0.08, 0.08 )
-number = 75
-value_max = 75
-
 [node name="Vision_area" type="Area2D" parent="."]
 visible = false
 collision_layer = 2147483649
@@ -401,12 +392,12 @@ region_enabled = true
 region_rect = Rect2( 48, 0, 48, 54 )
 
 [node name="ActionPlayer" type="AnimationPlayer" parent="Item_hand"]
-anims/action1 = SubResource( 12 )
-anims/setup = SubResource( 13 )
+anims/action1 = SubResource( 11 )
+anims/setup = SubResource( 12 )
 
 [node name="attack_animation" type="AnimationPlayer" parent="Item_hand"]
-anims/attack = SubResource( 14 )
-anims/idle = SubResource( 15 )
+anims/attack = SubResource( 13 )
+anims/idle = SubResource( 14 )
 
 [node name="Attack_delay" type="Timer" parent="Item_hand"]
 wait_time = 0.5
@@ -416,14 +407,22 @@ one_shot = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Item_hand/HitBox"]
 position = Vector2( 18.2689, -0.629961 )
-shape = SubResource( 16 )
+shape = SubResource( 15 )
 disabled = true
 
 [node name="Trigger_attack" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Trigger_attack"]
-shape = SubResource( 11 )
-[connection signal="death" from="HP bar" to="." method="_on_HP_bar_death"]
+shape = SubResource( 16 )
+
+[node name="HP bar" parent="." instance=ExtResource( 7 )]
+margin_left = -10.9443
+margin_top = -22.0045
+margin_right = 273.056
+margin_bottom = 17.9955
+rect_scale = Vector2( 0.08, 0.08 )
+number = 75
+value_max = 75
 [connection signal="body_entered" from="Vision_area" to="." method="_on_Vision_area_body_entered"]
 [connection signal="body_exited" from="Vision_area" to="." method="_on_Vision_area_body_exited"]
 [connection signal="timeout" from="Escape timer" to="." method="_on_Escape_timer_timeout"]
@@ -431,3 +430,4 @@ shape = SubResource( 11 )
 [connection signal="area_entered" from="Item_hand/HitBox" to="Item_hand" method="_on_HitBox_area_entered"]
 [connection signal="body_entered" from="Trigger_attack" to="Item_hand" method="_on_Trigger_attack_body_entered"]
 [connection signal="body_exited" from="Trigger_attack" to="Item_hand" method="_on_Trigger_attack_body_exited"]
+[connection signal="death" from="HP bar" to="." method="_on_HP_bar_death"]

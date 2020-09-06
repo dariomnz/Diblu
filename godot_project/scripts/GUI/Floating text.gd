@@ -6,10 +6,10 @@ var velocity = Vector2(50,-100)
 var gravity = Vector2(0,1)
 var mass = 200
 
-func initialize(position,text):
+func initialize(global_position : Vector2,text):
 	set_text(text)
 	
-	self.position=position
+	self.global_position=global_position
 	velocity = Vector2(rand_range(-50,50),-100)
 		
 func _ready():

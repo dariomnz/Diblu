@@ -1,0 +1,7 @@
+[gd_scene format=2]
+
+[node name="Dungeon" type="Node2D"]
+
+[node name="YSort" type="YSort" parent="." groups=[
+"world",
+]]

@@ -42,7 +42,8 @@ func _on_Trigger_attack_body_exited(body):
 		$Attack_delay.stop()
 
 func _on_HitBox_area_entered(area):
-	player._on_HitBox_area_entered(area)
+	if player.has_method("_on_HitBox_area_entered"):
+		player._on_HitBox_area_entered(area)
 
 
 func _on_Attack_delay_timeout():
