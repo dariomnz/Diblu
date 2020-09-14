@@ -1,0 +1,81 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://assets/tilemap/dungeon_tileset_walls.tres" type="TileSet" id=1]
+[ext_resource path="res://assets/tilemap/dungeon_tileset_floor.tres" type="TileSet" id=2]
+[ext_resource path="res://assets/GUI/black_bg.png" type="Texture" id=3]
+[ext_resource path="res://scripts/Dungeon/Corridor.gd" type="Script" id=4]
+[ext_resource path="res://scripts/Dungeon/Walls.gd" type="Script" id=5]
+
+[sub_resource type="TileSet" id=1]
+0/name = "black_bg.png 0"
+0/texture = ExtResource( 3 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 0, 0, 10, 10 )
+0/tile_mode = 0
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
+
+[node name="Corridor" type="TileMap"]
+cell_size = Vector2( 16, 16 )
+cell_y_sort = true
+format = 1
+script = ExtResource( 4 )
+corridor_width = 5
+corridor_length = 16
+
+[node name="Walls" type="TileMap" parent="."]
+z_index = 1
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 16, 16 )
+cell_custom_transform = Transform2D( 16, 0, 0, 32, 0, 0 )
+cell_tile_origin = 2
+cell_y_sort = true
+format = 1
+script = ExtResource( 5 )
+
+[node name="Floor" type="TileMap" parent="."]
+z_index = -1
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( 65537, 2, 65536, 65538, 2, 0, 65539, 2, 0, 65540, 2, 65536, 65541, 2, 0, 65542, 2, 65536, 65543, 2, 0, 65544, 2, 0, 65545, 2, 65536, 65546, 2, 0, 65547, 2, 0, 65548, 2, 65536, 65549, 2, 0, 65550, 2, 65536, 65551, 2, 0, 65552, 2, 65536, 131073, 2, 0, 131074, 2, 0, 131075, 2, 0, 131076, 2, 0, 131077, 2, 0, 131078, 2, 65536, 131079, 2, 0, 131080, 2, 0, 131081, 2, 0, 131082, 2, 65536, 131083, 2, 0, 131084, 2, 65536, 131085, 2, 65536, 131086, 2, 0, 131087, 2, 65536, 131088, 2, 0, 196609, 2, 0, 196610, 2, 65536, 196611, 2, 65536, 196612, 2, 0, 196613, 2, 65536, 196614, 2, 65536, 196615, 2, 0, 196616, 2, 0, 196617, 2, 65536, 196618, 2, 0, 196619, 2, 65536, 196620, 2, 0, 196621, 2, 0, 196622, 2, 65536, 196623, 2, 65536, 196624, 2, 0 )
+
+[node name="Exits" type="Node2D" parent="."]
+modulate = Color( 1, 1, 1, 0.490196 )
+
+[node name="Up" type="TileMap" parent="Exits"]
+z_index = 1
+tile_set = SubResource( 1 )
+cell_size = Vector2( 16, 16 )
+centered_textures = true
+format = 1
+
+[node name="Down" type="TileMap" parent="Exits"]
+z_index = 1
+tile_set = SubResource( 1 )
+cell_size = Vector2( 16, 16 )
+centered_textures = true
+format = 1
+
+[node name="Left" type="TileMap" parent="Exits"]
+z_index = 1
+tile_set = SubResource( 1 )
+cell_size = Vector2( 16, 16 )
+centered_textures = true
+format = 1
+tile_data = PoolIntArray( 131072, 0, 0 )
+
+[node name="Right" type="TileMap" parent="Exits"]
+z_index = 1
+tile_set = SubResource( 1 )
+cell_size = Vector2( 16, 16 )
+centered_textures = true
+format = 1
+tile_data = PoolIntArray( 131089, 0, 0 )

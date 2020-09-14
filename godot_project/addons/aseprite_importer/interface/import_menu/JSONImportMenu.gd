@@ -10,6 +10,18 @@ onready var alert_dialog : AcceptDialog = $AlertDialog
 
 const IMPORT_BUTTON_DEFAULT_TEXT = "Import JSON"
 
+const MSG_JSON_OPEN_FILE_ERROR = \
+	"An error occurred while opening the file \"%s\"\n\n" + \
+	"(error code: %d)"
+const MSG_JSON_PARSE_ERROR = "Error parsing the file"
+const MSG_INVALID_JSON_DATA = "Invalid Aseprite JSON file"
+const MSG_MISSING_FRAME_TAGS = \
+	"Missing animation tags data from the JSON file\n\n" + \
+	"Make sure to enable the option Output->Meta->Tags when exporting the spritesheet from Aseprite"
+const MSG_EMPTY_FRAME_TAGS = \
+	"Animation tags not defined in the JSON file\n\n" + \
+	"Add tags in the Aseprite timeline to define the frames inside each animation"
+
 
 signal data_imported(import_data)
 signal data_cleared
@@ -41,6 +53,7 @@ func _update_theme(editor_theme : EditorTheme) -> void:
 
 #Signal Callbacks
 func _on_ImportButton_pressed() -> void:
+	file_dialog.invalidate()
 	file_dialog.popup_centered_ratio(0.5)
 
 
@@ -57,12 +70,16 @@ func _on_FileDialog_file_selected(path : String) -> void:
 		var error_msg : String
 
 		match error:
-			AsepriteImportData.Error.JSON_PARSE_ERROR:
-				error_msg = "Error parsing the file"
-			AsepriteImportData.Error.INVALID_JSON_DATA:
-				error_msg = "Invalid Aseprite JSON file"
-			var code:
-				error_msg = "An error occurred!\nerror code: %d" % code
+			AsepriteImportData.Error.ERR_JSON_PARSE_ERROR:
+				error_msg = MSG_JSON_PARSE_ERROR
+			AsepriteImportData.Error.ERR_INVALID_JSON_DATA:
+				error_msg = MSG_INVALID_JSON_DATA
+			AsepriteImportData.Error.ERR_MISSING_FRAME_TAGS:
+				error_msg = MSG_MISSING_FRAME_TAGS
+			AsepriteImportData.Error.ERR_EMPTY_FRAME_TAGS:
+				error_msg = MSG_EMPTY_FRAME_TAGS
+			_:
+				error_msg = MSG_JSON_OPEN_FILE_ERROR % [path, error]
 
 		set_json_filepath("")
 

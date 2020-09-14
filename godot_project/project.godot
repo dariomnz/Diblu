@@ -24,6 +24,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/tilemap/Chunk.gd"
 }, {
+"base": "General_room",
+"class": "Corridor",
+"language": "GDScript",
+"path": "res://scripts/Dungeon/Corridor.gd"
+}, {
+"base": "TileMap",
+"class": "Dungeon_generator",
+"language": "GDScript",
+"path": "res://scripts/Dungeon/Dungeon_generator.gd"
+}, {
 "base": "Node",
 "class": "EditorTheme",
 "language": "GDScript",
@@ -33,6 +43,11 @@ _global_script_classes=[ {
 "class": "Furniture",
 "language": "GDScript",
 "path": "res://scripts/tilemap/tiles/Furniture.gd"
+}, {
+"base": "TileMap",
+"class": "General_room",
+"language": "GDScript",
+"path": "res://scripts/Dungeon/General_room.gd"
 }, {
 "base": "Control",
 "class": "Inventory",
@@ -74,6 +89,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/GUI/Control menu.gd"
 }, {
+"base": "Sprite",
+"class": "Mirror",
+"language": "GDScript",
+"path": "res://scripts/objects/Mirror.gd"
+}, {
+"base": "General_room",
+"class": "Room",
+"language": "GDScript",
+"path": "res://scripts/Dungeon/Room.gd"
+}, {
 "base": "Button",
 "class": "Slot_buttom",
 "language": "GDScript",
@@ -83,8 +108,11 @@ _global_script_class_icons={
 "AsepriteImportData": "",
 "AsepriteImporter": "",
 "Chunk": "",
+"Corridor": "",
+"Dungeon_generator": "",
 "EditorTheme": "",
 "Furniture": "",
+"General_room": "",
 "Inventory": "",
 "Inventory_bar": "",
 "Inventory_control": "",
@@ -93,6 +121,8 @@ _global_script_class_icons={
 "Item_image": "",
 "Live_entity": "",
 "Menu_control": "",
+"Mirror": "",
+"Room": "",
 "Slot_buttom": ""
 }
 
@@ -100,7 +130,6 @@ _global_script_class_icons={
 
 config/name="Diblu"
 run/main_scene="res://scenes/Game.tscn"
-run/low_processor_mode=true
 config/icon="res://icon.png"
 
 [autoload]

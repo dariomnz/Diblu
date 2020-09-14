@@ -36,7 +36,7 @@ func _physics_process(delta):
 	
 	var velocity = Vector2(0,0)
 	if is_escape_to and can_escape:
-		velocity = (is_escape_to.global_position - global_position).normalized() * 40
+		velocity = (is_escape_to.global_position - global_position).normalized() * escape_speed
 		if is_going_to_escape:
 			velocity*=-1
 		velocity = move_and_slide(velocity)

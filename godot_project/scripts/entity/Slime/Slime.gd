@@ -152,6 +152,8 @@ func create_water_projectile(_global_position = null,damage = 10):
 		get_tree().get_nodes_in_group("world")[0].call_deferred("add_child",projectile)
 
 func is_in_water() -> bool:
+	if not get_tree().has_group("Chunk_control"):
+		return false
 	var chunk = get_tree().get_nodes_in_group("Chunk_control")[0].get_chunk_by_position(position)
 	
 	if chunk:

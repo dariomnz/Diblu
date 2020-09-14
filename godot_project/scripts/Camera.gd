@@ -29,6 +29,9 @@ func update_zoom(newZoom):
 	zoom.y=newZoom
 	
 	current_zoom=newZoom
+	
+	global_signal.emit_signal("on_change_zoom",get_zoom())
+	
 
 func get_zoom():
 	return Vector2(current_zoom*2,current_zoom*2)

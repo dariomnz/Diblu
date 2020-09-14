@@ -6,6 +6,8 @@ var dino_color : String
 func _ready():
 	animationPlayer = $Dino_animation
 	
+	can_escape = false
+	
 	dino_color = dino_colors[randi()%len(dino_colors)]
 	
 	$Dino_sprite.texture = load("res://assets/entity/dino/"+dino_color+"_Dino.png")

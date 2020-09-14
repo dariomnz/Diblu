@@ -14,4 +14,8 @@ const POSIBLE_FURNITURE = {
 
 const NORMAL_KNOCKBACK = 200
 
+enum {UP,DOWN,LEFT,RIGHT}
+
+enum {HORIZONTAL=1,VERTICAL=2}
+
 var is_debug = true
