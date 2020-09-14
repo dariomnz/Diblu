@@ -11,8 +11,8 @@ class_name Dungeon_generator
 #]
 
 export(bool) var generate_new_dungeon setget generate_dungeon
-export(int,3,20) var max_rooms = 10
-export(int,3,20) var min_rooms = 3
+export(int,3,50) var max_rooms = 10 
+export(int,3,50) var min_rooms = 3 
 
 export(Vector2) var wall_border :=Vector2(10,10)
 
@@ -32,6 +32,7 @@ var total_rooms : Array = []
 func _ready():
 	generate_dungeon(true)
 	
+	
 	var player = preload("res://prefabs/entity/Slime/Slime.tscn").instance()
 	add_child(player)
 	player.global_position = Vector2(100,100)
@@ -40,7 +41,10 @@ func _ready():
 func generate_dungeon(can_generate):
 	if not can_generate:
 		return
-		
+	
+	
+	var start_time = OS.get_ticks_msec()
+	
 	#Clear the level
 	for child in get_children():
 		if child.name != "Walls":
@@ -77,56 +81,90 @@ func generate_dungeon(can_generate):
 #	for direction in [global_var.UP,global_var.LEFT,global_var.UP,global_var.RIGHT,global_var.RIGHT,global_var.RIGHT,global_var.DOWN,global_var.DOWN]:
 #		generate(direction)
 	
-	var total_rect : Rect2
+#	var total_rect : Rect2
+#	for used_rect in used_rects:
+#		total_rect = total_rect.merge(used_rect)
+#
+#	total_rect.position = world_to_map(total_rect.position)-wall_border
+#	total_rect.size = world_to_map(total_rect.size)+wall_border*2
+#	for x in range(total_rect.position.x,total_rect.position.x+total_rect.size.x):
+#		for y in range(total_rect.position.y,total_rect.position.y+total_rect.size.y):
+#			$Walls.set_cell(x,y,$Walls.tile_set.find_tile_by_name("Wall_down"))
+#			$Walls.update_bitmask_area(Vector2(x,y))
+			
+#	var total_rect : Rect2
 	for used_rect in used_rects:
-		total_rect = total_rect.merge(used_rect)
+#		total_rect = total_rect.merge(used_rect)
 		
-	total_rect.position = world_to_map(total_rect.position)-wall_border
-	total_rect.size = world_to_map(total_rect.size)+wall_border*2
-	for x in range(total_rect.position.x,total_rect.position.x+total_rect.size.x):
-		for y in range(total_rect.position.y,total_rect.position.y+total_rect.size.y):
-			$Walls.set_cell(x,y,$Walls.tile_set.find_tile_by_name("Wall_down"))
-			$Walls.update_bitmask_area(Vector2(x,y))
+		used_rect.position = world_to_map(used_rect.position)-wall_border
+		used_rect.size = world_to_map(used_rect.size)+wall_border*2
+		for x in range(used_rect.position.x,used_rect.position.x+used_rect.size.x):
+			for y in range(used_rect.position.y,used_rect.position.y+used_rect.size.y):
+				if get_cell(x,y-2) != $Walls.tile_set.find_tile_by_name("Wall_top"):
+					$Walls.set_cell(x,y,$Walls.tile_set.find_tile_by_name("Wall_down"))
+					$Walls.update_bitmask_area(Vector2(x,y))
 			
 	
 	for room in total_rooms:
 		remove_walls(room)
 	
-	for x in range(total_rect.position.x,total_rect.position.x+total_rect.size.x):
-		for y in range(total_rect.position.y,total_rect.position.y+total_rect.size.y):
-			if x==total_rect.position.x or x==total_rect.position.x+1 or x==total_rect.position.x+2 or x==total_rect.position.x+total_rect.size.x-1 or x==total_rect.position.x+total_rect.size.x-2 or x==total_rect.position.x+total_rect.size.x-3:
-				$Walls.set_cellv(Vector2(x,y),-1)
-			if y==total_rect.position.y or y==total_rect.position.y+1 or y==total_rect.position.y+2:
-				$Walls.set_cellv(Vector2(x,y-2),-1)
-				continue
-			if y==total_rect.position.y+total_rect.size.y-1 or y==total_rect.position.y+total_rect.size.y-2 or y==total_rect.position.y+total_rect.size.y-3:
-				$Walls.set_cellv(Vector2(x,y),-1)
-				continue
+#	for x in range(total_rect.position.x,total_rect.position.x+total_rect.size.x):
+#		for y in range(total_rect.position.y,total_rect.position.y+total_rect.size.y):
+#			if x==total_rect.position.x or x==total_rect.position.x+1 or x==total_rect.position.x+2\
+#			 or x==total_rect.position.x+total_rect.size.x-1\
+#			 or x==total_rect.position.x+total_rect.size.x-2\
+#			 or x==total_rect.position.x+total_rect.size.x-3:
+#				$Walls.set_cellv(Vector2(x,y),-1)
+#			if y==total_rect.position.y or y==total_rect.position.y+1 or y==total_rect.position.y+2:
+#				$Walls.set_cellv(Vector2(x,y-2),-1)
+#				continue
+#			if y==total_rect.position.y+total_rect.size.y-1\
+#			 or y==total_rect.position.y+total_rect.size.y-2\
+#			 or y==total_rect.position.y+total_rect.size.y-3:
+#				$Walls.set_cellv(Vector2(x,y),-1)
+#				continue
 	
-	
+#	print(total_rect.size)
 	
 	used_rects.clear()
 	actual_rooms.clear()
 	total_rooms.clear()
 	last_room = null
+	
+	print("Time to generate ",num_rooms," rooms: ",OS.get_ticks_msec()-start_time," ms")
 
 func try_generate_new_room():
+	var is_generate = false
+	var tryed : Array = []
+	while(not is_generate):
 	
-	var posible_direction = [global_var.UP,global_var.DOWN,global_var.LEFT,global_var.RIGHT]
-	
-	var next_direction = posible_direction[rand.randi_range(0,len(posible_direction)-1)]
+		var posible_direction = [global_var.UP,global_var.DOWN,global_var.LEFT,global_var.RIGHT]
 		
-	
-	if not actual_rooms.empty():
-		last_room = actual_rooms[rand.randi_range(0,len(actual_rooms)-1)]
-#	next_trys = [global_var.UP,global_var.DOWN,global_var.LEFT,global_var.RIGHT]
-	
-#	next_trys.erase(next_direction)
-	
-	if generate_new_room(next_direction) == -1:
-#		if not actual_rooms.empty():
-#			last_room = actual_rooms[rand.randi_range(0,len(actual_rooms)-1)]
-		try_generate_new_room()
+		var next_direction = posible_direction[rand.randi_range(0,len(posible_direction)-1)]
+			
+		
+		if not actual_rooms.empty():
+			var is_choose = false
+			while(not is_choose):
+				last_room = actual_rooms[rand.randi_range(0,len(actual_rooms)-1)]
+				
+				if not last_room in tryed:
+					is_choose = true
+				elif not tryed.empty():
+					tryed.append(last_room)
+				elif len(tryed) >= len(actual_rooms):
+					tryed.clear()
+				
+				
+	#	next_trys = [global_var.UP,global_var.DOWN,global_var.LEFT,global_var.RIGHT]
+		
+	#	next_trys.erase(next_direction)
+		
+		if generate_new_room(next_direction) != -1:
+			is_generate = true
+	#		if not actual_rooms.empty():
+	#			last_room = actual_rooms[rand.randi_range(0,len(actual_rooms)-1)]
+#			try_generate_new_room()
 	
 func generate_new_room(direction : int) -> int:
 	"""Generate to rooms whit the corridor"""
@@ -171,7 +209,7 @@ func generate_new_room(direction : int) -> int:
 		corridor.direction = global_var.VERTICAL
 		
 	#Update the walls of the Room
-	var out_clear_position = out_corridor_position
+#	var out_clear_position = out_corridor_position
 #	last_room.update_walls_corridor(from,out_corridor_position,corridor.corridor_width)
 	
 	#Put the corridor in the position from the room
@@ -195,7 +233,7 @@ func generate_new_room(direction : int) -> int:
 		
 	var in_corridor_position = posible_entrances[to][rand.randi_range(0,len(posible_entrances[to])-1)]
 	
-	var in_clear_position = in_corridor_position
+#	var in_clear_position = in_corridor_position
 	#Update the walls of the Room
 #	room.update_walls_corridor(to,in_corridor_position,corridor.corridor_width)
 	

@@ -423,6 +423,10 @@ margin_bottom = 17.9955
 rect_scale = Vector2( 0.08, 0.08 )
 number = 75
 value_max = 75
+
+[node name="VisibilityEnabler2D" type="VisibilityEnabler2D" parent="."]
+process_parent = true
+physics_process_parent = true
 [connection signal="body_entered" from="Vision_area" to="." method="_on_Vision_area_body_entered"]
 [connection signal="body_exited" from="Vision_area" to="." method="_on_Vision_area_body_exited"]
 [connection signal="timeout" from="Escape timer" to="." method="_on_Escape_timer_timeout"]

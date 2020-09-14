@@ -44,10 +44,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Exit" type="Button" parent="VBoxContainer"]
+[node name="Play dungeon" type="Button" parent="VBoxContainer"]
 margin_top = 44.0
 margin_right = 240.0
 margin_bottom = 84.0
+rect_min_size = Vector2( 0, 40 )
+text = "Dungeon"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Exit" type="Button" parent="VBoxContainer"]
+margin_top = 88.0
+margin_right = 240.0
+margin_bottom = 128.0
 rect_min_size = Vector2( 0, 40 )
 text = "Exit"
 
@@ -80,4 +90,5 @@ scale = Vector2( 5, 5 )
 texture = ExtResource( 3 )
 region_rect = Rect2( 9, 0, 0, 0 )
 [connection signal="pressed" from="VBoxContainer/Play" to="." method="_on_Play_pressed"]
+[connection signal="pressed" from="VBoxContainer/Play dungeon" to="." method="_on_Play_dungeon_pressed"]
 [connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_Exit_pressed"]

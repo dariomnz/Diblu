@@ -36,6 +36,9 @@ func get_posible_exits() -> Array:
 
 func get_floor_rect() -> Rect2:
 	var _used_floor = $Floor.get_used_rect()
+	_used_floor.position -= Vector2(1,1)
+	_used_floor.size += Vector2(2,2)
+	
 	_used_floor.position *= cell_size
 	_used_floor.size *= cell_size
 #	print(_used_floor)

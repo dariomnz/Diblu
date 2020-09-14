@@ -10,3 +10,7 @@ func _on_Play_pressed():
 
 func _on_Exit_pressed():
 	get_tree().quit()
+
+
+func _on_Play_dungeon_pressed():
+	var _err = get_tree().change_scene("res://scenes/Dungeon.tscn")
