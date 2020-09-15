@@ -19,10 +19,11 @@ func _ready():
 #	set_current_rotation_degrees(randi()%360)
 #@no_auto_basecall
 func _physics_process(_delta):
-	var direction = global_position.direction_to(get_tree().get_nodes_in_group("player")[0].global_position)
-	var degrees = rad2deg( direction.angle())
-	
-	set_current_rotation_degrees(degrees)
+	if get_tree().has_group("player"):
+		var direction = global_position.direction_to(get_tree().get_nodes_in_group("player")[0].global_position)
+		var degrees = rad2deg( direction.angle())
+		
+		set_current_rotation_degrees(degrees)
 	
 	if player_to_attack and can_attack:
 		action(1)

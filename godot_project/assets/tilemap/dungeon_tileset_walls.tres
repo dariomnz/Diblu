@@ -2,7 +2,7 @@
 
 [ext_resource path="res://assets/tilemap/normal_wall.png" type="Texture" id=3]
 
-[sub_resource type="ConvexPolygonShape2D" id=49]
+[sub_resource type="ConvexPolygonShape2D" id=1]
 points = PoolVector2Array( 16, 16, 0, 16, 0, 0, 16, 0 )
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
@@ -446,7 +446,7 @@ points = PoolVector2Array( 16, 16, 0, 16, 0, 12, 16, 12 )
 "shape": SubResource( 48 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
-6/z_index = 0
+6/z_index = 1
 10/name = "Wall_down"
 10/texture = ExtResource( 3 )
 10/tex_offset = Vector2( 0, 0 )
@@ -457,14 +457,14 @@ points = PoolVector2Array( 16, 16, 0, 16, 0, 12, 16, 12 )
 10/navigation_offset = Vector2( 0, 0 )
 10/shape_offset = Vector2( 0, 0 )
 10/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-10/shape = SubResource( 49 )
+10/shape = SubResource( 1 )
 10/shape_one_way = false
 10/shape_one_way_margin = 1.0
 10/shapes = [ {
 "autotile_coord": Vector2( 0, 0 ),
 "one_way": false,
 "one_way_margin": 1.0,
-"shape": SubResource( 49 ),
+"shape": SubResource( 1 ),
 "shape_transform": Transform2D( 1, 0, 0, 1, 0, 0 )
 } ]
 10/z_index = 0

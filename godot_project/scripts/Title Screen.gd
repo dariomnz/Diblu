@@ -13,4 +13,4 @@ func _on_Exit_pressed():
 
 
 func _on_Play_dungeon_pressed():
-	var _err = get_tree().change_scene("res://scenes/Dungeon.tscn")
+	var _err = get_tree().change_scene("res://scenes/Loading screen.tscn")

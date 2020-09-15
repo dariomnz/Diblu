@@ -14,6 +14,9 @@ var used_floor : Rect2 setget ,get_floor_rect
 func initialize():
 	$Exits.visible = false
 	$Walls.clear()
+	if not Engine.editor_hint:
+		if get_node_or_null("Room light"):
+			get_node("Room light").visible = true
 
 func get_posible_exits() -> Array:
 	var exit_array : Array = [global_var.UP,global_var.DOWN,global_var.LEFT,global_var.RIGHT]

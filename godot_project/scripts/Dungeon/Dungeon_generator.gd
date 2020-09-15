@@ -2,6 +2,8 @@ tool
 extends TileMap
 class_name Dungeon_generator
 
+signal upgrade_loading(percentage)
+
 #var rooms = [
 #	preload("res://prefabs/Dungeon/Rooms/Room1.tscn")
 #]
@@ -14,7 +16,10 @@ export(bool) var generate_new_dungeon setget generate_dungeon
 export(int,3,50) var max_rooms = 10 
 export(int,3,50) var min_rooms = 3 
 
-export(Vector2) var wall_border :=Vector2(10,10)
+export(Vector2) var wall_border :=Vector2(60,60)
+
+export(Vector2) var start_position := Vector2(1000,1000)
+
 
 var rand : = RandomNumberGenerator.new()
 
@@ -22,20 +27,24 @@ var entrances : Array setget ,get_entrances
 var rooms : Array setget ,get_rooms
 var corridors : Array setget ,get_corridors
 
-var last_room : Room = null
+var last_room : General_room = null
 var used_rects : Array = []
 var next_trys : Array = []
 
 var actual_rooms : Array = []
 var total_rooms : Array = []
 
+
+var num_rooms : int setget ,get_num_rooms
+
+#var try_number = 0
+
 func _ready():
+#	global_position = start_position
 	generate_dungeon(true)
 	
 	
-	var player = preload("res://prefabs/entity/Slime/Slime.tscn").instance()
-	add_child(player)
-	player.global_position = Vector2(100,100)
+	
 	
 	
 func generate_dungeon(can_generate):
@@ -60,11 +69,12 @@ func generate_dungeon(can_generate):
 	rand.randomize()
 	
 	
-	var num_rooms = rand.randi_range(min_rooms,max_rooms)
 
-	for _num_room in range(num_rooms):
+	for _num_room in range(get_num_rooms()):
 		
 		try_generate_new_room()
+		emit_signal("upgrade_loading",_num_room*1.0/num_rooms*0.4)
+		yield(get_tree(), "idle_frame")
 #		var next_direction = rand.randi_range(0,3)
 #
 #		next_trys = [global_var.UP,global_var.DOWN,global_var.LEFT,global_var.RIGHT]
@@ -80,50 +90,75 @@ func generate_dungeon(can_generate):
 		
 #	for direction in [global_var.UP,global_var.LEFT,global_var.UP,global_var.RIGHT,global_var.RIGHT,global_var.RIGHT,global_var.DOWN,global_var.DOWN]:
 #		generate(direction)
-	
-#	var total_rect : Rect2
-#	for used_rect in used_rects:
-#		total_rect = total_rect.merge(used_rect)
-#
-#	total_rect.position = world_to_map(total_rect.position)-wall_border
-#	total_rect.size = world_to_map(total_rect.size)+wall_border*2
-#	for x in range(total_rect.position.x,total_rect.position.x+total_rect.size.x):
-#		for y in range(total_rect.position.y,total_rect.position.y+total_rect.size.y):
-#			$Walls.set_cell(x,y,$Walls.tile_set.find_tile_by_name("Wall_down"))
-#			$Walls.update_bitmask_area(Vector2(x,y))
-			
-#	var total_rect : Rect2
+#	print("try_number  ",try_number)
+#	try_number = 0
+	var bucle_count = 0
+	var total_rect : Rect2
 	for used_rect in used_rects:
-#		total_rect = total_rect.merge(used_rect)
-		
-		used_rect.position = world_to_map(used_rect.position)-wall_border
-		used_rect.size = world_to_map(used_rect.size)+wall_border*2
-		for x in range(used_rect.position.x,used_rect.position.x+used_rect.size.x):
-			for y in range(used_rect.position.y,used_rect.position.y+used_rect.size.y):
-				if get_cell(x,y-2) != $Walls.tile_set.find_tile_by_name("Wall_top"):
-					$Walls.set_cell(x,y,$Walls.tile_set.find_tile_by_name("Wall_down"))
-					$Walls.update_bitmask_area(Vector2(x,y))
+		if !total_rect:
+			total_rect = used_rect
+		total_rect = total_rect.merge(used_rect)
+
+	total_rect.position = world_to_map(total_rect.position)-wall_border
+	total_rect.size = world_to_map(total_rect.size)+wall_border*2
+	var total_bucle_count = total_rect.get_area()
+	var step_to_upgrade_loading = int(total_rect.size.x*0.5)
+	for x in range(total_rect.position.x,total_rect.position.x+total_rect.size.x):
+		for y in range(total_rect.position.y,total_rect.position.y+total_rect.size.y):
+			bucle_count +=1
+			$Walls.set_cellv(Vector2(x,y-2),$Walls.tile_set.find_tile_by_name("Wall_top"))
+#			$Walls.set_cell(x,y,$Walls.tile_set.find_tile_by_name("Wall_down"))
+			$Walls.update_bitmask_area(Vector2(x,y-2))
 			
+		if x % step_to_upgrade_loading == 0:
+			emit_signal("upgrade_loading",bucle_count*1.0/total_bucle_count*0.2+0.4)
+			yield(get_tree(), "idle_frame")
+			
+			
+#	for used_rect in used_rects:
+#
+#		used_rect.position = world_to_map(used_rect.position)-wall_border
+#		used_rect.size = world_to_map(used_rect.size)+wall_border*2
+#		for x in range(used_rect.position.x,used_rect.position.x+used_rect.size.x):
+#			for y in range(used_rect.position.y,used_rect.position.y+used_rect.size.y):
+#				bucle_count+=1;
+#				if get_cell(x,y-2) != $Walls.tile_set.find_tile_by_name("Wall_top"):
+#					$Walls.set_cell(x,y,$Walls.tile_set.find_tile_by_name("Wall_down"))
+#					$Walls.update_bitmask_area(Vector2(x,y))
+#					iterations_count+=1;
+			
+
 	
+	bucle_count = 0
+	for x in range(total_rect.position.x,total_rect.position.x+total_rect.size.x):
+		for y in range(total_rect.position.y,total_rect.position.y+total_rect.size.y):
+			bucle_count += 1
+			if x==total_rect.position.x or x==total_rect.position.x+1 or x==total_rect.position.x+2\
+			 or x==total_rect.position.x+total_rect.size.x-1\
+			 or x==total_rect.position.x+total_rect.size.x-2\
+			 or x==total_rect.position.x+total_rect.size.x-3:
+				$Walls.set_cellv(Vector2(x,y),-1)
+			if y==total_rect.position.y or y==total_rect.position.y+1 or y==total_rect.position.y+2:
+				$Walls.set_cellv(Vector2(x,y-2),-1)
+				continue
+			if y==total_rect.position.y+total_rect.size.y-1\
+			 or y==total_rect.position.y+total_rect.size.y-2\
+			 or y==total_rect.position.y+total_rect.size.y-3:
+				$Walls.set_cellv(Vector2(x,y),-1)
+				continue
+			
+		if x % step_to_upgrade_loading == 0:
+			emit_signal("upgrade_loading",bucle_count*1.0/total_bucle_count*0.2+0.6)
+			yield(get_tree(), "idle_frame")
+
+#	print("iteracions  ",iterations_count, "bucle   ",bucle_count)
+	bucle_count = 0
+	total_bucle_count = len(total_rooms)
 	for room in total_rooms:
+		bucle_count +=1
 		remove_walls(room)
-	
-#	for x in range(total_rect.position.x,total_rect.position.x+total_rect.size.x):
-#		for y in range(total_rect.position.y,total_rect.position.y+total_rect.size.y):
-#			if x==total_rect.position.x or x==total_rect.position.x+1 or x==total_rect.position.x+2\
-#			 or x==total_rect.position.x+total_rect.size.x-1\
-#			 or x==total_rect.position.x+total_rect.size.x-2\
-#			 or x==total_rect.position.x+total_rect.size.x-3:
-#				$Walls.set_cellv(Vector2(x,y),-1)
-#			if y==total_rect.position.y or y==total_rect.position.y+1 or y==total_rect.position.y+2:
-#				$Walls.set_cellv(Vector2(x,y-2),-1)
-#				continue
-#			if y==total_rect.position.y+total_rect.size.y-1\
-#			 or y==total_rect.position.y+total_rect.size.y-2\
-#			 or y==total_rect.position.y+total_rect.size.y-3:
-#				$Walls.set_cellv(Vector2(x,y),-1)
-#				continue
-	
+		emit_signal("upgrade_loading",bucle_count*1.0/total_bucle_count*0.2+0.8)
+		yield(get_tree(), "idle_frame")
 #	print(total_rect.size)
 	
 	used_rects.clear()
@@ -155,7 +190,7 @@ func try_generate_new_room():
 				elif len(tryed) >= len(actual_rooms):
 					tryed.clear()
 				
-				
+			
 	#	next_trys = [global_var.UP,global_var.DOWN,global_var.LEFT,global_var.RIGHT]
 		
 	#	next_trys.erase(next_direction)
@@ -171,6 +206,7 @@ func generate_new_room(direction : int) -> int:
 	if not direction in [global_var.UP,global_var.DOWN,global_var.LEFT,global_var.RIGHT]:
 		return -1
 		
+#	try_number +=1
 	var from : int
 	var to : int
 	var is_horizontal : bool = true
@@ -194,6 +230,7 @@ func generate_new_room(direction : int) -> int:
 	#This is when is the first room, the entrance
 	if not last_room:
 		last_room = new_entrance(self)
+		last_room.global_position = start_position
 		
 	var last_posible_exits = last_room.posible_exits
 	
@@ -299,17 +336,17 @@ func remove_walls(room : General_room):
 	for wall in walls_arr:
 		$Walls.set_cell(room_position.x+wall.x,room_position.y+wall.y,$Walls.tile_set.find_tile_by_name("Wall_remove"))
 	
-func new_entrance(parent_node : Node) -> Room:
+func new_entrance(parent_node : Node) -> General_room:
 	var _rooms = get_entrances()
-	var room_instance : Room = _rooms[rand.randi_range(0,len(_rooms)-1)].instance()
+	var room_instance : General_room = _rooms[rand.randi_range(0,len(_rooms)-1)].instance()
 	parent_node.add_child(room_instance)
 	room_instance.initialize()
 	room_instance.set_owner(get_parent())
 	return room_instance
 	
-func new_room(parent_node : Node) -> Room:
+func new_room(parent_node : Node) -> General_room:
 	var _rooms = get_rooms()
-	var room_instance : Room = _rooms[rand.randi_range(0,len(_rooms)-1)].instance()
+	var room_instance : General_room = _rooms[rand.randi_range(0,len(_rooms)-1)].instance()
 	parent_node.add_child(room_instance)
 	room_instance.initialize()
 	room_instance.set_owner(get_parent())
@@ -387,3 +424,8 @@ func get_packed_scenes(dir_path : String) -> Array:
 		elif not file.begins_with("."):
 			packed_scenes.append(load(dir_path+file))
 	return packed_scenes
+
+func get_num_rooms() -> int:
+	if not num_rooms or Engine.editor_hint:
+		num_rooms = rand.randi_range(min_rooms,max_rooms)
+	return num_rooms

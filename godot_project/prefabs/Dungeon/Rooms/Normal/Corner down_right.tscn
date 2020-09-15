@@ -1,11 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/tilemap/dungeon_tileset_walls.tres" type="TileSet" id=1]
 [ext_resource path="res://assets/tilemap/dungeon_tileset_floor.tres" type="TileSet" id=2]
 [ext_resource path="res://scripts/Dungeon/Room.gd" type="Script" id=3]
 [ext_resource path="res://assets/tilemap/dungeon_tileset_exits.tres" type="TileSet" id=4]
 [ext_resource path="res://scripts/Dungeon/Walls.gd" type="Script" id=5]
-[ext_resource path="res://prefabs/entity/Skeleton/Skeleton.tscn" type="PackedScene" id=6]
 [ext_resource path="res://prefabs/Dungeon/Room light.tscn" type="PackedScene" id=7]
 
 [node name="Room" type="TileMap"]
@@ -70,17 +69,9 @@ centered_textures = true
 format = 1
 tile_data = PoolIntArray( 262170, 0, 0, 327706, 0, 0, 393242, 0, 0, 458778, 0, 0 )
 
-[node name="Entity Skeleton" parent="." instance=ExtResource( 6 )]
-position = Vector2( 112.246, 268.268 )
-
-[node name="Entity Skeleton2" parent="." instance=ExtResource( 6 )]
-position = Vector2( 344.595, 108.879 )
-
 [node name="Room light" parent="." instance=ExtResource( 7 )]
+visible = false
 position = Vector2( 224, 186 )
-scale = Vector2( 0.404, 0.525 )
-
-[node name="CollisionShape2D" parent="Room light/Area2D" index="0"]
-position = Vector2( 0, 0 )
+scale = Vector2( 0.452, 0.712 )
 
 [editable path="Room light"]

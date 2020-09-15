@@ -495,7 +495,7 @@ tracks/4/keys = {
 "times": PoolRealArray( 0.4, 1 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 2147483650, 2147483649 ]
+"values": [ 2147483658, 2147483657 ]
 }
 tracks/5/type = "value"
 tracks/5/path = NodePath(".:collision_mask")
@@ -572,7 +572,7 @@ tracks/4/keys = {
 "times": PoolRealArray( 0.4, 1 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 2147483650, 2147483649 ]
+"values": [ 2147483658, 2147483657 ]
 }
 tracks/5/type = "value"
 tracks/5/path = NodePath(".:collision_mask")
@@ -649,7 +649,7 @@ tracks/4/keys = {
 "times": PoolRealArray( 0.4, 1 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 2147483650, 2147483649 ]
+"values": [ 2147483658, 2147483657 ]
 }
 tracks/5/type = "value"
 tracks/5/path = NodePath(".:collision_mask")
@@ -726,7 +726,7 @@ tracks/4/keys = {
 "times": PoolRealArray( 0.4, 1 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 2147483650, 2147483649 ]
+"values": [ 2147483658, 2147483657 ]
 }
 tracks/5/type = "value"
 tracks/5/path = NodePath(".:collision_mask")
@@ -863,6 +863,7 @@ height = 8.54785
 "entity",
 "player",
 ]]
+collision_layer = 9
 script = ExtResource( 2 )
 
 [node name="Light2D" type="Light2D" parent="." groups=[
@@ -886,7 +887,7 @@ texture = ExtResource( 3 )
 position = Vector2( 0, -8 )
 texture = ExtResource( 1 )
 region_enabled = true
-region_rect = Rect2( 128, 448, 64, 64 )
+region_rect = Rect2( 512, 0, 64, 64 )
 
 [node name="Slime_animation" type="AnimationPlayer" parent="."]
 autoplay = "idle_front"

@@ -2,7 +2,7 @@
 
 [ext_resource path="res://assets/tilemap/dungeon_tileset_walls.tres" type="TileSet" id=1]
 [ext_resource path="res://assets/tilemap/dungeon_tileset_floor.tres" type="TileSet" id=2]
-[ext_resource path="res://scripts/Dungeon/Room.gd" type="Script" id=3]
+[ext_resource path="res://scripts/Dungeon/Entrance_room.gd" type="Script" id=3]
 [ext_resource path="res://assets/tilemap/dungeon_tileset_exits.tres" type="TileSet" id=4]
 [ext_resource path="res://prefabs/tilemap/tiles/Portal.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scripts/Dungeon/Walls.gd" type="Script" id=6]
@@ -69,3 +69,6 @@ format = 1
 
 [node name="Portal" parent="." instance=ExtResource( 5 )]
 position = Vector2( 113, 66 )
+
+[node name="Spawn_point" type="Position2D" parent="."]
+position = Vector2( 112, 95 )
