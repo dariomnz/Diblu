@@ -131,6 +131,8 @@ _global_script_class_icons={
 config/name="Diblu"
 run/main_scene="res://scenes/Title Screen.tscn"
 run/low_processor_mode=true
+boot_splash/image="res://icon.png"
+boot_splash/use_filter=false
 config/icon="res://icon.png"
 
 [autoload]
@@ -142,7 +144,7 @@ global_signal="*res://scripts/global_signal.gd"
 [display]
 
 mouse_cursor/custom_image="res://assets/GUI/mouse.png"
-mouse_cursor/custom_image_hotspot=Vector2( 15, 15 )
+mouse_cursor/custom_image_hotspot=Vector2( 11, 11 )
 window/stretch/mode="2d"
 window/stretch/aspect="expand"
 
@@ -329,10 +331,6 @@ pointing/emulate_mouse_from_touch=false
 2d_physics/layer_2="Player jump"
 2d_physics/layer_3="Walls"
 2d_physics/layer_4="Dungeon_light"
-
-[physics]
-
-2d/thread_model=2
 
 [rendering]
 

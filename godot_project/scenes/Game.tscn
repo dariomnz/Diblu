@@ -1,8 +1,7 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://prefabs/entity/Slime/Slime.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/Game.gd" type="Script" id=2]
-[ext_resource path="res://prefabs/entity/Skeleton/Skeleton.tscn" type="PackedScene" id=3]
 [ext_resource path="res://prefabs/GUI/Inventory control.tscn" type="PackedScene" id=4]
 [ext_resource path="res://scripts/tilemap/Chunk control.gd" type="Script" id=5]
 [ext_resource path="res://scripts/tilemap/Map_Furniture.gd" type="Script" id=6]
@@ -13,7 +12,24 @@
 [ext_resource path="res://assets/tilemap/tiles/crate/Crate.png" type="Texture" id=13]
 [ext_resource path="res://assets/tilemap/tiles/campfire/campfire.png" type="Texture" id=14]
 
-[sub_resource type="TileSet" id=1]
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+render_mode unshaded;
+
+void fragment()
+{
+	vec2 uv_texture = UV;
+//	uv_texture.x = 1.0 - uv_texture.x;
+	uv_texture.y = 1.0 - uv_texture.y;
+	COLOR = texture(SCREEN_TEXTURE,uv_texture);
+}
+"
+custom_defines = ""
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+
+[sub_resource type="TileSet" id=3]
 0/name = "Crate 0"
 0/texture = ExtResource( 13 )
 0/tex_offset = Vector2( 0, 0 )
@@ -43,6 +59,13 @@
 1/shapes = [  ]
 1/z_index = 0
 
+[sub_resource type="Environment" id=4]
+background_mode = 4
+glow_enabled = true
+glow_levels/3 = false
+glow_blend_mode = 0
+glow_bicubic_upscale = true
+
 [node name="Game" type="Node2D"]
 script = ExtResource( 2 )
 
@@ -62,6 +85,26 @@ visible = false
 
 [node name="Control menu" parent="GUI canvas" instance=ExtResource( 9 )]
 
+[node name="Control" type="Control" parent="GUI canvas"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="GUI canvas/Control"]
+material = SubResource( 2 )
+anchor_left = 0.777656
+anchor_right = 1.0
+anchor_bottom = 0.283
+margin_left = -0.320007
+margin_right = -6.10352e-05
+margin_bottom = 0.200012
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
 [node name="YSort" type="YSort" parent="." groups=[
 "world",
 ]]
@@ -78,7 +121,7 @@ format = 1
 script = ExtResource( 5 )
 
 [node name="Furniture" type="TileMap" parent="YSort/Chunk control"]
-tile_set = SubResource( 1 )
+tile_set = SubResource( 3 )
 cell_size = Vector2( 1, 1 )
 format = 1
 script = ExtResource( 6 )
@@ -87,14 +130,14 @@ script = ExtResource( 6 )
 wait_time = 0.2
 one_shot = true
 
-[node name="Entity Skeleton" parent="YSort" instance=ExtResource( 3 )]
-position = Vector2( 96.776, -45.7183 )
-
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 script = ExtResource( 12 )
 
 [node name="Timer" type="Timer" parent="CanvasModulate"]
 wait_time = 0.1
 autostart = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 4 )
 [connection signal="timeout" from="YSort/Chunk control/Furniture/Timer" to="YSort/Chunk control/Furniture" method="_on_Timer_timeout"]
 [connection signal="timeout" from="CanvasModulate/Timer" to="CanvasModulate" method="_on_Timer_timeout"]

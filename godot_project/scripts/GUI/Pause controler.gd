@@ -64,4 +64,5 @@ func _on_Settings_pressed():
 
 
 func _on_Main_menu_pressed():
-	var _err = get_tree().change_scene("res://scenes/Title Screen.tscn")
+	global.change_scene("res://scenes/Title Screen.tscn")
+#	var _err = get_tree().change_scene("res://scenes/Title Screen.tscn")

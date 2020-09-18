@@ -8,7 +8,7 @@ export var actual_light = 1.0 setget update_light
 
 onready var timer_wait_time = $Timer.wait_time
 
-var is_night = false
+export var is_night = false
 
 export var update_factor = 0.001
 

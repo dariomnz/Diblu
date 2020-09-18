@@ -62,7 +62,6 @@ scale_random = 1.0
 scale_curve = SubResource( 10 )
 
 [node name="Water_projectile" type="Area2D"]
-modulate = Color( 0.756863, 0.984314, 1, 1 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_group_": true

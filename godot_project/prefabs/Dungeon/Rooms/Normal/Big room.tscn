@@ -86,5 +86,10 @@ tile_data = PoolIntArray( 196643, 0, 0, 262179, 0, 0, 327715, 0, 0, 393251, 0, 0
 
 [node name="Room light" parent="." instance=ExtResource( 6 )]
 visible = false
-position = Vector2( 297, 249 )
-scale = Vector2( 0.599055, 0.983476 )
+position = Vector2( 294.027, 249.595 )
+scale = Vector2( 0.592178, 0.753665 )
+
+[node name="Area2D" parent="Room light" index="1"]
+scale = Vector2( 1.09743, 3.04842 )
+
+[editable path="Room light"]

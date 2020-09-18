@@ -65,5 +65,3 @@ nine_patch_stretch = true
 __meta__ = {
 "_edit_use_anchors_": true
 }
-
-[node name="Tween" type="Tween" parent="Control/Loading_scene"]

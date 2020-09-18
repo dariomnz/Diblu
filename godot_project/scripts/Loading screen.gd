@@ -15,7 +15,11 @@ func _ready():
 	loader = ResourceLoader.load_interactive(new_scene_path)
 	
 func _process(_delta):
-	generate_dungeon()
+	if $Loading_bar.value <= 20:
+		generate_dungeon()
+	elif $Loading_bar.value == 100:
+		start_transition()
+		set_process(false)
 		
 
 func generate_dungeon():
@@ -36,15 +40,15 @@ func generate_dungeon():
 #		num_rooms = scene_instance.get_node("Dungeon").num_rooms
 		get_tree().root.add_child(scene_instance)
 		
-		set_process(false)
+#		set_process(false)
 #		queue_free()
 #	return 1.0
 
 func update_percentage(newpercentage):
 	change_bar(newpercentage * 100 * 0.8 + 100*0.2)
 	
-	if $Loading_bar.value == 100:
-		start_transition()
+#	if $Loading_bar.value == 100:
+#		start_transition()
 
 func change_bar(newValue):
 	$Loading_bar.value = newValue
@@ -52,7 +56,9 @@ func change_bar(newValue):
 	$Label.text = label_list[actual_label_idx]
 	
 func start_transition():
-	$Tween.interpolate_property(get_parent(),"modulate",null,Color(1.0,1.0,1.0,0),1)
-	$Tween.start()
-	yield($Tween,"tween_all_completed")
+	var transition_len = global.create_transition("center in")
+	yield(get_tree().create_timer(transition_len),"timeout")
+
+	global.create_transition("center out")
 	get_parent().get_parent().queue_free()
+#	yield(transition_out,"finished")

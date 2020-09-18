@@ -429,3 +429,18 @@ func get_num_rooms() -> int:
 	if not num_rooms or Engine.editor_hint:
 		num_rooms = rand.randi_range(min_rooms,max_rooms)
 	return num_rooms
+	
+func get_rooms_depth(more_than : int) -> Array:
+	"""Return a array with the rooms that are more_than the enter of the dungeon"""
+	var _rooms : Array = []
+	for child in get_children():
+		child
+		
+	return _rooms
+
+
+func _get_rooms_depth(root : Node,more_than : int,rooms_arr : Array):
+	
+	
+	
+	
