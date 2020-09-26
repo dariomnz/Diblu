@@ -935,7 +935,9 @@ position = Vector2( 0.936443, -3.13708 )
 rotation = 1.5708
 shape = SubResource( 23 )
 
-[node name="Camera2D" type="Camera2D" parent="." groups=[
+[node name="Camera position" type="Position2D" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="Camera position" groups=[
 "camera",
 ]]
 rotating = true
@@ -948,3 +950,7 @@ drag_margin_top = 0.1
 drag_margin_right = 0.1
 drag_margin_bottom = 0.1
 script = ExtResource( 12 )
+
+[node name="MinimapTransform" type="RemoteTransform2D" parent="."]
+update_rotation = false
+update_scale = false

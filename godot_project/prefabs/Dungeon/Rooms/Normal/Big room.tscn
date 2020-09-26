@@ -84,12 +84,9 @@ centered_textures = true
 format = 1
 tile_data = PoolIntArray( 196643, 0, 0, 262179, 0, 0, 327715, 0, 0, 393251, 0, 0, 458787, 0, 0, 524323, 0, 0, 589859, 0, 0, 655395, 0, 0, 720931, 0, 0, 786467, 0, 0, 852003, 0, 0, 917539, 0, 0, 983075, 0, 0, 1048611, 0, 0, 1114147, 0, 0, 1179683, 0, 0, 1245219, 0, 0, 1310755, 0, 0, 1376291, 0, 0, 1441827, 0, 0, 1507363, 0, 0, 1572899, 0, 0, 1638435, 0, 0, 1703971, 0, 0, 1769507, 0, 0 )
 
-[node name="Room light" parent="." instance=ExtResource( 6 )]
+[node name="Light" parent="." instance=ExtResource( 6 )]
 visible = false
 position = Vector2( 294.027, 249.595 )
 scale = Vector2( 0.592178, 0.753665 )
 
-[node name="Area2D" parent="Room light" index="1"]
-scale = Vector2( 1.09743, 3.04842 )
-
-[editable path="Room light"]
+[editable path="Light"]

@@ -16,6 +16,15 @@ const NORMAL_KNOCKBACK = 200
 
 enum {UP,DOWN,LEFT,RIGHT}
 
+enum directions{UP,DOWN,LEFT,RIGHT}
+
+const FROM_TO = {
+	UP:DOWN,
+	DOWN:UP,
+	LEFT:RIGHT,
+	RIGHT:LEFT
+	}
+
 enum {HORIZONTAL=1,VERTICAL=2}
 
 var is_debug = true

@@ -69,13 +69,12 @@ centered_textures = true
 format = 1
 tile_data = PoolIntArray( 262170, 0, 0, 327706, 0, 0, 393242, 0, 0, 458778, 0, 0 )
 
-[node name="Room light" parent="." instance=ExtResource( 7 )]
+[node name="Light" parent="." instance=ExtResource( 7 )]
 visible = false
 position = Vector2( 220.432, 180.054 )
 scale = Vector2( 0.450626, 0.547132 )
 
-[node name="Area2D" parent="Room light" index="1"]
-position = Vector2( 6.04553, 7.46875 )
-scale = Vector2( 1.13349, 3.17929 )
+[node name="CollisionShape2D" parent="Light/Area2D" index="0"]
+scale = Vector2( 49.878, 14.39 )
 
-[editable path="Room light"]
+[editable path="Light"]

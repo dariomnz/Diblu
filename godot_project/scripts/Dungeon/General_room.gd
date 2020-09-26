@@ -15,8 +15,8 @@ func initialize():
 	$Exits.visible = false
 	$Walls.clear()
 	if not Engine.editor_hint:
-		if get_node_or_null("Room light"):
-			get_node("Room light").visible = true
+		if get_node_or_null("Light"):
+			get_node("Light").visible = true
 
 func get_posible_exits() -> Array:
 	var exit_array : Array = [global_var.UP,global_var.DOWN,global_var.LEFT,global_var.RIGHT]
@@ -39,14 +39,13 @@ func get_posible_exits() -> Array:
 
 func get_floor_rect() -> Rect2:
 	var _used_floor = $Floor.get_used_rect()
-	_used_floor.position -= Vector2(1,1)
-	_used_floor.size += Vector2(2,2)
+	_used_floor = _used_floor.grow(1)
+#	_used_floor.position -= Vector2(1,1)
+#	_used_floor.size += Vector2(2,2)
 	
 	_used_floor.position *= cell_size
 	_used_floor.size *= cell_size
-#	print(_used_floor)
 	_used_floor.position += global_position
-#	print(_used_floor)
 	return _used_floor
 	
 

@@ -22,6 +22,12 @@ var velocity = Vector2.ZERO
 
 var dash_vector = Vector2.DOWN
 	
+	
+func _ready():
+	if get_tree().has_group("minimap"):
+		$MinimapTransform.remote_path = get_tree().get_nodes_in_group("minimap")[0].get_camera_path()
+		
+		
 func create_jump_smoke():
 	var smoke_particle = preload("res://prefabs/particles/Smoke.tscn").instance()
 	
@@ -98,6 +104,10 @@ func _physics_process(delta):
 			move_state(delta)
 		DASH:
 			dash_state(delta)
+	move_camera()
+	
+func move_camera():
+	$"Camera position".global_position = global_position + (get_global_mouse_position() - global_position)/8
 	
 func move_state(delta):
 	get_input(delta)

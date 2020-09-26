@@ -911,7 +911,7 @@ __meta__ = {
 }
 
 [node name="Scale" type="Node2D" parent="Control"]
-position = Vector2( -1, 120 )
+position = Vector2( 0, 120 )
 scale = Vector2( 5, 5 )
 
 [node name="Fire" type="Particles2D" parent="Control/Scale"]

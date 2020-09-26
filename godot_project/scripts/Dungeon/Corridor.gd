@@ -11,11 +11,11 @@ func _ready():
 	update_size()
 #	._ready()
 
-func randomize_length(max_value):
+func randomize_length(min_value : int,max_value : int):
 	var rand = RandomNumberGenerator.new()
 	rand.randomize()
 	
-	corridor_length = rand.randi_range(3,max_value)
+	corridor_length = rand.randi_range(min_value,max_value)
 	update_size()
 	if has_node("Walls"):
 		$Walls.clear()
@@ -106,4 +106,21 @@ func update_size() -> void:
 							$Exits/Down.set_cell(x,y+1,0)
 						
 	
+#Override
+func get_floor_rect() -> Rect2:
+	var _used_floor : Rect2 = $Floor.get_used_rect()
+	match direction:
+		global_var.VERTICAL:
+			_used_floor = _used_floor.grow_individual(0,-2,0,-2)
+#			_used_floor.position += Vector2(-4,2)
+#			_used_floor.size -= Vector2(-8,4)
+		global_var.HORIZONTAL:
+			_used_floor = _used_floor.grow_individual(-2,0,-2,0)
+#			_used_floor.position += Vector2(2,-4)
+#			_used_floor.size -= Vector2(4,-8)
+
+	_used_floor.position *= cell_size
+	_used_floor.size *= cell_size
+	_used_floor.position += global_position
 	
+	return _used_floor

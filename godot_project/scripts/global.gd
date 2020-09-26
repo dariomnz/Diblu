@@ -1,5 +1,6 @@
 extends Node
 
+var current_scene = null
 
 func create_float_text(obj : Node2D,text):
 	var damage_text = preload("res://prefabs/GUI/Floating text.tscn").instance()
@@ -28,7 +29,7 @@ func change_scene(path : String,transition_name = null ):
 		
 	var new_scene = load(path).instance()
 	for child in get_tree().root.get_children():
-		if not child.name.begins_with("global"):
+		if not child.get_class() == "Node":
 			child.queue_free()
 	get_tree().root.add_child(new_scene)
 	if transition_name:

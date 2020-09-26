@@ -1,0 +1,80 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scripts/GUI/Minimap_dungeon.gd" type="Script" id=1]
+[ext_resource path="res://assets/minimap/border.png" type="Texture" id=2]
+[ext_resource path="res://icon.png" type="Texture" id=3]
+[ext_resource path="res://assets/minimap/minimap_tileset.png" type="Texture" id=4]
+
+[sub_resource type="TileSet" id=1]
+1/name = "Floor"
+1/texture = ExtResource( 4 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 0, 0, 176, 80 )
+1/tile_mode = 1
+1/autotile/bitmask_mode = 1
+1/autotile/bitmask_flags = [ Vector2( 0, 0 ), 432, Vector2( 0, 1 ), 438, Vector2( 0, 2 ), 54, Vector2( 0, 3 ), 48, Vector2( 1, 0 ), 504, Vector2( 1, 1 ), 511, Vector2( 1, 2 ), 63, Vector2( 1, 3 ), 56, Vector2( 2, 0 ), 216, Vector2( 2, 1 ), 219, Vector2( 2, 2 ), 27, Vector2( 2, 3 ), 24, Vector2( 3, 0 ), 144, Vector2( 3, 1 ), 146, Vector2( 3, 2 ), 18, Vector2( 3, 3 ), 16, Vector2( 4, 0 ), 176, Vector2( 4, 1 ), 182, Vector2( 4, 2 ), 434, Vector2( 4, 3 ), 50, Vector2( 4, 4 ), 178, Vector2( 5, 0 ), 248, Vector2( 5, 1 ), 255, Vector2( 5, 2 ), 507, Vector2( 5, 3 ), 59, Vector2( 5, 4 ), 251, Vector2( 6, 0 ), 440, Vector2( 6, 1 ), 447, Vector2( 6, 2 ), 510, Vector2( 6, 3 ), 62, Vector2( 6, 4 ), 446, Vector2( 7, 0 ), 152, Vector2( 7, 1 ), 155, Vector2( 7, 2 ), 218, Vector2( 7, 3 ), 26, Vector2( 7, 4 ), 154, Vector2( 8, 0 ), 184, Vector2( 8, 1 ), 191, Vector2( 8, 2 ), 506, Vector2( 8, 3 ), 58, Vector2( 8, 4 ), 186, Vector2( 9, 0 ), 443, Vector2( 9, 1 ), 254, Vector2( 9, 2 ), 442, Vector2( 9, 3 ), 190, Vector2( 10, 2 ), 250, Vector2( 10, 3 ), 187 ]
+1/autotile/icon_coordinate = Vector2( 0, 0 )
+1/autotile/tile_size = Vector2( 16, 16 )
+1/autotile/spacing = 0
+1/autotile/occluder_map = [  ]
+1/autotile/navpoly_map = [  ]
+1/autotile/priority_map = [  ]
+1/autotile/z_index_map = [  ]
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape_one_way = false
+1/shape_one_way_margin = 0.0
+1/shapes = [  ]
+1/z_index = 0
+
+[node name="Minimap scene" type="Control" groups=[
+"minimap",
+]]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Layer -1" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Background" type="ColorRect" parent="Layer -1"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0.458824, 1, 0.392157 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Minimap" type="TileMap" parent="."]
+tile_set = SubResource( 1 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( 196613, 0, 4, 196614, 0, 196610, 196617, 0, 4, 196618, 0, 196610, 262148, 0, 0, 262149, 0, 131079, 262151, 0, 196608, 262152, 0, 196609, 262153, 0, 262151, 262155, 0, 3, 327684, 0, 65536, 327685, 0, 65538, 327689, 0, 131076, 327690, 0, 5, 327691, 0, 196615, 393220, 0, 131072, 393221, 0, 65543, 393225, 0, 65536, 393226, 0, 65538, 393228, 0, 3, 458757, 0, 131076, 458758, 0, 2, 458761, 0, 65536, 458762, 0, 262149, 458763, 0, 196609, 458764, 0, 262151, 524293, 0, 65540, 524294, 0, 196613, 524295, 0, 196609, 524296, 0, 196609, 524297, 0, 196614, 524298, 0, 131074, 524300, 0, 131075, 589829, 0, 65539, 589835, 0, 196611, 655365, 0, 65539, 655370, 0, 196611, 720901, 0, 196612, 720902, 0, 196610, 720905, 0, 196611, 786439, 0, 196608, 786440, 0, 196610 )
+
+[node name="Layer 1" type="CanvasLayer" parent="."]
+
+[node name="Border" type="NinePatchRect" parent="Layer 1"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 2 )
+patch_margin_left = 3
+patch_margin_top = 3
+patch_margin_right = 3
+patch_margin_bottom = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 4, 4 )
+
+[node name="icon" type="Sprite" parent="Camera2D"]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 3 )

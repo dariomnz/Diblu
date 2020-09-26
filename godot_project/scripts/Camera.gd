@@ -7,6 +7,7 @@ var default_zoom = 0.5
 var max_zoom = 1
 var min_zoom = 0.1
 
+
 func _input(_event):
 	var increment = 1.10
 	

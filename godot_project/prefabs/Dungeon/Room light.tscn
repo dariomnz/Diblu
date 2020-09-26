@@ -22,7 +22,7 @@ tracks/0/keys = {
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 10.0339, 10.7811 )
 
-[node name="Room light" type="Light2D"]
+[node name="Light" type="Light2D"]
 position = Vector2( 143, 85 )
 scale = Vector2( 0.26709, 0.326467 )
 texture = ExtResource( 2 )
