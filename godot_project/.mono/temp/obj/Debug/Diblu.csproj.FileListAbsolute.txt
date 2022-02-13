@@ -1,0 +1,6 @@
+C:\Users\damum\Desktop\godot\Diblu-2.0\godot_project\.mono\temp\bin\Debug\Diblu.dll
+C:\Users\damum\Desktop\godot\Diblu-2.0\godot_project\.mono\temp\bin\Debug\Diblu.pdb
+C:\Users\damum\Desktop\godot\Diblu-2.0\godot_project\.mono\temp\obj\Debug\Diblu.csprojAssemblyReference.cache
+C:\Users\damum\Desktop\godot\Diblu-2.0\godot_project\.mono\temp\obj\Debug\Diblu.csproj.CoreCompileInputs.cache
+C:\Users\damum\Desktop\godot\Diblu-2.0\godot_project\.mono\temp\obj\Debug\Diblu.dll
+C:\Users\damum\Desktop\godot\Diblu-2.0\godot_project\.mono\temp\obj\Debug\Diblu.pdb

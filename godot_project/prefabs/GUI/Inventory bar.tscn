@@ -1,0 +1,146 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://assets/GUI/inventory_theme.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/GUI/Slot Inventory.gd" type="Script" id=2]
+[ext_resource path="res://scripts/GUI/Bar Inventory.gd" type="Script" id=3]
+
+[sub_resource type="StyleBoxTexture" id=1]
+
+[sub_resource type="StyleBoxTexture" id=2]
+
+[sub_resource type="StyleBoxTexture" id=3]
+
+[sub_resource type="StyleBoxTexture" id=4]
+
+[sub_resource type="StyleBoxTexture" id=5]
+
+[node name="Inventory bar" type="Control" groups=[
+"inventory bar",
+]]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme = ExtResource( 1 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Transparent" type="Button" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/focus = SubResource( 3 )
+custom_styles/disabled = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Slot1" type="Button" parent="."]
+anchor_left = 0.326867
+anchor_top = 0.90642
+anchor_right = 0.366276
+anchor_bottom = 0.973528
+margin_right = -0.355713
+margin_bottom = -0.265015
+focus_mode = 0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Slot2" type="Button" parent="."]
+anchor_left = 0.370886
+anchor_top = 0.906887
+anchor_right = 0.410296
+anchor_bottom = 0.973996
+margin_right = -0.355713
+margin_bottom = -0.265015
+focus_mode = 0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Slot3" type="Button" parent="."]
+anchor_left = 0.414596
+anchor_top = 0.907355
+anchor_right = 0.454006
+anchor_bottom = 0.974464
+margin_right = -0.355713
+margin_bottom = -0.265015
+focus_mode = 0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Slot4" type="Button" parent="."]
+anchor_left = 0.459044
+anchor_top = 0.90642
+anchor_right = 0.498454
+anchor_bottom = 0.973528
+margin_right = -0.355713
+margin_bottom = -0.265015
+focus_mode = 0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Slot5" type="Button" parent="."]
+anchor_left = 0.503122
+anchor_top = 0.90642
+anchor_right = 0.542532
+anchor_bottom = 0.973528
+margin_right = -0.355713
+margin_bottom = -0.265015
+focus_mode = 0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Slot6" type="Button" parent="."]
+anchor_left = 0.547044
+anchor_top = 0.907355
+anchor_right = 0.586454
+anchor_bottom = 0.974464
+margin_right = -0.355713
+margin_bottom = -0.265015
+focus_mode = 0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Slot7" type="Button" parent="."]
+anchor_left = 0.590734
+anchor_top = 0.90642
+anchor_right = 0.630144
+anchor_bottom = 0.973528
+margin_right = -0.355713
+margin_bottom = -0.265015
+focus_mode = 0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="Slot8" type="Button" parent="."]
+anchor_left = 0.63482
+anchor_top = 0.90642
+anchor_right = 0.67423
+anchor_bottom = 0.973528
+margin_right = -0.355713
+margin_bottom = -0.265015
+focus_mode = 0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": true
+}

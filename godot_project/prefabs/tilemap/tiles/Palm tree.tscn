@@ -1,0 +1,102 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://assets/tilemap/tilemap1.png" type="Texture" id=1]
+[ext_resource path="res://scripts/tilemap/tiles/Palm tree.gd" type="Script" id=2]
+[ext_resource path="res://assets/entity/shadow.png" type="Texture" id=3]
+[ext_resource path="res://scripts/entity/HurtBox.gd" type="Script" id=4]
+
+
+
+[sub_resource type="OccluderPolygon2D" id=1]
+polygon = PoolVector2Array( -4.08688, 3.74825, 4.15393, 3.72041, 6.24198, 0.0732927, 4.01473, -3.71303, -4.1704, -3.62951, -6.28629, -0.0380697 )
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 4.17043
+height = 4.28179
+
+[sub_resource type="CapsuleShape2D" id=3]
+radius = 22.8527
+height = 10.0446
+
+[sub_resource type="Animation" id=4]
+length = 0.4
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("Palm tree_sprite:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 10.0, 0.0, -10.0, 0.0 ]
+}
+
+[sub_resource type="CapsuleShape2D" id=5]
+radius = 6.90691
+height = 33.2393
+
+[sub_resource type="CapsuleShape2D" id=6]
+radius = 14.7436
+height = 17.0846
+
+[node name="Tall_tile Palm tree" type="StaticBody2D"]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource( 2 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource( 1 )
+
+[node name="collision_body" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+z_index = 1
+shape = SubResource( 2 )
+
+[node name="Shadow" type="Sprite" parent="."]
+position = Vector2( 0, -4 )
+texture = ExtResource( 3 )
+
+[node name="Palm tree_sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+offset = Vector2( 0, -26 )
+region_enabled = true
+region_rect = Rect2( 0, 304, 48, 64 )
+
+[node name="area_leaves" type="Area2D" parent="."]
+visible = false
+position = Vector2( 16, 20 )
+collision_layer = 3
+collision_mask = 3
+
+[node name="collision_leaves" type="CollisionShape2D" parent="area_leaves"]
+position = Vector2( -15.625, -45.625 )
+shape = SubResource( 3 )
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/hit = SubResource( 4 )
+
+[node name="HurtBox" type="Area2D" parent="."]
+visible = false
+script = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+position = Vector2( 0.787453, -17.9539 )
+shape = SubResource( 5 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="HurtBox"]
+position = Vector2( 0.944931, -37.4827 )
+rotation = 1.5708
+shape = SubResource( 6 )
+
+[node name="Tween" type="Tween" parent="."]
+[connection signal="area_entered" from="area_leaves" to="." method="_on_area_leaves_area_entered"]
+[connection signal="area_exited" from="area_leaves" to="." method="_on_area_leaves_area_exited"]
+[connection signal="body_entered" from="area_leaves" to="." method="_on_area_leaves_body_entered"]
+[connection signal="body_exited" from="area_leaves" to="." method="_on_area_leaves_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
